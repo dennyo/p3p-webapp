@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@Page.Title</title>
+    </head>
+    <body>
+        @if(Page.Title != null)
+        {
+            <h1>@Page.Title</h1>
+        }
+        @if(Page.Description != null)
+        {
+            <h4>@Page.Description</h4>
+        }
+        @RenderBody
+    </body>
+</html>
