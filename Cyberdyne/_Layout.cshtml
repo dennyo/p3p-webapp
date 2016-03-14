@@ -11,14 +11,24 @@
     </head>
     
     <body>
-        @if(Page.Title != null)
-        {
-            <h1>@Page.Title</h1>
-        }
-        @if(Page.Description != null)
-        {
-            <h4>@Page.Description</h4>
-        }
-        @RenderBody()   
+        <div id="header">
+            @if(Page.Title != null)
+            {
+                <h1>@Page.Title</h1>
+            }
+            @if(Page.Description != null)
+            {
+                <h4>@Page.Description</h4>
+            }
+            This is the header.
+        </div>
+        <div id="body">
+            @RenderBody()
+            This is the body.
+        </div>
+        <div id ="footer">
+            this is the footer. <br />
+            &copy; Cyberdyne @DateTime.Now.Year    
+        </div>   
     </body>
 </html>

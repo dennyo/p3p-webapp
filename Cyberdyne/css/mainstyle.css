@@ -1,0 +1,11 @@
+body{
+    padding: 10px;
+}
+
+#header,    #body , #footer {  
+    display: block;
+    border:  1px solid grey;    
+    width:  90%;
+    padding: 10px;
+    margin: auto;
+}
