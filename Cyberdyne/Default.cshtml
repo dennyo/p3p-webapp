@@ -1,4 +1,16 @@
 ﻿@{
     Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
+    var db = Database.Open("basicData");
+   // var latestRobot = db.QueryValue("SELECT MAX(RobotID) FROM Robots");
+   // var robotName = db.QueryValue("SELECT RobotName FROM Robots WHERE RobotID = @0", latestRobot);
+   // var robotPhoto = db.QueryValue("SELECT Photo FROM Photos WHERE RobotID = @0", latestRobot);
+   // var robotText = db.QueryValue("SELECT text FROM RobotText WHERE RobotID = @0", latestRobot);
+   // var imageSrc = string.Format("?????????????");
 }
+<!--
+<h2>Most Recent addition</h2>
+<h1>robotName</h1>
+<p> robotText</p>
+<img src=imageSrc" />
+-->
