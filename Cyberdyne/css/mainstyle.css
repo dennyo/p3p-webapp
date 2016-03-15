@@ -1,8 +1,6 @@
 #header, .container , #footer {  
     display: block;  
-    width:  90%;
     padding: 10px;
-    margin: auto;
     border:  2px solid black;
 }
 
