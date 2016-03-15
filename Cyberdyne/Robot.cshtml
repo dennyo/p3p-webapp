@@ -1,6 +1,47 @@
 ﻿@{
     Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
+
+    var robotId = "";
+    var robotName = "";
+    var photoId = "";
+
+    var email = Session["email"];
+
+    if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
+        robotId = Request.QueryString["ID"];
+        var db = Database.Open("basicData");
+        var dbCommand = "SELECT * FROM Robots WHERE RobotId = @0";
+        var row = db.QuerySingle(dbCommand, robotId);
+        if (row != null)
+        {
+            robotName = row.RobotName;
+            photoId = row.PhotoId;
+        }
+        else
+        {
+            Validation.AddFormError("BEEP BOOP. Robot is lost.");
+            // If you are using a version of ASP.NET Web Pages 2 that's
+            // earlier than the RC release, comment out the preceding
+            // statement and uncomment the following one.
+            //ModelState.AddFormError("No movie was selected.");
+        }
+    }
+    else{
+        Validation.AddFormError("BEEP BOOP. Robot is lost.");
+        // If you are using a version of ASP.NET Web Pages 2 that's
+        // earlier than the RC release, comment out the preceding
+        // statement and uncomment the following one.
+        //ModelState.AddFormError("No movie was selected.");
+    }
 }
 
+@if (!robotName.IsEmpty()){<h2>This is a @robotName</h2>}
+else {<h2>@Html.ValidationSummary()</h2>}
+<form method="post">
+<fieldset>
+    <input type="hidden" name="robotId" value="@robotId" />
+</fieldset>
+</form>
+<p><a href="~/Default">Return</a></p>
 
