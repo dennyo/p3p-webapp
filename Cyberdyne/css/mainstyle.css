@@ -1,15 +1,5 @@
-<<<<<<< HEAD
-#header,    #body , #footer {  
-    display: block;
-    border:  1px solid grey;    
-=======
-body{
-    padding: 10px;
-}
-
 #header, .container , #footer {  
     display: block;  
->>>>>>> 34038bd5d3f46bc901488d740531611406a8fd92
     width:  90%;
     padding: 10px;
     margin: auto;
