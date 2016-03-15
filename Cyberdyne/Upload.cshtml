@@ -19,9 +19,11 @@
                 byte[] fileContent = new byte[fileLength];
                 fileStream.Read(fileContent, 0, fileLength);
                 var db = Database.Open("basicData");
-                var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
-                db.Execute(sql, fileName, fileContent, fileMime);
+                //var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
+                var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
+                db.Execute(sql, /*fileName, */fileContent, fileMime);
                 id = (int)db.GetLastInsertId();
+                db.Close();
             }
         }
     }
@@ -38,7 +40,7 @@
 @if (IsPost && fileName != String.Empty) {
     <span>File uploaded!</span><br/>
     if(fileMime.StartsWith("image")){
-        <img src="Download.cshtml?Id=@id" width="100%" />
+        <img src="DisplayImage.cshtml?Id=@id" width="100%" />
     }
     else {
         <p> invalid input!</p>

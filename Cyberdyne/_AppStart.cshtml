@@ -2,4 +2,10 @@
     WebSecurity.InitializeDatabaseConnection("authenticationData", "UserProfile", "UserId", "UserName", autoCreateTables: true);
 
     App.Name = "Cyberdyne";
+
+
+    //Emergency Measures
+
+    /*var db = Database.Open("basicData");
+    db.Execute("DELETE FROM Photos");*/
 }

@@ -1,37 +1,12 @@
-﻿@*@functions{
-    public static class Repository
-    {
-        public static Robot getRobot(int robotId)
-        {
-            var db = Database.Open("basicData");
-            var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
-            Robot robotObject = new Robot(robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
-            db.Close();
-            return robotObject;
-        }
-
-        public static List<Robot> getAllRobots()
-        {
-            var db = Database.Open("basicData");
-            List<Robot> robotList = new List<Robot>();
-            var robotQuery = db.Query("SELECT * FROM Robots");
-            foreach(var row in robotQuery)
-            {
-                robotList.Add(new Robot(row.RobotName, row.RobotText, Convert.ToInt32(row.PhotoId)));
-            }
-            db.Close();
-            return robotList;
-        }
-    }
-
+﻿@functions{
     public class Robot
     {
         private int robotId;
         private string robotName;
         private string robotText;
-        private int image;
+        private int coverImage;
 
-        public int robotId
+        public int RobotId
         {
             get{return robotId;}
         }
@@ -45,18 +20,103 @@
             get{return robotText;}
             set{robotText = value;}
         }
-        public int Image
+        public int CoverImage
         {
-            get{return image;}
-            set{image = value;}
+            get{return coverImage;}
+            set{CoverImage = value;}
         }
 
-        public Robot(int robotId, string robotName, string robotText, int image)
+        public Robot(int robotId, string robotName, string robotText, int coverImage)
         {
             this.robotId = robotId;
             this.robotName = robotName;
             this.robotText = robotText;
-            this.image = image;
+            this.coverImage = coverImage;
+        }
+
+        //return list with photoids corresponded with this robot
+        public List<int> getPhotos()
+        {
+            List<int> PhotoIDs = new List<int>();
+            var db = Database.Open("basicData");
+            var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
+            foreach(var row in IDs)
+            {
+                PhotoIDs.Add(Convert.ToInt32(row.PhotoId));
+            }
+            db.Close();
+            return PhotoIDs;
+        }
+
+        //return list with links to code
+        public List<string> getCodeLinks()
+        {
+            List<string> links = new List<string>();
+            var db = Database.Open("basicData");
+
+            var data = db.Query("SELECT link FROM CodeLinks WHERE RobotId = @0", robotId);
+            foreach(var row in data)
+            {
+                links.Add(row.link);
+            }
+
+            db.Close();
+            return links;
+        }
+
+        //retrun list with codesnippets
+        public List<string> getCodeSnippets()
+        {
+            List<string> links = new List<string>();
+            var db = Database.Open("basicData");
+
+            var data = db.Query("SELECT link FROM CodeSnippets WHERE RobotId = @0", robotId);
+            foreach(var row in data)
+            {
+                links.Add(row.link);
+            }
+
+            db.Close();
+            return links;
+        }
+
+        //return list with video links
+        public List<string> getVideoLinks()
+        {
+            List<string> links = new List<string>();
+            var db = Database.Open("basicData");
+
+            var data = db.Query("SELECT link FROM VideoLinks WHERE RobotId = @0", robotId);
+            foreach(var row in data)
+            {
+                links.Add(row.link);
+            }
+
+            db.Close();
+            return links;
         }
     }
-}*@
+
+
+    public Robot getRobot(int robotId)
+    {
+        var db = Database.Open("basicData");
+        var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
+        Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+        db.Close();
+        return robotObject;
+    }
+
+    public List<Robot> getAllRobots()
+    {
+        var db = Database.Open("basicData");
+        List<Robot> robotList = new List<Robot>();
+        var robotQuery = db.Query("SELECT * FROM Robots");
+        foreach(var row in robotQuery)
+        {
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, Convert.ToInt32(row.PhotoId)));
+        }
+        db.Close();
+        return robotList;
+    }
+}
