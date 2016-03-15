@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Register";
+    Page.Description = "Add an account";
+    Page.ShowTitle = "false";
+
+    var userName = "";
+    var password = "";
+    var confirmPassword = "";
+
+    Validation.RequireField("userName", "You must enter an Email address");
+    Validation.RequireField("password", "Your password cannot be blank");
+    Validation.RequireField("confirmPassword", "Your confirmation password can't be blank either");
+    Validation.Add("confirmPassword",
+        Validator.EqualsTo("password", "Confirmation password does not match password"));
+    Validation.Add("password",
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Password must contain at least 6 caracters"));
+    Validation.Add("userName",
+        Validator.StringLength(
+            maxLength: 400,
+            errorMessage: "Your email cannot contain more then 4000 caracters"));
+
+    if(IsPost)
+    {
+        AntiForgery.Validate();
+        userName = Request.Form["userName"];
+        password = Request.Form["password"];
+        confirmPassword = Request.Form["confirmPassword"];
+
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("authenticationData");
+
+            var user = db.QuerySingle("SELECT UserName FROM UserProfile WHERE LOWER(UserName) = LOWER(@0)", userName);
+            if(user == null)
+            {
+                db.Execute("INSERT INTO UserProfile (UserName) VALUES (@0)", userName);
+
+                try
+                {
+                    var token = WebSecurity.CreateAccount(userName, password, false);
+                }
+                catch(System.Web.Security.MembershipCreateUserException e)
+                {
+                    ModelState.AddFormError(e.Message);
+                }
+            }
+            else
+            {
+                ModelState.AddFormError("UserName is already in use");
+            }
+        }
+    }
+}
+
+
+<form method="post">
+    @AntiForgery.GetHtml()
+    @Html.ValidationSummary("Account creation failed, Please correct errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+    <fieldset>
+        <legend>Register a new account</legend>
+        <div class="form-group">
+            <label for="userName">UserName</label>
+            <input type="text" id="userName" name="userName" value="@userName" class="form-control">
+            @Html.ValidationMessage("userName")
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" value="@password" class="form-control">
+            @Html.ValidationMessage("password")
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" value="@confirmPassword" class="form-control">
+            @Html.ValidationMessage("confirmPassword")
+        </div>
+        <div class="from-group">
+            <button type="submit" class="btn btn-default">Register</button>
+        </div>
+    </fieldset>
+</form>

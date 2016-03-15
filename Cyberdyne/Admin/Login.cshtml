@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Login";
+    Page.ShowTitle = "false";
+    Page.Description = "Enter your credentials to log in";
+    
+    var userName = "";
+    var password = "";
+    bool rememberMe = false;
+
+    Validation.RequireField("userName", "You must enter an UserName");
+    Validation.Add("userName",
+        Validator.StringLength(
+            maxLength: 400,
+            minLength: 1,
+            errorMessage: "Username can not contain more then 400 caracters"));
+
+    Validation.RequireField("password", "You must enter a password");
+    Validation.Add("password", 
+        Validator.StringLength(
+            maxLength: Int32.MaxValue,
+            minLength: 6,
+            errorMessage: "Password must contain at least 6 caracters"));
+
+    if(IsPost)
+    {
+        AntiForgery.Validate();
+
+        userName = Request.Form["userName"];
+        password = Request.Form["password"];
+        rememberMe = Request.Form["rememberMe"].AsBool();
+
+        if(Validation.IsValid())
+        {
+            if(WebSecurity.Login(userName, password, rememberMe))
+            {
+                //Redirect to new page
+                //Context.RedirectLocal();
+                return;
+            }
+            else
+            {
+                ModelState.AddFormError("The provided username or password is invalid");
+            }
+        }
+    }
+}
+<form method="post">
+    <fieldset>
+        @AntiForgery.GetHtml()
+        @Html.ValidationSummary("Log in was unsuccesful. please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+        <legend>Login</legend>
+        <div class="form-group">
+            <label for="userName">UserName</label>
+            <input type="text" id="userName" name="userName" value="@userName" class="form-control">
+            @Html.ValidationMessage("userName")
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" value="@password" class="form-control">
+            @Html.ValidationMessage("password")
+        </div>
+        <div class="form-group">
+            <label for=" rememberMe">Remember Me</label>
+            <input type="checkbox" id="rememberMe" name="rememberMe" value="true" checked="@rememberMe"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
+        </div>
+    </fieldset>
+</form>
+
