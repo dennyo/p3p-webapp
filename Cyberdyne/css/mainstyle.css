@@ -1,11 +1,15 @@
 #header, .container , #footer {  
     display: block;  
-    padding: 10px;
-    border:  2px solid black;
+    padding: 10px;  
+}
+    
+#header p {
+    color: white;
 }
 
 #footer {
     overflow: hidden;
+    border:  2px solid black;
 }
 
 .container > div{
@@ -18,4 +22,24 @@
 
 .right {
     float:  right;
+}
+
+span#title{
+    color:  white;
+    font-size: 30px;
+}
+
+
+#myNavbar {
+    position: relative;
+}
+
+#myNavbar .nav {
+    position: absolute; 
+    bottom: 0; 
+    right: 0;   
+}
+
+nav {
+    padding-right: 25px;
 }
