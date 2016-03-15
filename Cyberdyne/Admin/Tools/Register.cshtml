@@ -1,4 +1,10 @@
 ﻿@{
+    if(!Roles.IsUserInRole("God"))
+    {
+        Response.Redirect("~/");
+    }
+    WebSecurity.RequireRoles(new string[] {"God"});
+
     Layout = "~/_Layout.cshtml";
     Page.Title = "Register";
     Page.Description = "Add an account";
@@ -42,6 +48,8 @@
                 try
                 {
                     var token = WebSecurity.CreateAccount(userName, password, false);
+                    Roles.AddUserToRole(userName, "Admin");
+                    Response.Redirect("~/Admin/Tools/Manage");
                 }
                 catch(System.Web.Security.MembershipCreateUserException e)
                 {

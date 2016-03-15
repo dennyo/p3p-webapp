@@ -75,3 +75,8 @@
         </div>
     </fieldset>
 </form>
+<br>
+@if(Roles.IsUserInRole("God"))
+{
+    <a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a>
+}
