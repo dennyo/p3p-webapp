@@ -1,0 +1,62 @@
+﻿@functions{
+    public static class Repository
+    {
+        public static Robot getRobot(int robotId)
+        {
+            var db = Database.Open("basicData");
+            var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
+            Robot robotObject = new Robot(robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+            db.Close();
+            return robotObject;
+        }
+
+        public static List<Robot> getAllRobots()
+        {
+            var db = Database.Open("basicData");
+            List<Robot> robotList = new List<Robot>();
+            var robotQuery = db.Query("SELECT * FROM Robots");
+            foreach(var row in robotQuery)
+            {
+                robotList.Add(new Robot(row.RobotName, row.RobotText, Convert.ToInt32(row.PhotoId)));
+            }
+            db.Close();
+            return robotList;
+        }
+    }
+
+    public class Robot
+    {
+        private int robotId;
+        private string robotName;
+        private string robotText;
+        private int image;
+
+        public int robotId
+        {
+            get{return robotId;}
+        }
+        public string RobotName 
+        {
+            get{return robotName;} 
+            set{robotName = value;}
+        }
+        public string RobotText
+        {
+            get{return robotText;}
+            set{robotText = value;}
+        }
+        public int Image
+        {
+            get{return image;}
+            set{image = value;}
+        }
+
+        public Robot(int robotId, string robotName, string robotText, int image)
+        {
+            this.robotId = robotId;
+            this.robotName = robotName;
+            this.robotText = robotText;
+            this.image = image;
+        }
+    }
+}
