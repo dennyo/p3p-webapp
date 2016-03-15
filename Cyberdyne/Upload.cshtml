@@ -1,0 +1,46 @@
+﻿@using System.IO
+@{ 
+    Page.Title= "Home";
+    Layout = "~/_Layout.cshtml";
+    int id = 0;
+    var fileName = "";
+    var fileMime = "";
+    if (IsPost) {
+        var uploadedFile = Request.Files[0];
+        fileName = Path.GetFileName(uploadedFile.FileName);
+        if(fileName != String.Empty)
+        {
+            fileMime = uploadedFile.ContentType;
+            if(fileMime.StartsWith("image"))
+            {
+                var fileStream = uploadedFile.InputStream;
+                var fileLength = uploadedFile.ContentLength;
+            
+                byte[] fileContent = new byte[fileLength];
+                fileStream.Read(fileContent, 0, fileLength);
+                var db = Database.Open("basicData");
+                var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
+                db.Execute(sql, fileName, fileContent, fileMime);
+                id = (int)db.GetLastInsertId();
+            }
+        }
+    }
+
+}
+  <h1>Gallery</h1>
+<div>
+    @FileUpload.GetHtml(initialNumberOfFiles:1,
+    allowMoreFilesToBeAdded:false,
+    includeFormTag:true,
+    uploadText:"Upload")
+</div>
+
+@if (IsPost && fileName != String.Empty) {
+    <span>File uploaded!</span><br/>
+    if(fileMime.StartsWith("image")){
+        <img src="Download.cshtml?Id=@id" alt="s" />
+    }
+    else {
+        <p> invalid input!</p>
+    }
+}  
