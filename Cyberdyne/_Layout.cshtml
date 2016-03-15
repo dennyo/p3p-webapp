@@ -5,18 +5,21 @@
         <meta charset="utf-8" />
         <title>@Page.Title</title>
         <link rel="icon" href="favicon.ico">    
-        <link href="~/css/bootstrap.css" rel="stylesheet">
-        <link href="~/css/bootstrap-theme.css" rel="stylesheet">
-	    <link href="~/css/mainstyle.css" rel="stylesheet"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="~/css/bootstrap-theme.css" rel="stylesheet" type="text/css">
+	    <link href="~/css/mainstyle.css" rel="stylesheet" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     </head>
     
     <body>
         <div id="header">
-            @if(Page.Title != null)
+            @if(Page.Title != null && Page.ShowTitle != "false")
             {
                 <h1>@Page.Title</h1>
             }
-            @if(Page.Description != null)
+            @if(Page.Description != null & Page.ShowDescription != "false")
             {
                 <h4>@Page.Description</h4>
             }
