@@ -1,3 +1,7 @@
 ﻿@{
-    WebSecurity.RequireAuthenticatedUser();
+    if(!WebSecurity.IsAuthenticated)
+    {
+        Response.Redirect("~/");
+    }
+    WebSecurity.RequireAuthenticatedUser();   
 }

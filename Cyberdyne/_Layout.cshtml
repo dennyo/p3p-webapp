@@ -14,6 +14,34 @@
     </head>
     
     <body>
+        @if(WebSecurity.IsAuthenticated)
+        {
+            @*nav-bar*@
+            <nav class="navbar navbar-inverse navbar-static-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="~/">@App.Name</a>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        @*left entries*@
+                        <ul class="nav navbar-nav">
+                            <li>Add Robot</li>
+                        </ul>
+                        @*right entries*@
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="~/Admin/Tools/Manage"><span class="glyphicon glyphicon-user"></span> @WebSecurity.CurrentUserName</a></li>
+                            <li><a href="~/Admin/Tools/Logout?ReturnUrl=~@Request.Url.AbsolutePath"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
         <div id="header">
             @if(Page.Title != null && Page.ShowTitle != "false")
             {

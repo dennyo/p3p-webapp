@@ -1,0 +1,77 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Manage my account";
+    Page.Description = "Change your account information";   
+    
+    string passwordMessage = "";
+
+    var db = Database.Open("authenticationData");
+
+    //password variables
+    var oldPassword = "";
+    var newPassword = "";
+    var confirmNewPassword = "";
+    
+    //code for changing password
+    if(IsPost && Request.Form["submitPassword"] != null)
+    {
+        Validation.RequireField("oldPassword", "You have to enter your old password");
+        Validation.RequireField("newPassword", "Your new password cannot be blank");
+        Validation.Add("confirmNewPassword",
+            Validator.EqualsTo("newPassword", "Your new password does not match your confirmation password"));
+        Validation.Add("newPassword",
+            Validator.StringLength(
+                maxLength: Int32.MaxValue,
+                minLength: 6,
+                errorMessage: "Your password must at least be 6 caracters long"));
+        Validation.Add("oldPassword",
+            Validator.StringLength(
+                maxLength: Int32.MaxValue,
+                minLength: 6,
+                errorMessage: "Your password must at least be 6 caracters long"));
+        AntiForgery.Validate();
+        if(Validation.IsValid())
+        {
+            oldPassword = Request.Form["oldPassword"];
+            newPassword = Request.Form["newPassword"];
+            confirmNewPassword = Request.Form["confirmNewPassword"];
+
+            if(WebSecurity.ChangePassword(WebSecurity.CurrentUserName, oldPassword, newPassword))
+            {
+                passwordMessage = "Your password has been succesfully changed";
+            }
+            else
+            {
+                passwordMessage = "Something went wrong while changing your password, Please check your input and try again";
+            }
+        }
+    }
+}
+<form method="post">
+    @AntiForgery.GetHtml()
+    <fieldset>
+        <legend>Change Password</legend>
+        @if(!passwordMessage.IsEmpty())
+        {
+            <p>@passwordMessage</p>
+        }
+        <div class="form-group">
+            <label for="oldPassword">Old Password</label>
+            <input type="password" name="oldPassword" id="oldPassword" value="@oldPassword" class="form-control">
+            @Html.ValidationMessage("oldPassword")
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" name="newPassword" id="newPassword" value="@newPassword" class="form-control">
+            @Html.ValidationMessage("newPassword")
+        </div>
+        <div class="form-group">
+            <label for="confirmNewPassword">Confirm new password</label>
+            <input type="password" name="confirmNewPassword" id="confirmNewPassword" value="@confirmNewPassword" class="form-control">
+            @Html.ValidationMessage("confirmNewPassword")
+        </div>
+        <div class="form-group">
+            <input type="submit" id="submitPassword" name="submitPassword" value="Change Password" class="btn btn-default">
+        </div>
+    </fieldset>
+</form>
