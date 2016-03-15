@@ -37,19 +37,21 @@ body {
 span#title{
     color:  white;
     font-size: 30px;
+    display: inline;
 }
 
+@media screen and (min-width:768px)
+{
+    #myNavbar {
+        position: relative;
+    }
 
-#myNavbar {
-    position: relative;
+    #myNavbar .nav {
+        position: absolute; 
+        bottom: 0; 
+        right: 0;   
+    }
 }
-
-#myNavbar .nav {
-    position: absolute; 
-    bottom: 0; 
-    right: 0;   
-}
-
 nav {
     padding-right: 25px;
 }
