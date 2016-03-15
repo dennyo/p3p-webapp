@@ -2,10 +2,27 @@ body{
     padding: 10px;
 }
 
-#header,    #body , #footer {  
-    display: block;
-    border:  1px solid grey;    
+#header, .container , #footer {  
+    display: block;  
     width:  90%;
     padding: 10px;
     margin: auto;
+    border:  2px solid black;
+}
+
+#footer {
+    overflow: hidden;
+}
+
+.container > div{
+    border:  1px solid grey;
+    margin: 5px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float:  right;
 }
