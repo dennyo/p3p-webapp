@@ -1,31 +1,35 @@
 ﻿@{
-    Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
-  //var db = Database.Open("???");
-  //var selectQueryString = "SELECT * FROM ??? ORDER BY Name";
-}
-<!--THis is a test, change it! http://www.asp.net/web-pages/overview/data/5-working-with-data for reference.-->
-  <h1>Gallery</h1>
-  <form method="post" action="" name="form">
-    <table border="1">
-      <thead>
-        <tr>
-          <th>&nbsp;</th>
-          <th>Name</th>
-          <th>Description</th>
+    Page.Title = "Gallery";
 
-          <th>Price</th>
-        </tr>
-      </thead>
-        <!--
-      <tbody>
-        @foreach (var row in db.Query(selectQueryString)) {
-          <tr>
-            <td><a href="@Href("~/DeleteProduct", row.Id)">Delete</a></td>
-            <td>@row.Name</td>
-          </tr>
+    int count = 0;
+    int rows = 0;
+    List<Repository.Robot> robots = Repository.getAllRobots();
+    
+    if(robots.Count > 0)
+    {
+        rows = robots.Count / 3;
+        if(robots.Count % 3 > 0) 
+        {
+            rows++;
         }
-      </tbody>
-        -->
-    </table>
-  </form>
+    }
+    
+}
+
+@for(int i = 0; i < rows; i++)
+{
+    <div class="row">
+    @for(int j = 0; j < 3; j++)
+    {
+        if(count < robots.Count)
+        {
+            <div class="col-md-4">
+                <img src="@robots[count].CoverImage" alt="photo" width="250px"/>
+                @robots[count].RobotName
+            </div>
+        }
+        count++;
+    }    
+    </div>
+}
