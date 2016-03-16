@@ -22,9 +22,11 @@ margin-bottom: 5px;
     margin-top: -20px;
 }
 
-.container > div {
-    border:  1px solid grey;
-    background-color: rgba(0,0,100,0.5);
+.container .col-md-12, .col-md-6 div {
+    border-radius:  10px;
+    border: 2px solid #292929;
+    margin-bottom: 10px;
+    background-color: rgba(0,0,80,0.5);
     color:  white;
 }
 
@@ -77,6 +79,7 @@ span#title{
     color: white;
 }
 
+<<<<<<< HEAD
 .gallery a:hover{
     text-decoration: none;
     text-decoration-color: none;
@@ -87,3 +90,8 @@ span#title{
     font-size:  45px;
     
 }
+=======
+.col-md-6 {
+    padding: 5px;
+}
+>>>>>>> 77d6ff8c88ecf452f4963aa9f2877a235f0043a2

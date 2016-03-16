@@ -1,0 +1,25 @@
+﻿@{
+    Page.Title="Remove Robot";
+    
+    var robotId = Request.QueryString["Id"];
+    
+    if(WebSecurity.IsAuthenticated)
+    {
+        if(robotId.IsInt())
+        {
+            var db = Database.Open("basicData");
+            if(db.Query("SELECT * FROM Robots WHERE RobotId = @0", robotId) != null)
+            {
+                var photoIds = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
+                foreach(var photo in photoIds)
+                {
+                    db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photo.PhotoId);
+                }
+                db.Execute("DELETE FROM 3DFiles, CodeLinks, CodeSnippets, VideoLinks, PhotoReference WHERE RobotId = @0", robotId);
+                db.Execute("DELETE FROM Robots WHERE RobotId = @0", robotId);   
+            }
+
+            db.Close();
+        }
+    }   
+}
