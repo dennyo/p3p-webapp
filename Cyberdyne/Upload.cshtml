@@ -40,7 +40,7 @@
 @if (IsPost && fileName != String.Empty) {
     <span>File uploaded!</span><br/>
     if(fileMime.StartsWith("image")){
-        <img src="DisplayImage.cshtml?Id=@id" width="100%" />
+        <img src="DisplayImage.cshtml?Id=@id" alt ="t"width="100%" />
     }
     else {
         <p> invalid input!</p>

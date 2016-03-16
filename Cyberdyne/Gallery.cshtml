@@ -1,31 +1,21 @@
 ﻿@{
     Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
-  //var db = Database.Open("???");
-  //var selectQueryString = "SELECT * FROM ??? ORDER BY Name";
-}
-<!--THis is a test, change it! http://www.asp.net/web-pages/overview/data/5-working-with-data for reference.-->
-  <h1>Gallery</h1>
-  <form method="post" action="" name="form">
-    <table border="1">
-      <thead>
-        <tr>
-          <th>&nbsp;</th>
-          <th>Name</th>
-          <th>Description</th>
 
-          <th>Price</th>
-        </tr>
-      </thead>
-        <!--
-      <tbody>
-        @foreach (var row in db.Query(selectQueryString)) {
-          <tr>
-            <td><a href="@Href("~/DeleteProduct", row.Id)">Delete</a></td>
-            <td>@row.Name</td>
-          </tr>
-        }
-      </tbody>
-        -->
-    </table>
-  </form>
+    var mainPhoto = "";
+    var robotName = "";
+
+    List<Repository.Robot> robots = Repository.getAllRobots();
+
+}
+  <h1>Gallery</h1>
+@foreach(Repository.Robot robot in robots)
+    {
+        robotName = robot.RobotName;
+        mainPhoto = robot.CoverImage;
+        <div class="col-md-4">
+            <p>@robotName</p>
+            <img src="@mainPhoto" alt="photo" width="250px" height="250px" />
+        </div>
+    }
+  
