@@ -1,21 +1,37 @@
 ﻿@{
-    Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
+    Page.Title = "Gallery";
 
-    var mainPhoto = "";
-    var robotName = "";
-
+    int count = 0;
+    int rows = 0;
     List<Repository.Robot> robots = Repository.getAllRobots();
-
-}
-  <h1>Gallery</h1>
-@foreach(Repository.Robot robot in robots)
+    
+    if(robots.Count > 0)
     {
-        robotName = robot.RobotName;
-        mainPhoto = robot.CoverImage;
-        <div class="col-md-4">
-            <p>@robotName</p>
-            <img src="@mainPhoto" alt="photo" width="250px" height="250px" />
-        </div>
+        rows = robots.Count / 3;
+        if(robots.Count % 3 > 0) 
+        {
+            rows++;
+        }
     }
-  
+    
+}
+
+@for(int i = 0; i < rows; i++)
+{
+    <div class="row">
+    @for(int j = 0; j < 3; j++)
+    {
+        if(count < robots.Count)
+        {
+            <div class="col-md-4">
+                <a href="~/Robot?Id=@robots[count].RobotId"><div>
+                    <img src="@robots[count].CoverImage" alt="photo" width="250px"/>
+                    @robots[count].RobotName
+                </div></a>
+            </div>
+        }
+        count++;
+    }    
+    </div>
+}
