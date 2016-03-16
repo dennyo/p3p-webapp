@@ -61,13 +61,16 @@ span#title{
     right:  0;
 }
 }
+.navbar #navRight {
+    margin-right: -11px;
+}
 .navbar #navRight > li {
     background-color: #bc1111;
     font-size: 20px; 
     border-top-left-radius: 5px;
     border-left: 2px outset #9D9D9D;
     border-top:  2px outset #9D9D9D;
-    margin-right: -2px;
+    margin-right: -4px;
     padding: 3px
 }
 
