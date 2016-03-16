@@ -98,16 +98,24 @@
     }
 
 
-    public Robot getRobot(int robotId)
+    public static Robot getRobot(int robotId)
     {
         var db = Database.Open("basicData");
         var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
-        Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+        if(robotQuery != null)
+        {
+            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+        }
+        else
+        {
+            db.Close();
+            return null;
+        }
         db.Close();
         return robotObject;
     }
 
-    public List<Robot> getAllRobots()
+    public static List<Robot> getAllRobots()
     {
         var db = Database.Open("basicData");
         List<Robot> robotList = new List<Robot>();
