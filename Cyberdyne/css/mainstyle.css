@@ -18,7 +18,7 @@ margin-bottom: 5px;
 }
 
 .container {
-    background-image: url('../background.jpg');
+    background-image: url('../Cyberdyne background.jpg');
     margin-top: -20px;
 }
 
@@ -71,4 +71,8 @@ span#title{
 
 .navbar #navRight > li > a {
     color: #9D9D9D;
+}
+
+.navbar #navRight > li > a:hover {
+    color: white;
 }
