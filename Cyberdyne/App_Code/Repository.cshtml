@@ -95,6 +95,22 @@
             db.Close();
             return links;
         }
+
+        //return list with 3D links
+        public List<string> getVideoLinks()
+        {
+            List<string> links = new List<string>();
+            var db = Database.Open("basicData");
+
+            var data = db.Query("SELECT link FROM 3DLinks WHERE RobotId = @0", robotId);
+            foreach(var row in data)
+            {
+                links.Add(row.link);
+            }
+
+            db.Close();
+            return links;
+        }
     }
 
 
@@ -105,14 +121,15 @@
         if(robotQuery != null)
         {
             Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+            db.Close();
+            return robotObject;
         }
         else
         {
             db.Close();
             return null;
         }
-        db.Close();
-        return robotObject;
+        return null;
     }
 
     public static List<Robot> getAllRobots()
