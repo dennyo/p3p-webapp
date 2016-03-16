@@ -17,7 +17,7 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <div id="header">
-                            <img src="~/Cyberdyne.png" width="120px"  alt="cyberdyne" />
+                            <img src="~/Cyberdyne.png" id="logo" alt="cyberdyne" />
                             <span id="title">@App.Name</span>
                         </div>                    
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -31,25 +31,19 @@
         @if(WebSecurity.IsAuthenticated)
         {            
                         @*left entries*@
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav" id="navbar-left">
                             <li><a href="#"><span class="glyphicon glyphicon-plus"></span> Edit Robots</a></li>
                             <li><a href="~/Admin/Tools/Manage"><span class="glyphicon glyphicon-user"></span> @WebSecurity.CurrentUserName</a></li> 
                             <li><a href="~/Admin/Tools/Logout?ReturnUrl=~@Request.Url.AbsolutePath"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>                           
                         </ul>
-                        @*right entries*@
-                        @*<ul class="nav navbar-nav navbar-right">
-                            
-                        </ul>*@
+
         }
-        else
-        {
                         @*right entries*@
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="~/Default">Home</a></li>
                             <li><a href="~/Gallery">Gallery</a></li>
                             <li><a href="~/About">About</a></li>
-                        </ul>
-        }                            
+                        </ul>                         
                     </div>
                 </div>
             </nav>
