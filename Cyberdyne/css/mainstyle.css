@@ -76,3 +76,14 @@ span#title{
 .navbar #navRight > li > a:hover {
     color: white;
 }
+
+.gallery a:hover{
+    text-decoration: none;
+    text-decoration-color: none;
+}
+
+.gallery h2 {
+    text-align: center;
+    font-size:  45px;
+    
+}
