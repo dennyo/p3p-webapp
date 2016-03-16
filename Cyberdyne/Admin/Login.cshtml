@@ -45,11 +45,12 @@
         }
     }
 }
-<form method="post">
+<div class="col-md-12">
+  <form method="post">
     <fieldset>
         @AntiForgery.GetHtml()
         @Html.ValidationSummary("Log in was unsuccesful. please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-        <legend>Login</legend>
+        <h1>Login</h1>
         <div class="form-group">
             <label for="userName">UserName</label>
             <input type="text" id="userName" name="userName" value="@userName" class="form-control">
@@ -68,5 +69,6 @@
             <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
         </div>
     </fieldset>
-</form>
+  </form>
+</div>
 
