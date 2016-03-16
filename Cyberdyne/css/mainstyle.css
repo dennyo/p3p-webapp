@@ -20,6 +20,7 @@ margin-bottom: 5px;
 .container {
     background-image: url('../Cyberdyne background.jpg');
     margin-top: -20px;
+    min-height: 450px;
 }
 
 .container .col-md-12, .col-md-6 div {
