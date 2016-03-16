@@ -4,24 +4,28 @@
 
     var robotId = "";
     var robotName = "";
-    var mainPhotoId = "";
+    var mainPhoto = "";
     var robotText = "";
-    List<int> photoIds;
+    List<string> photos;
     List<string> codeLinks;
     List<string> codeSnippets;
+    List<string> threeDLinks;
+    List<string> videoLinks;
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
         robotId = Request.QueryString["ID"];
 
-        Repository.Robot tempRobot = Repository.getRobot(robotId);
+        Repository.Robot tempRobot = Repository.getRobot(Convert.ToInt16(robotId));
         if (tempRobot != null)
         {
             robotName = tempRobot.RobotName;
-            mainPhotoId = tempRobot.CoverImage;
+            mainPhoto = tempRobot.CoverImage;
             robotText = tempRobot.RobotText;
-            photoIds = tempRobot.getPhotos();
+            photos = tempRobot.getPhotos();
             codeLinks = tempRobot.getCodeLinks();
             codeSnippets = tempRobot.getCodeSnippets();
+            //threeDLinks = tempRobot.get3DLinks();
+            videoLinks = tempRobot.getVideoLinks();
         }
         else
         {
@@ -41,9 +45,27 @@
     }
 }
 
-@if (!robotName.IsEmpty()){<h2>This is a @robotName</h2>}
+@if (!robotName.IsEmpty())
+{
+    <div class="col-md-4">
+        <img src="@mainPhoto" alt="photo" width="250px" height="250px" />
+    </div>
+    <div class="col-md-8">
+        <h1>This is a @robotName</h1>
+        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+            Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec,
+            pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, 
+            vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede 
+            mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.
+            Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, 
+            feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi 
+            vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. 
+        </p>
+    </div>
+    
+}
 else {<h2>@Html.ValidationSummary()</h2>}
-@foreach (var row in db.Query(selectQueryString)){}
+
 <form method="post">
 <fieldset>
     <input type="hidden" name="robotId" value="@robotId" />

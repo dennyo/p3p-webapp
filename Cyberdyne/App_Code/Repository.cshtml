@@ -4,7 +4,7 @@
         private int robotId;
         private string robotName;
         private string robotText;
-        private int coverImage;
+        private string coverImage;
 
         public int RobotId
         {
@@ -20,13 +20,13 @@
             get{return robotText;}
             set{robotText = value;}
         }
-        public int CoverImage
+        public string CoverImage
         {
             get{return coverImage;}
             set{CoverImage = value;}
         }
 
-        public Robot(int robotId, string robotName, string robotText, int coverImage)
+        public Robot(int robotId, string robotName, string robotText, string coverImage)
         {
             this.robotId = robotId;
             this.robotName = robotName;
@@ -35,14 +35,14 @@
         }
 
         //return list with photoids corresponded with this robot
-        public List<int> getPhotos()
+        public List<string> getPhotos()
         {
-            List<int> PhotoIDs = new List<int>();
+            List<string> PhotoIDs = new List<string>();
             var db = Database.Open("basicData");
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
-                PhotoIDs.Add(Convert.ToInt32(row.PhotoId));
+                PhotoIDs.Add("DisplayImage.cshtml?Id=" + row.PhotoId);
             }
             db.Close();
             return PhotoIDs;
@@ -97,12 +97,12 @@
         }
 
         //return list with 3D links
-        public List<string> get3DLinks()
+        /*public List<string> get3DLinks()
         {
             List<string> links = new List<string>();
             var db = Database.Open("basicData");
 
-            var data = db.Query("SELECT link FROM 3DLinks WHERE RobotId = @0", robotId);
+            var data = db.Query("SELECT link FROM 3DFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
                 links.Add(row.link);
@@ -110,7 +110,7 @@
 
             db.Close();
             return links;
-        }
+        }*/
     }
 
 
@@ -120,7 +120,7 @@
         var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
         if(robotQuery != null)
         {
-            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, Convert.ToInt32(robotQuery.PhotoId));
+            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, "DisplayImage.cshtml?Id=" + robotQuery.PhotoId);
             db.Close();
             return robotObject;
         }
@@ -139,7 +139,7 @@
         var robotQuery = db.Query("SELECT * FROM Robots");
         foreach(var row in robotQuery)
         {
-            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, Convert.ToInt32(row.PhotoId)));
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "DisplayImage.cshtml?Id=" + row.PhotoId));
         }
         db.Close();
         return robotList;
