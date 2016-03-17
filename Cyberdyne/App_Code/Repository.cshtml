@@ -132,6 +132,21 @@
         return null;
     }
 
+    public static List<Robot> getLastRobots()
+    {
+        var db = Database.Open("basicData");
+        List<Robot> robotList = new List<Robot>();
+        var subQuery1 = db.QueryValue("SELECT MAX(RobotID) FROM Robots");
+        var subQuery2 = db.QueryValue("SELECT MAX(RobotID) FROM Robots WHERE RobotId != @0", subQuery1);
+        var robotQuery = db.Query("SELECT * FROM Robots WHERE RobotId = @0 OR RobotId = @1 ORDER BY RobotID DESC", subQuery1, subQuery2);
+        foreach(var row in robotQuery)
+        {
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "DisplayImage.cshtml?Id=" + row.PhotoId));
+        }
+        db.Close();
+        return robotList;
+    }
+
     public static List<Robot> getAllRobots()
     {
         var db = Database.Open("basicData");
