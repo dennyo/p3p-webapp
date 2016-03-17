@@ -1,3 +1,10 @@
+body {
+    background-image: url('../Cyberdyne background.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 #header, .container , #footer {  
     display: block;  
     padding: 10px;  
@@ -18,7 +25,6 @@ margin-bottom: 5px;
 }
 
 .container {
-    background-image: url('../Cyberdyne background.jpg');
     margin-top: -20px;
     min-height: 450px;
 }
@@ -60,7 +66,7 @@ span#title{
     }
     #myNavbar #navRight {
     right:  0;
-}
+    }
 }
 .navbar #navRight {
     margin-right: -11px;
@@ -93,9 +99,6 @@ span#title{
     font-size:  45px;
     color: white;
     
-}
-.auto {
-    padding-top: 250px;
 }
 
 .gallery {
