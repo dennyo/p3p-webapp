@@ -3,11 +3,6 @@
     Layout = "~/_Layout.cshtml";
     var db = Database.Open("basicData");
     List<Repository.Robot> robots = Repository.getLastRobots();
-   // var latestRobot = db.QueryValue("SELECT MAX(RobotID) FROM Robots");
-   // var robotName = db.QueryValue("SELECT RobotName FROM Robots WHERE RobotID = @0", latestRobot);
-   // var robotPhoto = db.QueryValue("SELECT Photo FROM Photos WHERE RobotID = @0", latestRobot);
-   // var robotText = db.QueryValue("SELECT text FROM RobotText WHERE RobotID = @0", latestRobot);
-   // var imageSrc = string.Format("?????????????");
 }
 <div id="introduction" class="col-md-12">
     <div class="col-md-4">
@@ -26,6 +21,7 @@
         </p>
     </div>
 </div>
+@if (robots.Count() != 0){
 <div class="col-md-12" id="latest">
     <h1>Latest Additions</h1>
     @foreach (Repository.Robot robot in robots)
@@ -39,3 +35,4 @@
     </div>
     }
 </div>
+}
