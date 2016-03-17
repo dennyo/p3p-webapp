@@ -8,12 +8,19 @@
     string message = "";
     var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
 
-    var partData = db.Query("SELECT * FROM PartReference WHERE RobotId = @0", RobotId);
+    var partData = db.Query("SELECT * FROM Parts");
     var grid = new WebGrid(source: partData, rowsPerPage: 50);
 
     var partName = "";
-    var partNo = "";
-    var partLink = "";
+
+    if(IsPost && Request.Form["submitItem"] != null)
+    {
+        AntiForgery.Validate();
+        Validation.RequireField("partName", "You have to enter a name for the part you're about to add");
+        partName = Request.Form["partName"];
+        db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);
+        Response.Redirect(Request.Url.AbsoluteUri);
+    }
 
     if(IsPost && Request.Form["removeItem"] != null)
     {
@@ -38,12 +45,30 @@
 <div class="container">
     <br>
     <div class="row">
-        <div class="col-xs-2">
-            <a href="~/Admin/Tools/AddPart" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-plus"></span></a>
-        </div>
-        <div class="col-xs-2 col-xs-offset-8">
+        <div class="col-xs-2 col-xs-offset-10">
             <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
+    </div>
+    <br>
+    <div class="row">
+        <form method="post" class="form-inline">
+            <fieldset>
+                @AntiForgery.GetHtml()
+                @if(!message.IsEmpty())
+                {
+                    <p>@message</p>
+                }
+                <legend>Add Item to list</legend>
+                @Html.ValidationSummary()
+                <div class="form-group">
+                    <label for="partName">Name:</label>
+                    <input type="text" id="partName" name="partName" value="@partName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+                </div>
+            </fieldset>
+        </form>
     </div>
     <br>
     <div class="row well">
@@ -53,7 +78,6 @@
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
-                    grid.Column(columnName: "PartNo", header: "Part No.", canSort: false),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
                                             <button type="submit" name="removeItem" class="btn btn-danger">
