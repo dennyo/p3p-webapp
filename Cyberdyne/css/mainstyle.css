@@ -148,3 +148,22 @@ span#title{
     color:  white;
     text-decoration: none;
 }
+
+#counter {
+    background-color: rgba(0,0,0,0);
+    border:  none;
+    color: white;
+}
+
+.submitButton {
+    background-color: #bc1111;
+    color: #9d9d9d;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.submitButton:hover{
+    color:  white;
+}
