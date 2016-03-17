@@ -2,6 +2,7 @@
     Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
     var db = Database.Open("basicData");
+    List<Repository.Robot> robots = Repository.getLastRobots();
    // var latestRobot = db.QueryValue("SELECT MAX(RobotID) FROM Robots");
    // var robotName = db.QueryValue("SELECT RobotName FROM Robots WHERE RobotID = @0", latestRobot);
    // var robotPhoto = db.QueryValue("SELECT Photo FROM Photos WHERE RobotID = @0", latestRobot);
@@ -27,30 +28,14 @@
 </div>
 <div class="col-md-12" id="latest">
     <h1>Latest Additions</h1>
+    @foreach (Repository.Robot robot in robots)
+    {
     <div class="col-md-6">
-        <img src="placeholder.png" alt="photo" />
-        <h2>example</h2>
-        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-            Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec,
-            pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, 
-            vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede 
-            mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.
-            Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, 
-            feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi 
-            vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. 
-        </p>
+        <a href="~/Robot?Id=@robot.RobotId">
+        <img src="@robot.CoverImage" alt="photo" />
+        <h2>@robot.RobotName</h2>
+        </a>
+        <p>@robot.RobotText</p>
     </div>
-        <div class="col-md-6">
-        <img src="placeholder.png" alt="photo" />
-        <h2>example</h2>
-        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-            Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec,
-            pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, 
-            vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede 
-            mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus.
-            Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, 
-            feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi 
-            vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. 
-        </p>
-    </div>
+    }
 </div>
