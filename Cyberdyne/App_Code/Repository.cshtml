@@ -111,8 +111,28 @@
             db.Close();
             return links;
         }
+
+        //return parts
+        
     }
 
+    public class Part
+    {
+        private int partId;
+        private string partName;
+        private string partNo;
+        private int coverPhoto;
+
+        public Part(int partId, string partName, string partNo, int coverPhoto)
+        {
+            this.partId = partId;
+            this.partName = partName;
+            this.partNo = partNo;
+            this.coverPhoto = coverPhoto;
+        }
+
+
+    }
 
     public static Robot getRobot(int robotId)
     {

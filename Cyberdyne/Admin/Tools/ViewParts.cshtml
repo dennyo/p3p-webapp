@@ -32,13 +32,14 @@
             ModelState.AddFormError("This Item does not exist in your list");
         }
     }
+    db.Close();
 }
 
 <div class="container">
     <br>
     <div class="row">
         <div class="col-xs-2">
-            <a href="@Request.Url.AbsoluteUri" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="~/Admin/Tools/AddPart" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-plus"></span></a>
         </div>
         <div class="col-xs-2 col-xs-offset-8">
             <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
