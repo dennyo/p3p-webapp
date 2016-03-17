@@ -132,6 +132,19 @@ span#title{
 
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
-      width: 70%;
+      width: 300px;
       margin: auto;
   }
+
+#photos {
+    text-align: center;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+#footer a:hover {
+    color:  white;
+    text-decoration: none;
+}
