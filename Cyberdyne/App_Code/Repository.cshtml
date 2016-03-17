@@ -97,12 +97,12 @@
         }
 
         //return list with 3D links
-        public List<string> get3DLinks()
+        public List<string> getThreeDLinks()
         {
             List<string> links = new List<string>();
             var db = Database.Open("basicData");
 
-            var data = db.Query("SELECT link FROM 3DFiles WHERE RobotId = @0", robotId);
+            var data = db.Query("SELECT link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
                 links.Add(row.link);
