@@ -23,7 +23,7 @@
             photos = tempRobot.getPhotos();
             codeLinks = tempRobot.getCodeLinks();
             codeSnippets = tempRobot.getCodeSnippets();
-            //threeDLinks = tempRobot.get3DLinks();
+            threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
         }
         else
@@ -52,6 +52,7 @@
             </div>
         </div>
     </div>
+    if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0){
     <div class="col-md-12">
         @if (photos.Count() != 0)
         {
@@ -131,7 +132,7 @@
         }
         @if (threeDLinks.Count() != 0)
         {
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h1>3D view</h1>
                 @foreach (string threeDLink in threeDLinks)
                 {
@@ -156,6 +157,7 @@
             </div>
         }
     </div>
+    }
 }
 else 
 {
