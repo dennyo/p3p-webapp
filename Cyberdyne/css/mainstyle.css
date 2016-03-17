@@ -96,19 +96,39 @@ span#title{
 
 .gallery h2 {
     text-align: center;
-    font-size:  45px;
+    font-size:  40px;
     color: white;
+    padding-top: 90%;
+    padding-bottom: 5px;
+    background: linear-gradient(rgba(9,0,0,0),rgba(9,0,0,0.9));
     
 }
 
 .gallery {
     background-repeat: no-repeat;
+    border:  solid, black, 20px;
+    background-size: 100%, auto;
 }
 
 .col-md-6 {
     padding: 5px;
 }
 
+@media screen and (max-width: 470px) {
+    .gallery h2 {
+    font-size: 30px;
+}
+}
+
+@media screen and (min-width: 470px) and (max-width: 991px) {
+    .gallery {
+    background-size: 350px, auto;
+    background-position-x:  center;
+}
+    .gallery h2 {
+    padding-top: 310px;
+}
+}
 
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {

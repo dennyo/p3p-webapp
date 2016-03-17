@@ -25,10 +25,9 @@
         if(count < robots.Count)
         {
             <div class="col-md-4">
-                <div class="gallery"><a href="~/Robot?Id=@robots[count].RobotId">
-                    <h2 class="auto">@robots[count].RobotName </h2>                    
-                    <img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/>
-
+                <div class="gallery" style="background-image: url(@robots[count].CoverImage)"><a href="~/Robot?Id=@robots[count].RobotId">
+                    @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
+                    <h2 class="auto">@robots[count].RobotName </h2>
                 </a></div>
             </div>
         }
