@@ -99,6 +99,7 @@ span#title{
     font-size:  40px;
     color: white;
     padding-top: 90%;
+    padding-bottom: 5px;
     background: linear-gradient(rgba(9,0,0,0),rgba(9,0,0,0.9));
     
 }
@@ -125,7 +126,7 @@ span#title{
     background-position-x:  center;
 }
     .gallery h2 {
-    padding-top: 320px;
+    padding-top: 310px;
 }
 }
 
