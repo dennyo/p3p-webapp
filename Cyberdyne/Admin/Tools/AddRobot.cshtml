@@ -7,6 +7,7 @@
     var fileMime = "";
     var robotName = "";
     var robotDescription = "";
+    var videoLink = "";
     if (IsPost) {
         var uploadedFile = Request.Files[0];
         fileName = Path.GetFileName(uploadedFile.FileName);
@@ -23,6 +24,7 @@
                 var db = Database.Open("basicData");
                 robotName = Request.Form["robotName"];
                 robotDescription = Request.Form["robotDescription"];
+                videoLink = Request.Form["videoLink"];
                 //var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
                 var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
                 db.Execute(sql, /*fileName, */fileContent, fileMime);
@@ -30,6 +32,7 @@
                 db.Execute("INSERT INTO Robots (RobotName, RobotText, PhotoID) VALUES (@0,@1,@2)", robotName, robotDescription, id);
                 int robotID = (int)db.GetLastInsertId();
                 db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
+                db.Execute("INSERT INTO VideoLinks (RobotId, Link) VALUES (@0,@1)", robotID, videoLink);
                 db.Close();
                 string url = "~/Robot?id=" + robotID;
                 Response.Redirect(url);
@@ -46,7 +49,21 @@
             <label for="robotName">Name</label>
             <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control">
             <label for="robotDescription">Description</label>
-            <textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>
+            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotDescription" name="robotDescription" class="form-control" rows="8">@robotDescription</textarea>
+            <input disabled value="4000 characters left" id="counter"><br />
+                <script>
+                function textCounter(field,field2,maxlimit)
+                {
+                 var countfield = document.getElementById(field2);
+                 if ( field.value.length > maxlimit ) {
+                  field.value = field.value.substring( 0, maxlimit );
+                  return false;
+                 } else {
+                  countfield.value = maxlimit - field.value.length + " characters left";
+                 }
+                }
+                </script>
+            <label>Image</label>
             <div>
             @FileUpload.GetHtml(
             initialNumberOfFiles:1,
@@ -55,7 +72,9 @@
             uploadText: "Upload2",
             name: "Upload2")
             </div>
-            <input type="submit" name="buttonUpload2" value="Submit"/>
+            <label for="videoLink">Embedded video link</label>
+            <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control"> <br/>
+            <input type="submit" name="buttonUpload2" value="Submit" class="submitButton" />
     </fieldset>
   </form>
 </div>
