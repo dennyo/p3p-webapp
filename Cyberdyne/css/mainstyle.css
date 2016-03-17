@@ -128,3 +128,9 @@ span#title{
     padding-top: 320px;
 }
 }
+
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+  }
