@@ -13,17 +13,33 @@
         public string RobotName 
         {
             get{return robotName;} 
-            set{robotName = value;}
+            set{
+                var db = Database.Open("basicData");
+                robotName = value;
+                db.Execute("UPDATE Robots SET RobotName = @0 WHERE RobotId = @1", value, robotId);
+                db.Close();
+            }
         }
         public string RobotText
         {
             get{return robotText;}
-            set{robotText = value;}
+            set{
+                var db = Database.Open("basicData");
+                robotText = value;
+                db.Execute("UPDATE Robots SET RobotText = @0 WHERE RobotId = @1", value, robotId);
+                db.Close();
+            }
         }
         public string CoverImage
         {
             get{return coverImage;}
-            set{CoverImage = value;}
+            set{
+                var db = Database.Open("basicData");
+                string basicString = "DisplayImage?Id=";
+                coverImage = basicString + value;
+                db.Execute("UPDATE Robots SET RobotId = @0 WHERE RobotId = @1", coverImage, robotId);
+                db.Close();
+            }
         }
 
         public Robot(int robotId, string robotName, string robotText, string coverImage)
@@ -121,9 +137,45 @@
         private int partId;
         private string partName;
         private string partNo;
-        private int coverPhoto;
+        private string coverPhoto;
 
-        public Part(int partId, string partName, string partNo, int coverPhoto)
+        public int PartId
+        {
+            get{return partId;}
+        }
+        public string PartName
+        {
+            get{return partName;}
+            set{
+                var db = Database.Open("basicData");
+                partName = value;
+                db.Execute("UPDATE Parts SET PartName = @0 WHERE PartId = @1", value, partId);
+                db.Close();
+            }
+        }
+        public string PartNo 
+        {
+            get{return partNo;}
+            set{
+                var db = Database.Open("basicData");
+                partNo = value;
+                db.Execute("UPDATE Parts SET PartNo = @0 WHERE PartId = @1", value, partId);
+                db.Close();
+            }
+        }
+        public int CoverPhoto 
+        {
+            get{return partNo;}
+            set{
+                var db = Database.Open("basicData");
+                string basicString = "DisplayImage?Id=";
+                coverPhoto = basicString + value;
+                db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", coverPhoto, partId);
+                db.Close();
+            }
+        }
+
+        public Part(int partId, string partName, string partNo, string coverPhoto)
         {
             this.partId = partId;
             this.partName = partName;
@@ -144,11 +196,7 @@
             db.Close();
             return robotObject;
         }
-        else
-        {
-            db.Close();
-            return null;
-        }
+        db.Close();
         return null;
     }
 
@@ -178,5 +226,45 @@
         }
         db.Close();
         return robotList;
+    }
+
+    public static Part getPart(int partId)
+    {
+        var db = Database.Open("basicData");
+        var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", partId);
+        if(partData != null)
+        {
+            Part tempPart = new Part(partId, partData.PartName, partData.PartNo, "DisplayImage.cshtml?Id=" + partData.PhotoId);
+            db.Close();
+            return tempPart;
+        }
+        db.Close();
+        return null;
+    }
+
+    public static List<Part> getAllParts()
+    {
+        var db = Database.Open("basicData");
+        List<Part> partList = new List<Part>();
+        var partData = db.Query("SELECT * FROM Parts");
+        foreach(var row in partData)
+        {
+            partList.Add(new Part(row.PartId, row.PartName, row.PartNo, "DisplayImage.cshtml?Id=" + row.PhotoId));
+        }
+        db.Close();
+        return partList;
+    }
+
+    public static string getTextElement(int elementId)
+    {
+        var db = Database.Open("basicData");
+        var textData = db.QuerySingle("SELECT ElementText FROM TextElements WHERE ElementId = @0", elementId);
+        if(textData != null)
+        {
+            db.Close();
+            return textData.ElementText;
+        }
+        db.Close();
+        return "";
     }
 }
