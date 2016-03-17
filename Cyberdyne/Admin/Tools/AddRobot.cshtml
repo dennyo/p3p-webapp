@@ -1,18 +1,53 @@
 ﻿@{
-    Layout = "~/_Layout.cshtml";
     Page.Title = "Add Robot";
+    Layout = "~/_Layout.cshtml";
+    
+    var robotName = "";
+    var robotDescription = "";
 
+    Validation.RequireField("robotName", "You must enter an robotName");
+    Validation.Add("robotName",
+        Validator.StringLength(
+            maxLength: 400,
+            minLength: 1,
+            errorMessage: "Robot's name cannot contain more than 400 characters"));
 
+    Validation.RequireField("robotDescription", "You must enter a description");
+    Validation.Add("robotDescription", 
+        Validator.StringLength(
+            maxLength: 4000,
+            minLength: 1,
+            errorMessage: "Robot description cannot contain more than 4000 charachters"));
+
+    if(IsPost)
+    {
+        robotName = Request.Form["robotName"];
+        robotDescription = Request.Form["robotDescription"];
+    }
 }
 
-<!DOCTYPE html>
+<div class="col-md-12">
+<h1>Add a Robot</h1>
+    <form id="robotform" method="post">
+    <fieldset>
+        @AntiForgery.GetHtml()
+        @Html.ValidationSummary("Log in was unsuccesful. please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+        <div class="form-group">
+            <label for="robotName">Name</label>
+            <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control">
+            @Html.ValidationMessage("robotName")
+        </div>
+        <div class="form-group">
+            <label for="robotDescription">Description</label>
+        @*  <input type="text" id="robotDescription" name="robotDescription" value="@robotDescription" class="form-control">
+        *@    <textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>
+                @Html.ValidationMessage("robotDescription")
+        </div>
+        <div class="form-group">
+            <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
+        </div>
+    </fieldset>
+  </form>
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title></title>
-    </head>
-    <body>
-        
-    </body>
-</html>
+
+</div>
