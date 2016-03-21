@@ -39,17 +39,20 @@
 
 @if (!robotName.IsEmpty())
 {
-    <div class="col-md-12">
+    <div class="col-md-12">          
+        
         <div class="col-md-4">
             <div>
                 <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
         <div class="col-md-8">
-            <div>
-                <h1>@robotName</h1>
+            <h1>@robotName</h1>
                 <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
-            </div>
+            <div class="btn btn-danger btn-block" id="removeBtn">
+                <a href="~/Admin/Tools/RemoveRobot?id=@Request.QueryString["Id"]">
+                <span class="glyphicon glyphicon-remove"></span> Delete this robot
+            </a>            </div>
         </div>
     </div>
     if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0){

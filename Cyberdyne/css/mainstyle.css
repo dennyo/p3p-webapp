@@ -120,10 +120,13 @@ input[type="text"], input[type="password"], #robotDescription {
     width: 100%;
 }
 
-#mainphoto {width:  200px;}
+    #mainphoto {
+        width: 200px;
+    }
+
 }
 
-@media screen and (min-width: 470px) and (max-width: 991px) {
+@media screen and (min-width: 480px) and (max-width: 991px) {
     .gallery {
     background-size: 350px, auto;
     background-position-x:  center;
@@ -136,9 +139,10 @@ input[type="text"], input[type="password"], #robotDescription {
     padding-top: 310px;
 }
 
-input[type="text"], input[type="password"], #robotDescription {
-    width: 75%;
-}
+    input[type="text"], input[type="password"], #robotDescription {
+        width: 75%;
+    }
+
 }
 @media screen and (min-width: 991px) {
 
@@ -190,4 +194,14 @@ label {
 #required {
     font-size: 14px;
     font-style: italic;
+}
+
+#removeBtn {
+    font-size: 12px;
+    width: max-content;
+    margin-bottom: 10px;
+}
+
+#removeBtn a {
+    color:  white;
 }
