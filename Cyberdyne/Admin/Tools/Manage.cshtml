@@ -47,10 +47,11 @@
         }
     }
 }
+<div class="col-md-12">
 <form method="post">
     @AntiForgery.GetHtml()
     <fieldset>
-        <legend>Change Password</legend>
+        <h1>Change Password</h1>
         @if(!passwordMessage.IsEmpty())
         {
             <p>@passwordMessage</p>
@@ -80,3 +81,4 @@
 {
     <a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a>
 }
+</div>

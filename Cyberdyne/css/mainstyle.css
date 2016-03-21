@@ -20,7 +20,7 @@ margin-bottom: 5px;
 
 #footer {
     overflow: hidden;
-    background-color: #292929;
+    background: linear-gradient(rgb(34,34,34), rgb(59,59,59));
     color:  white;
 }
 
@@ -29,7 +29,7 @@ margin-bottom: 5px;
     min-height: 450px;
 }
 
-.container .col-md-12, .col-md-6 div {
+.container > .col-md-12, .col-md-6 div {
     border-radius:  10px;
     border: 2px solid #292929;
     margin-bottom: 10px;
@@ -110,13 +110,16 @@ span#title{
     background-size: 100%, auto;
 }
 
-.col-md-6 {
+.col-md-6 div {
     padding: 5px;
 }
 
 @media screen and (max-width: 470px) {
     .gallery h2 {
     font-size: 30px;
+}
+input[type="text"], input[type="password"], #robotDescription {
+    width: 100%;
 }
 }
 
@@ -128,6 +131,17 @@ span#title{
     .gallery h2 {
     padding-top: 310px;
 }
+
+input[type="text"], input[type="password"], #robotDescription {
+    width: 75%;
+}
+}
+@media screen and (min-width: 991px) {
+
+input[type="text"], input[type="password"], #robotDescription {
+    width: 50%;
+}
+
 }
 
 .carousel-inner > .item > img,
@@ -155,15 +169,10 @@ span#title{
     color: white;
 }
 
-.submitButton {
-    background-color: #bc1111;
-    color: #9d9d9d;
-    border: 1px solid #9d9d9d;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
+th {
+    color: #292929;
 }
 
-.submitButton:hover{
-    color:  white;
+.table {
+    margin: 0 20px 0 20px;
 }

@@ -48,7 +48,7 @@
         <div class="col-md-8">
             <div>
                 <h1>@robotName</h1>
-                <p>@robotText</p>
+                <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
             </div>
         </div>
     </div>
