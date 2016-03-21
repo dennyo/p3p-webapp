@@ -175,3 +175,12 @@ th {
 .table {
     margin: 0 20px 0 20px;
 }
+
+label {
+    font-size: 24px;
+}
+
+#required {
+    font-size: 14px;
+    font-style: italic;
+}
