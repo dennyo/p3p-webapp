@@ -70,18 +70,17 @@
     <br>
     <div class="well">
             @grid.GetHtml(
-                tableStyle: "table table-striped table-responsive",
+                tableStyle: "table table-responsive",
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
+                                            <a href="~/Admin/Tools/EditPart?Id=@item.PartId"><div class="btn btn-primary">
+                                                <span class="glyphicon glyphicon-wrench"></span> Edit </div></a>
                                             <button type="submit" name="removeItem" class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-remove"></span> Remove
                                             </button>
-                                            <a href="~/EditPart?Id=@item.PartId"><button type="submit" name="editItem" class="btn btn-primary">
-                                                <span class="glyphicon glyphicon-wrench"></span> Edit
-                                            </button> </a>
                                             <input type="hidden" name="itemIdRemove" value="@item.PartId"> 
                                         </form>)
                 )
