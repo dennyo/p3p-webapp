@@ -66,32 +66,34 @@
 
 <div class="col-md-12">
 <h1>Edit part</h1>
-<h2>@partName</h2>
+
     <form method="post" class="form-group"> @* mist nog form ID *@
     <fieldset>
         @AntiForgery.GetHtml()
         @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <label for="partName">Name</label>
         <div class="form-inline">
-
+         <h2>@partName</h2>
             <input type="text" id="partName" name="partName" value="@partName" class="form-control">
             @Html.ValidationMessage("partName")
+
             <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
         </div>
     </fieldset>
   </form>
 
-<h2>@partNo</h2>
+
     <form method="post" class="form-group"> @* mist nog form ID *@
     <fieldset>
         @AntiForgery.GetHtml()
         @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <label for="partNo">Serial Number</label>
         <div class="form-inline">
-
+           <h2>@partNo</h2>
           <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
             @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
                 @Html.ValidationMessage("partNo")
+
             <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
         </div>
     </fieldset>
