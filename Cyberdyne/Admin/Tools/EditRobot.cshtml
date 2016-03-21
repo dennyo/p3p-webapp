@@ -1,5 +1,4 @@
 ﻿@{
-        Page.Title = "Edit Part";
     Layout = "~/_Layout.cshtml";
     
     var robotId = "";
@@ -57,9 +56,10 @@
             var updateCommand = "UPDATE Robots SET RobotName=@0, RobotText=@1, PhotoId=@2 WHERE RobotId=@3";
             db.Execute(updateCommand, robotName, robotText, mainPhoto, robotId);
             db.Close();
-            Response.Redirect("~/Default");
+            Response.Redirect(string.Format("~/Robot?id={0}", robotId));
         }
     }
+    Page.Title = String.Format("Edit {0}", robotName);
 }
 
 
