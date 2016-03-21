@@ -4,7 +4,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 #header, .container , #footer {  
     display: block;  
     padding: 10px;  
@@ -20,7 +19,6 @@ margin-bottom: 5px;
 
 #footer {
     overflow: hidden;
-    background-color: #292929;
     color:  white;
 }
 
@@ -29,7 +27,7 @@ margin-bottom: 5px;
     min-height: 450px;
 }
 
-.container .col-md-12, .col-md-6 div {
+.container > .col-md-12, .col-md-6 div {
     border-radius:  10px;
     border: 2px solid #292929;
     margin-bottom: 10px;
@@ -110,7 +108,7 @@ span#title{
     background-size: 100%, auto;
 }
 
-.col-md-6 {
+.col-md-6 div {
     padding: 5px;
 }
 
@@ -118,6 +116,11 @@ span#title{
     .gallery h2 {
     font-size: 30px;
 }
+input[type="text"], input[type="password"], #robotDescription {
+    width: 100%;
+}
+
+#mainphoto {width:  200px;}
 }
 
 @media screen and (min-width: 470px) and (max-width: 991px) {
@@ -125,8 +128,25 @@ span#title{
     background-size: 350px, auto;
     background-position-x:  center;
 }
+#navLeft li {
+   margin-left: -10px;
+   margin-right: -10px; 
+}
     .gallery h2 {
     padding-top: 310px;
+}
+
+input[type="text"], input[type="password"], #robotDescription {
+    width: 75%;
+}
+}
+@media screen and (min-width: 991px) {
+
+input[type="text"], input[type="password"], #robotDescription {
+    width: 50%;
+}
+.table{    
+    margin: 0 20px 0 20px;
 }
 }
 
@@ -155,15 +175,19 @@ span#title{
     color: white;
 }
 
-.submitButton {
-    background-color: #bc1111;
-    color: #9d9d9d;
-    border: 1px solid #9d9d9d;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
+th {
+    color: #292929;
 }
 
-.submitButton:hover{
-    color:  white;
+.table {
+    color:  black;
+}
+
+label {
+    font-size: 24px;
+}
+
+#required {
+    font-size: 14px;
+    font-style: italic;
 }

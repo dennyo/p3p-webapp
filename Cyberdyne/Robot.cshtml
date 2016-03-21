@@ -42,13 +42,13 @@
     <div class="col-md-12">
         <div class="col-md-4">
             <div>
-                <img src="@mainPhoto" alt="photo" width="250px" height="250px" />
+                <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
         <div class="col-md-8">
             <div>
                 <h1>@robotName</h1>
-                <p>@robotText</p>
+                <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
             </div>
         </div>
     </div>

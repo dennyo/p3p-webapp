@@ -42,23 +42,21 @@
     db.Close();
 }
 
-<div class="container">
+<div class="col-md-12">
     <br>
-    <div class="row">
-        <div class="col-xs-2 col-xs-offset-10">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
             <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
         </div>
-    </div>
-    <br>
-    <div class="row">
-        <form method="post" class="form-inline">
+    <div class="col-md-12">
+        <form method="post">
             <fieldset>
                 @AntiForgery.GetHtml()
                 @if(!message.IsEmpty())
                 {
                     <p>@message</p>
                 }
-                <legend>Add Item to list</legend>
+                <h1>Add Item to list</h1>
                 @Html.ValidationSummary()
                 <div class="form-group">
                     <label for="partName">Name:</label>
@@ -69,21 +67,30 @@
                 </div>
             </fieldset>
         </form>
-    </div>
     <br>
-    <div class="row well">
-        <div class="row">
+    <div class="well">
             @grid.GetHtml(
-                tableStyle: "table table-striped table-responsive",
+                tableStyle: "table table-responsive",
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
+                                            <a href="~/Admin/Tools/EditPart?Id=@item.PartId"><div class="btn btn-primary">
+                                                <span class="glyphicon glyphicon-wrench"></span> Edit </div></a>
                                             <button type="submit" name="removeItem" class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-remove"></span> Remove
                                             </button>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6eccf5a4e6674577912cf2fa2a022cfa7eec2ad3
                                             <input type="hidden" name="itemIdRemove" value="@item.PartId"> 
+                                        </form>),
+                    grid.Column(format: @<form method="get" action="~/@WebSecurity.CurrentUserName/Tools/EditPart">
+                                            <button type="submit" name="Id" class="btn btn-primary" value="@item.PartId" >
+                                                <span class="glyphicon glyphicon-wrench"></span> Edit 
+                                            </button>
                                         </form>)
                 )
             )
