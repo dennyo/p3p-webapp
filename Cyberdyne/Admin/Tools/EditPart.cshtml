@@ -5,15 +5,16 @@
     var partId = "";
     var partName = "";
     var partNo = "";
-
+    Repository.Part tempPart;
+    
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
         partId = Request.QueryString["ID"];
 
-        Repository.Part tempPart = Repository.getPart(Convert.ToInt16(partId));
+        tempPart = Repository.getPart(Convert.ToInt16(partId));
         if (tempPart != null)
         {
-            partName = tempPart.partName;
-            partNo = tempPart.partNo;
+            partName = tempPart.PartName;
+            partNo = tempPart.PartNo;
         }
         else
         {
@@ -30,7 +31,7 @@
         partNo = Request.Form["partNo"];
     }
 
-    if(IsPost && Request.form["submitPartName"])
+@*   if(IsPost && Request.Form["submitPartName"] != null)
     {
     Validation.RequireField("partName", "You must enter a part name");
     Validation.Add("partName",
@@ -38,46 +39,62 @@
             maxLength: 400,
             minLength: 1,
             errorMessage: "Part name cannot contain more than 400 characters"));
-        
+     @*   if (Validation.IsValid)
+        {
+        Repository.Part.PartName = partName;
+        }* @
+        tempPart.PartName = partName;
     }
-
-    if(IsPost && Request.form["submitPartNo"])
+    if(IsPost && Request.Form["submitPartNo"] != null)
     {
-    Validation.RequireField("partNo", "You must enter a number");
+    Validation.RequireField("partNo", "You must enter a serial number");
     Validation.Add("partNo", 
         Validator.StringLength(
             maxLength: 100,
             minLength: 1,
             errorMessage: "Serial number cannot contain more than 100 characters"));
-        
+ @*       if (Validation.IsValid)
+        {
+        Repository.Part.PartNo = partNo;
+        }* @
+        tempPart.PartNo = partNo;
     }
-
+  *@  
 }
 
 
 
 <div class="col-md-12">
 <h1>Edit part</h1>
-    <form method="post" class="form-inline"> @* mist nog form ID *@
+<h2>@partName</h2>
+    <form method="post" class="form-group"> @* mist nog form ID *@
     <fieldset>
         @AntiForgery.GetHtml()
         @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-        <div class="form-group">
-            <label for="partName">Name</label>
+                    <label for="partName">Name</label>
+        <div class="form-inline">
+
             <input type="text" id="partName" name="partName" value="@partName" class="form-control">
             @Html.ValidationMessage("partName")
-        </div>
-        <div class="form-group">
-            <label for="partNo">Serial Number</label>
-          <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
-            @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
-                @Html.ValidationMessage("partNo")
-        </div>
-        <div class="form-group">
-            <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
+            <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
         </div>
     </fieldset>
   </form>
 
+<h2>@partNo</h2>
+    <form method="post" class="form-group"> @* mist nog form ID *@
+    <fieldset>
+        @AntiForgery.GetHtml()
+        @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+                    <label for="partNo">Serial Number</label>
+        <div class="form-inline">
+
+          <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
+            @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
+                @Html.ValidationMessage("partNo")
+            <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
+        </div>
+    </fieldset>
+  </form>
 
 </div>
