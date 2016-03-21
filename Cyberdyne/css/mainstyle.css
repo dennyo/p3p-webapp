@@ -105,7 +105,7 @@ span#title{
 .gallery {
     background-repeat: no-repeat;
     border:  solid, black, 20px;
-    background-size: 100%, auto;
+    background-size: cover;
 }
 
 .col-md-6 div {
@@ -126,6 +126,7 @@ input[type="text"], input[type="password"], #robotDescription {
 @media screen and (min-width: 470px) and (max-width: 991px) {
     .gallery {
     background-size: 350px, auto;
+    background-size: cover;
     background-position-x:  center;
 }
 #navLeft li {

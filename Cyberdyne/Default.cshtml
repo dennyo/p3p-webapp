@@ -8,7 +8,7 @@
 <div id="introduction" class="col-md-12">
     <div class="col-md-8">
         <h1>Introduction</h1>
-        <p> @intro
+        <p> @Html.Raw(intro.Replace("\n","<br />"))
         </p>
     </div>
 </div>
@@ -22,7 +22,7 @@
         <img src="@robot.CoverImage" alt="photo" />
         <h2>@robot.RobotName</h2>
         </a>
-        <p>@robot.RobotText</p>
+        <p>@Html.Raw(robot.RobotText.Replace("\n","<br />"))</p>
     </div>
     }
 </div>
