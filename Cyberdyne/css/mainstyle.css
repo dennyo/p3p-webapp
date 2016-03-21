@@ -6,7 +6,7 @@ body {
 }
 #header, .container , #footer {  
     display: block;  
-    padding: 10px;  
+    padding: 10px;
 }
     
 #header p {
@@ -28,9 +28,9 @@ margin-bottom: 5px;
 }
 
 .container > .col-md-12, .col-md-6 div {
-    border-radius:  10px;
-    border: 2px solid #292929;
-    margin-bottom: 10px;
+    /*border-radius:  10px;  
+    border: 2px solid #292929; */
+    margin-bottom: 20px; 
     background-color: rgba(0,0,80,0.5);
     color:  white;
 }
@@ -70,7 +70,7 @@ span#title{
     margin-right: -11px;
 }
 .navbar #navRight > li {
-    background-color: #bc1111;
+    background: linear-gradient(rgba(248,80,50,0.8),rgba(248,80,50,0.4));
     font-size: 20px; 
     border-top-left-radius: 5px;
     border-left: 2px outset #9D9D9D;
@@ -105,11 +105,7 @@ span#title{
 .gallery {
     background-repeat: no-repeat;
     border:  solid, black, 20px;
-    background-size: 100%, auto;
-}
-
-.col-md-6 div {
-    padding: 5px;
+    background-size: cover;
 }
 
 @media screen and (max-width: 470px) {
@@ -129,6 +125,7 @@ input[type="text"], input[type="password"], #robotDescription {
 @media screen and (min-width: 480px) and (max-width: 991px) {
     .gallery {
     background-size: 350px, auto;
+    background-size: cover;
     background-position-x:  center;
 }
 #navLeft li {
