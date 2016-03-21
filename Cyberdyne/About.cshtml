@@ -6,17 +6,17 @@
     <div class="col-md-6">
       <div>
         <h2>About Me</h2>
-        <p> @textElements[0]
+        <p>@Html.Raw(textElements[0].Replace("\n","<br />"))
         </p>
       </div>
     </div>
     <div class="col-md-6">
       <div>
         <h2>About Foppele Inc.</h2>
-        <p> @textElements[1]
+        <p> @Html.Raw(textElements[1].Replace("\n","<br />"))
         </p>
         <h2>Contact</h2>
-        <p> @textElements[2] 
+        <p> @Html.Raw(textElements[2].Replace("\n","<br />"))
         </p>
       </div>
     </div>
