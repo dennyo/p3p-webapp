@@ -7,7 +7,8 @@ body {
 
 #header, .container , #footer {  
     display: block;  
-    padding: 10px;  
+    padding: 10px;
+    padding-bottom: 
 }
     
 #header p {
@@ -32,7 +33,9 @@ margin-bottom: 5px;
 .container > .col-md-12, .col-md-6 div {
     border-radius:  10px;
     border: 2px solid #292929;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
     background-color: rgba(0,0,80,0.5);
     color:  white;
 }
@@ -72,7 +75,7 @@ span#title{
     margin-right: -11px;
 }
 .navbar #navRight > li {
-    background-color: #bc1111;
+    background: linear-gradient(rgba(248,80,50,0.8),rgba(248,80,50,0.4));
     font-size: 20px; 
     border-top-left-radius: 5px;
     border-left: 2px outset #9D9D9D;
