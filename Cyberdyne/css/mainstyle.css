@@ -207,13 +207,13 @@ label {
     font-style: italic;
 }
 
-.robotBtn {
+.robotBtn, .editBtn {
     font-size: 12px;
     width: max-content;
     margin-bottom: 10px;
 }
 
-.robotBtn a {
+.robotBtn a, .editBtn a {
     color:  white;
 }
 
