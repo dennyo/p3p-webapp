@@ -62,41 +62,33 @@
     Page.Title = String.Format("Edit {0}", robotName);
 }
 
-
-
 <div class="col-md-12">
 <h1>Edit robot</h1>
     <form method="post" class="form-inline"> @* mist nog form ID *@
     <fieldset>
         @AntiForgery.GetHtml()
         @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-        <div class="form-group">
-            <label for="robotName">Name</label>
+            <label for="robotName">Name</label> <br />
             <input type="text" id="name" name="name" value="@robotName" class="form-control">
             @Html.ValidationMessage("name")
-        </div>
     </fieldset>
     <fieldset>
-        <div class="form-group">
-            <label for="robotText">Text</label>
-            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8">@robotText</textarea>
+            <label for="robotText">Text</label> @Html.ValidationMessage("robotText") <br />
+            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8">@robotText</textarea> 
             @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
-                @Html.ValidationMessage("robotText")
-        </div>
-    </fieldset>
+                
+    </fieldset> <br />
     <fieldset>
+        <label for="photo">Choose Main Photo</label> <br />
         @foreach (var photo in photos)
         {
-            <div class="form-group">
                 <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
                 <img src="@photo" alt="photo" width="250px" height="250px" />
-            </div>
         }
     </fieldset>
+        <br />
     <fieldset>
-        <div class="form-group">
-            <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
-        </div>
+            <input type="submit" id="submit" name="submit" value="Save Changes" class="btn btn-primary">
     </fieldset>
   </form>
 
