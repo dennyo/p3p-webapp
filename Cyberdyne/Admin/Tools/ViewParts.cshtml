@@ -88,15 +88,13 @@
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
                                             <button type="submit" name="editItem" class="btn btn-warning">
-                                                <span class="glyphicon glyphicon-pencil"></span> Edit
+                                                <span class="glyphicon glyphicon-wrench"></span> Edit
                                             </button>
                                             <input type="hidden" name="itemIdEdit" value="@item.PartId">
                                         </form>),
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
-                                            <a href="~/Admin/Tools/EditPart?Id=@item.PartId"><div class="btn btn-primary">
-                                                <span class="glyphicon glyphicon-wrench"></span> Edit </div></a>
                                             <button type="submit" name="removeItem" class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-remove"></span> Remove
                                             </button>
