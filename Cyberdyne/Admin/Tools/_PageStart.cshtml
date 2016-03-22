@@ -1,7 +1,7 @@
 ﻿@{
     if(!WebSecurity.IsAuthenticated)
     {
-        Response.Redirect("~/");
+        Response.Redirect("~/Admin");
     }
     WebSecurity.RequireAuthenticatedUser();   
 }
