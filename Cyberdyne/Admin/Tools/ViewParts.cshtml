@@ -19,6 +19,7 @@
         Validation.RequireField("partName", "You have to enter a name for the part you're about to add");
         partName = Request.Form["partName"];
         db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);
+        db.Close();
         Response.Redirect(Request.Url.AbsoluteUri);
     }
 
@@ -31,13 +32,24 @@
         {
             db.Execute("DELETE FROM PartReference WHERE PartId = @0", removeItemId);
             db.Execute("DELETE FROM Vendors WHERE PartId = @0", removeItemId);
+            var photoId = db.QueryValue("SELECT PhotoId FROM Parts WHERE PartId = @0", removeItemId);
+            db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photoId);
             db.Execute("DELETE FROM Parts WHERE PartId = @0", removeItemId);
+            db.Close();
             Response.Redirect(Request.Url.AbsoluteUri);
         }
         else
         {
             ModelState.AddFormError("This Item does not exist in your list");
         }
+    }
+
+    if(IsPost && Request.Form["editItem"] != null)
+    {
+        AntiForgery.Validate();
+        string editItemId = Request.Form["itemIdEdit"];
+        db.Close();
+        Response.Redirect("~/Admin/Tools/EditPart?Id=" + editItemId);
     }
     db.Close();
 }
@@ -77,6 +89,13 @@
                 tableStyle: "table table-striped table-responsive",
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
+                    grid.Column(format: @<form method="post">
+                                            @AntiForgery.GetHtml()
+                                            <button type="submit" name="editItem" class="btn btn-warning">
+                                                <span class="glyphicon glyphicon-pencil"></span> Edit
+                                            </button>
+                                            <input type="hidden" name="itemIdEdit" value="@item.PartId">
+                                        </form>),
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
