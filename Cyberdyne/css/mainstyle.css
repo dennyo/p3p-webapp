@@ -112,7 +112,7 @@ span#title{
     .gallery h2 {
     font-size: 30px;
 }
-input[type="text"], input[type="password"], #robotDescription {
+input[type="text"], input[type="password"], #robotText {
     width: 100%;
 }
 
@@ -136,14 +136,14 @@ input[type="text"], input[type="password"], #robotDescription {
     padding-top: 310px;
 }
 
-    input[type="text"], input[type="password"], #robotDescription {
+    input[type="text"], input[type="password"], #robotText {
         width: 75%;
     }
 
 }
 @media screen and (min-width: 991px) {
 
-input[type="text"], input[type="password"], #robotDescription {
+input[type="text"], input[type="password"], #robotText {
     width: 50%;
 }
 .table{    
@@ -200,12 +200,16 @@ label {
     font-style: italic;
 }
 
-#removeBtn {
+.robotBtn {
     font-size: 12px;
     width: max-content;
     margin-bottom: 10px;
 }
 
-#removeBtn a {
+.robotBtn a {
     color:  white;
+}
+
+.inline {
+    display: inline;
 }
