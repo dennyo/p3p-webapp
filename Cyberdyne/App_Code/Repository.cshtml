@@ -183,7 +183,94 @@
             this.coverPhoto = coverPhoto;
         }
 
+        public List<Vendor> getVendors()
+        {
+            List<Vendor> tempList = new List<Vendor>();
+            var db = Database.Open("basicData");
+            var vendorData = db.Query("SELECT * FROM Vendors WHERE PartId = @0", partId);
+            foreach(var row in vendorData)
+            {
+                tempList.Add(new Vendor(row.VendorName, row.VendorLink, row.Price, row.PartId, row.PurchaseLink, row.VendorId));
+            }
+            db.Close();
+            return tempList;
+        }
+    }
 
+    public class Vendor
+    {
+        private string name;
+        private string link;
+        private float price;
+        private int partId;
+        private string purchaseLink;
+        private int vendorId;
+
+        public string Name
+        {
+            get{return name;}
+            set{
+                var db = Database.Open("basicData");
+                name = value;
+                db.Execute("UPDATE Vendors SET VendorName = @0 WHERE VendorId = @1", value, vendorId);
+                db.Close();
+            }
+        }
+
+        public string Link
+        {
+            get{return link;}
+            set{
+                var db = Database.Open("basicData");
+                link = value;
+                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", value, vendorId);
+                db.Close();
+            }
+        }
+
+        public float Price
+        {
+            get{return price;}
+            set{
+                var db = Database.Open("basicData");
+                price = value;
+                db.Execute("UPDATE Vendors SET Price = @0 WHERE VendorId = @1", value, vendorId);
+                db.Close();
+            }
+        }
+
+        public string PurchaseLink
+        {
+            get{return purchaseLink;}
+            set{
+                var db = Database.Open("basicData");
+                purchaseLink = value;
+                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", value, vendorId);
+                db.Close();
+            }
+        }
+
+        public int PartId
+        {
+            get{return partId;}
+        }
+
+        public int VendorId
+        {
+            get{return vendorId;}
+        }
+
+
+
+        public Vendor(string name,string link, float price, int partId, string purchaseLink, int vendorId)
+        {
+            this.name = name;
+            this.link = link;
+            this.price = price;
+            this.partId = partId;
+            this.purchaseLink = purchaseLink;
+            this.vendorId = vendorId;
+        }
     }
 
     public static Robot getRobot(int robotId)
