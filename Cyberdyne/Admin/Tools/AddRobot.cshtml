@@ -91,7 +91,11 @@
             <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
             <label for="threeDlink"><span class="glyphicon glyphicon-link"></span>&nbsp;3D model link</label>
             <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
-            <input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" />
+            @*<input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" /> *@
+            <button type="submit" name="buttonUpload2" class="btn btn-default">
+                <span class="glyphicon glyphicon-save"></span> Upload
+            </button>
+            <input type="hidden" name="buttonUpload2"> 
     </fieldset>
   </form>
 </div>
