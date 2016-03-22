@@ -12,6 +12,16 @@
     var grid = new WebGrid(source: partData, rowsPerPage: 50);
 
     var partName = "";
+    bool isRobot = false;
+
+    if(!RobotId.IsEmpty() && RobotId.IsInt())
+    {
+        var queryData = db.QuerySingle("SELECT RobotId FROM Robots WHERE RobotId = @0", RobotId);
+        if(queryData != null)
+        {
+            isRobot = true;
+        }
+    }
 
     if(IsPost && Request.Form["submitItem"] != null)
     {
@@ -51,6 +61,19 @@
         db.Close();
         Response.Redirect("~/Admin/Tools/EditPart?Id=" + editItemId);
     }
+    if(IsPost && (Request.Form["addToRobot"] != null || Request.Form["removeFromRobot"] != null))
+    {
+        var tempId = Request.Form["selectedItemId"];
+
+        if(Request.Form["addToRobot"] != null)
+        {
+            db.Execute("INSERT INTO PartReference (PartId, RobotId) VALUES (@0, @1)", tempId, RobotId);
+        }
+        else
+        {
+            db.Execute("DELETE FROM PartReference WHERE PartId = @0 AND RobotId = @1", tempId, RobotId);
+        }
+    }
     db.Close();
 }
 
@@ -85,6 +108,28 @@
                 tableStyle: "table table-responsive",
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
+                    grid.Column(header: "Add/Remove from Robot", format: @<form method="post">
+                                            @if(isRobot)
+                                            {
+                                                var data = Database.Open("basicData");
+                                                var queryData = db.QuerySingle("SELECT PartId FROM PartReference WHERE PartId = @0 AND RobotId = @1", item.PartId, RobotId);
+                                                data.Close();
+                                                if(queryData == null)
+                                                {
+                                                    <button type="submit" name="addToRobot" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </button>
+                                                    <input type="hidden" name="selectedItemId" value="@item.PartId">
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" name="removeFromRobot" class="btn btn-danger">
+                                                        <span class="glyphicon glyphicon-remove"></span>
+                                                    </button>
+                                                    <input type="hidden" name="selectedItemId" value="@item.PartId">
+                                                }
+                                            }
+                                        </form>),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
                                             <button type="submit" name="editItem" class="btn btn-warning">
@@ -93,6 +138,7 @@
                                             <input type="hidden" name="itemIdEdit" value="@item.PartId">
                                         </form>),
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
+                    grid.Column(header: "Prices", format: @<text>@Repository.getPart(item.PartId).getVendors().Count</text>),
                     grid.Column(format: @<form method="post">
                                             @AntiForgery.GetHtml()
                                             <button type="submit" name="removeItem" class="btn btn-danger">
