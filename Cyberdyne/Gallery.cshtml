@@ -7,8 +7,8 @@
     
     if(robots.Count > 0)
     {
-        rows = robots.Count / 3;
-        if(robots.Count % 3 > 0) 
+        rows = robots.Count / 4;
+        if(robots.Count % 4 > 0) 
         {
             rows++;
         }
@@ -20,18 +20,34 @@
 @for(int i = 0; i < rows; i++)
 {
     <div class="col-md-12">
-    @for(int j = 0; j < 3; j++)
+    @for(int j = 0; j < 4; j++)
     {
-        if(count >= 0)
+        if (count == robots.Count - 1)
         {
-            <div class="col-md-4">
+             <div class="col-md-6"><a href="~/Robot?Id=@robots[count].RobotId">
+                <div class="gallery featured_img" style="background-image: url(@robots[count].CoverImage)">
+                    @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
+                </div></a>
+            </div>
+            <div class="col-md-6">
+                <div class="featured_text">
+                    <h2 class="auto">@robots[count].RobotName </h2>
+                    <p>@Html.Raw(robots[count].RobotText.Replace("\n","<br />"))</p>
+                </div>
+            </div>
+            count--;
+            break;
+        }
+        else if(count >= 0)
+        {
+            <div class="col-md-3">
                 <div class="gallery" style="background-image: url(@robots[count].CoverImage)"><a href="~/Robot?Id=@robots[count].RobotId">
                     @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
                     <h2 class="auto">@robots[count].RobotName </h2>
                 </a></div>
             </div>
         }
-        count--;
+         count--;
     }    
     </div>
 }
