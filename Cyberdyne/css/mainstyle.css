@@ -35,6 +35,10 @@ margin-bottom: 5px;
     color:  white;
 }
 
+.container > .col-md-6 div {
+    padding: 10px;
+}
+
 .left {
     float: left;
 }
