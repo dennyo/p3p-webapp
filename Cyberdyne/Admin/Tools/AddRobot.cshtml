@@ -3,54 +3,98 @@
     Page.Title = "Add Robot";
     Layout = "~/_Layout.cshtml";
     int id = 0;
+    int robotID = 0;
     var fileName = "";
     var fileMime = "";
     var robotName = "";
     var robotDescription = "";
     var videoLink = "";
-    if (IsPost) {
-        var uploadedFile = Request.Files[0];
-        fileName = Path.GetFileName(uploadedFile.FileName);
-        if(fileName != String.Empty)
-        {
-            fileMime = uploadedFile.ContentType;
-            if(fileMime.StartsWith("image"))
-            {
-                var fileStream = uploadedFile.InputStream;
-                var fileLength = uploadedFile.ContentLength;
-            
-                byte[] fileContent = new byte[fileLength];
-                fileStream.Read(fileContent, 0, fileLength);
-                var db = Database.Open("basicData");
-                robotName = Request.Form["robotName"];
-                robotDescription = Request.Form["robotDescription"];
-                videoLink = Request.Form["videoLink"];
-                //var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
-                var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
-                db.Execute(sql, /*fileName, */fileContent, fileMime);
-                id = (int)db.GetLastInsertId();
-                db.Execute("INSERT INTO Robots (RobotName, RobotText, PhotoID) VALUES (@0,@1,@2)", robotName, robotDescription, id);
-                int robotID = (int)db.GetLastInsertId();
-                db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
-                db.Execute("INSERT INTO VideoLinks (RobotId, Link) VALUES (@0,@1)", robotID, videoLink);
-                db.Close();
-                string url = "~/Robot?id=" + robotID;
-                Response.Redirect(url);
-            }
-        }
-    }
+    var threeDlink = "";
 
+    if(IsPost)
+    {
+        Validation.RequireField("robotName", "You must provide a name for the robot");
+        Validation.RequireField("robotDescription", "You must provide a description");
+        if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
+        if(Request.Form["robotName"] != null) {robotName = Request.Form["robotName"];}
+        if(Request.Form["robotName"] != null) {robotDescription = Request.Form["robotDescription"];} 
+        if(Request.Form["videoLink"] != null) {videoLink= Request.Form["videoLink"];}
+        if(Request.Form["threeDlink"] != null) {threeDlink= Request.Form["threeDlink"];}
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            db.Execute("INSERT INTO Robots (RobotName, RobotText) VALUES (@0,@1)", robotName, robotDescription);
+            robotID = (int)db.GetLastInsertId();
+            if(videoLink != "")
+            {
+                db.Execute("INSERT INTO VideoLinks (RobotId, Link) VALUES (@0,@1)", robotID, videoLink);
+            }
+            if(threeDlink != "")
+            {
+                db.Execute("INSERT INTO ThreeDFiles (RobotId, link) VALUES (@0,@1)", robotID, threeDlink);
+            }
+            for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
+            {
+                var uploadedFile = Request.Files[imageCount];
+                fileName = Path.GetFileName(uploadedFile.FileName);
+                if(fileName != String.Empty)
+                {
+                    fileMime = uploadedFile.ContentType;
+                    if(fileMime.StartsWith("image"))
+                    {
+                        var fileStream = uploadedFile.InputStream;
+                        var fileLength = uploadedFile.ContentLength;                       
+                        byte[] fileContent = new byte[fileLength];
+                        fileStream.Read(fileContent, 0, fileLength);
+                        var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
+                        db.Execute(sql, /*fileName, */fileContent, fileMime);
+                        id = (int)db.GetLastInsertId();
+                        db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
+                        if(imageCount==0)
+                        {
+                            db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
+                        }
+                    }
+                }
+            }
+            db.Close();
+            string url = "~/Robot?id=" + robotID;
+            Response.Redirect(url);   
+        } 
+    }
 }
 
 <div class="col-md-12">
-<h1>Add a Robot</h1>
+<h1>Add a Robot</h1><span id="required">* Required Fields</span>
     <form id="robotform" method="post" enctype="multipart/form-data">
     <fieldset>
-            <label for="robotName">Name</label>
-            <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control">
-            <label for="robotDescription">Description</label>
-            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotDescription" name="robotDescription" class="form-control" rows="8">@robotDescription</textarea>
-            <input disabled value="4000 characters left" id="counter"><br />
+        @Html.ValidationSummary()
+            <label for="robotName">Name*</label> @Html.ValidationMessage("robotName")
+            <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control" placeholder="Enter the name of the robot">
+            <br />
+            <label for="robotDescription">Description*</label> @Html.ValidationMessage("robotDescription")
+            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotDescription" name="robotDescription" class="form-control" rows="8" placeholder="Provide a description for the robot">@robotDescription</textarea>
+            <input disabled value="4000 characters left" id="counter">
+            <br />
+            <br />
+            <label>Images*</label> @Html.ValidationMessage("Upload2")   
+            <div>
+            @FileUpload.GetHtml(
+            initialNumberOfFiles:1,
+            allowMoreFilesToBeAdded:true,
+            includeFormTag:false,
+            uploadText: "Upload2",
+            name: "Upload2")
+            </div>
+            <br />
+            <label for="videoLink">Embedded video link</label>
+            <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
+            <label for="threeDlink">3D model link</label>
+            <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
+            <input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" />
+    </fieldset>
+  </form>
+</div>
                 <script>
                 function textCounter(field,field2,maxlimit)
                 {
@@ -63,18 +107,3 @@
                  }
                 }
                 </script>
-            <label>Image</label>
-            <div>
-            @FileUpload.GetHtml(
-            initialNumberOfFiles:1,
-            allowMoreFilesToBeAdded:false,
-            includeFormTag:false,
-            uploadText: "Upload2",
-            name: "Upload2")
-            </div>
-            <label for="videoLink">Embedded video link</label>
-            <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control"> <br/>
-            <input type="submit" name="buttonUpload2" value="Submit" class="submitButton" />
-    </fieldset>
-  </form>
-</div>

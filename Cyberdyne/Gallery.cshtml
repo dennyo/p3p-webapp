@@ -2,7 +2,6 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = "Gallery";
 
-    int count = 0;
     int rows = 0;
     List<Repository.Robot> robots = Repository.getAllRobots();
     
@@ -14,6 +13,7 @@
             rows++;
         }
     }
+    int count = robots.Count - 1;
     
 }
 
@@ -22,7 +22,7 @@
     <div class="col-md-12">
     @for(int j = 0; j < 3; j++)
     {
-        if(count < robots.Count)
+        if(count >= 0)
         {
             <div class="col-md-4">
                 <div class="gallery" style="background-image: url(@robots[count].CoverImage)"><a href="~/Robot?Id=@robots[count].RobotId">
@@ -31,7 +31,7 @@
                 </a></div>
             </div>
         }
-        count++;
+        count--;
     }    
     </div>
 }

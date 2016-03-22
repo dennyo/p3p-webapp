@@ -1,25 +1,67 @@
 ﻿@{
     Page.Title="Remove Robot";
-    
-    var robotId = Request.QueryString["Id"];
-    
-    if(WebSecurity.IsAuthenticated)
-    {
-        if(robotId.IsInt())
-        {
-            var db = Database.Open("basicData");
-            if(db.Query("SELECT * FROM Robots WHERE RobotId = @0", robotId) != null)
-            {
-                var photoIds = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
-                foreach(var photo in photoIds)
-                {
-                    db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photo.PhotoId);
-                }
-                db.Execute("DELETE FROM 3DFiles, CodeLinks, CodeSnippets, VideoLinks, PhotoReference WHERE RobotId = @0", robotId);
-                db.Execute("DELETE FROM Robots WHERE RobotId = @0", robotId);   
-            }
+        Layout = "~/_Layout.cshtml";
 
-            db.Close();
+    var robotId = "";
+    var robotName = "";
+    var mainPhoto = "";
+    var robotText = "";
+    if(!Request.QueryString["id"].IsEmpty() && Request.QueryString["id"].IsInt()) 
+    {
+        robotId = Request.QueryString["id"];
+
+        Repository.Robot tempRobot = Repository.getRobot(Convert.ToInt16(robotId));
+        if (tempRobot != null)
+        {
+            robotName = tempRobot.RobotName;
+            mainPhoto = tempRobot.CoverImage;
+            robotText = tempRobot.RobotText;
         }
-    }   
+    }
+    if(IsPost){
+        if(WebSecurity.IsAuthenticated)
+        {
+            if(robotId.IsInt())
+            {
+                var db = Database.Open("basicData");
+                if(db.Query("SELECT * FROM Robots WHERE RobotId = @0", robotId) != null)
+                {
+                    var photoIds = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM ThreeDFiles WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM CodeLinks WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM CodeSnippets WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM VideoLinks WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM PhotoReference WHERE RobotId = @0", robotId);
+                    db.Execute("DELETE FROM PartReference WHERE RobotId = @0", robotId);
+                    db.Execute("UPDATE Robots SET PhotoId = NULL WHERE RobotID = @0", robotId);
+                    foreach(var photo in photoIds)
+                    {
+                        db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photo.PhotoId);
+                    }
+                    db.Execute("DELETE FROM Robots WHERE RobotId = @0", robotId);   
+                }
+
+                db.Close();
+            }
+        } 
+    }  
 }
+
+    <div class="col-md-12">    
+        <h1>Remove Robot</h1> 
+        <p>Are you sure you want to delete this robot? This can NOT be undone.</p>     
+        <div class="col-md-4">
+            <div>
+                <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>@robotName</h1>
+                <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
+        </div>
+        <form method="post">
+<input type="submit" value="submit" class="btn btn-default" />
+</form>
+    </div>
+
+   

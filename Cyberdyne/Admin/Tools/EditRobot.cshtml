@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    
+    var robotId = "";
+    var robotName = "";
+    var mainPhoto = "";
+    var robotText = "";
+    List<string> photos = new List<string>();
+    List<string> codeLinks = new List<string>();
+    List<string> codeSnippets = new List<string>();
+    List<string> threeDLinks = new List<string>();
+    List<string> videoLinks = new List<string>();
+
+    if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
+        robotId = Request.QueryString["ID"];
+
+        Repository.Robot tempRobot = Repository.getRobot(Convert.ToInt16(robotId));
+        if (tempRobot != null)
+        {
+            robotName = tempRobot.RobotName;
+            mainPhoto = tempRobot.CoverImage;
+            robotText = tempRobot.RobotText;
+            photos = tempRobot.getPhotos();
+            codeLinks = tempRobot.getCodeLinks();
+            codeSnippets = tempRobot.getCodeSnippets();
+            threeDLinks = tempRobot.getThreeDLinks();
+            videoLinks = tempRobot.getVideoLinks();
+        }
+        else
+        {
+            Validation.AddFormError("BEEP BOOP. Robot is lost.");
+        }
+    }
+    else{
+        Validation.AddFormError("BEEP BOOP. Robot is lost.");
+    }
+
+    if(IsPost)
+    {
+        Validation.RequireField("name", "You must enter a name");
+        
+        robotName = Request.Form["name"];
+        robotText = Request.Form["robotText"];
+        mainPhoto = Request.Form["photo"];
+
+        if(Validation.IsValid()){
+            var db = Database.Open("basicData");
+            if (mainPhoto.Length == 0)
+            {
+                mainPhoto = "1";
+            }
+            if (robotText.Length == 0)
+            {
+                robotText = null;
+            }
+            var updateCommand = "UPDATE Robots SET RobotName=@0, RobotText=@1, PhotoId=@2 WHERE RobotId=@3";
+            db.Execute(updateCommand, robotName, robotText, mainPhoto, robotId);
+            db.Close();
+            Response.Redirect(string.Format("~/Robot?id={0}", robotId));
+        }
+    }
+    Page.Title = String.Format("Edit {0}", robotName);
+}
+
+
+
+<div class="col-md-12">
+<h1>Edit robot</h1>
+    <form method="post" class="form-inline"> @* mist nog form ID *@
+    <fieldset>
+        @AntiForgery.GetHtml()
+        @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+        <div class="form-group">
+            <label for="robotName">Name</label>
+            <input type="text" id="name" name="name" value="@robotName" class="form-control">
+            @Html.ValidationMessage("name")
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <label for="robotText">Text</label>
+            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8">@robotText</textarea>
+            @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
+                @Html.ValidationMessage("robotText")
+        </div>
+    </fieldset>
+    <fieldset>
+        @foreach (var photo in photos)
+        {
+            <div class="form-group">
+                <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
+                <img src="@photo" alt="photo" width="250px" height="250px" />
+            </div>
+        }
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            <input type="submit" id="submit" name="submit" value="Login" class="btn btn-default">
+        </div>
+    </fieldset>
+  </form>
+
+
+</div>
