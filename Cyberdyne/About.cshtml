@@ -1,22 +1,73 @@
 ﻿@{
     Page.Title= "About";
     Layout = "~/_Layout.cshtml";
+    var db = Database.Open("basicData");
     List<string> textElements = new List<string> {Repository.getTextElement(2), Repository.getTextElement(3), Repository.getTextElement(4)};
+    int id = Convert.ToInt16(Request.QueryString["edit"]);
+    var elementText = Repository.getTextElement(id);
+    if(IsPost)
+    {
+        elementText = Request.Form["elementText"];
+        db.Execute("UPDATE TextElements SET ElementText= @0 WHERE ElementID = @1", elementText, id);
+        Response.Redirect("~/About");
+    }
 }
-    <div class="col-md-6">
-      <div>
-        <h2>About Me</h2>
-        <p>@Html.Raw(textElements[0].Replace("\n","<br />"))
-        </p>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div>
-        <h2>About Foppele Inc.</h2>
-        <p> @Html.Raw(textElements[1].Replace("\n","<br />"))
-        </p>
-        <h2>Contact</h2>
-        <p> @Html.Raw(textElements[2].Replace("\n","<br />"))
-        </p>
-      </div>
-    </div>
+<div class="col-md-6">
+   <div>
+       <h2>About Me</h2>
+        @if(Request.QueryString["edit"] == "2" && WebSecurity.IsAuthenticated)
+        {
+            <form id="aboutform" method="post">
+                <fieldset>
+                    <textarea id="elemntText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                    <button type="submit" name="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button> 
+                </fieldset>
+            </form>
+        }
+        else
+        {
+            <p> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
+            if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=2"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+        }
+  </div>
+</div>
+<div class="col-md-6">
+   <div>
+       <h2>About Foppele Inc.</h2>
+        @if(Request.QueryString["edit"] == "3" && WebSecurity.IsAuthenticated)
+        {
+            <form id="aboutform" method="post">
+                <fieldset>
+                    <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                    <button type="submit" name="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button> 
+                </fieldset>
+            </form>
+        }
+        else
+        {
+           <p> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
+           if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=3"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+        }
+       <h2>Contact</h2>
+       @if(Request.QueryString["edit"] == "4" && WebSecurity.IsAuthenticated)
+        {
+            <form id="aboutform" method="post">
+                <fieldset>
+                    <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                    <button type="submit" name="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button> 
+                </fieldset>
+            </form>
+        }
+        else
+        {
+            <p> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
+            if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=4"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+        }
+  </div>
+</div>
