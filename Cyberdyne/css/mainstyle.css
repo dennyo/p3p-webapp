@@ -67,7 +67,7 @@ span#title{
     }
 }
 .navbar #navRight {
-    margin-right: -11px;
+    margin-right: -13px;
 }
 .navbar #navRight > li {
     background: linear-gradient(rgba(248,80,50,0.8),rgba(248,80,50,0.4));
@@ -75,7 +75,7 @@ span#title{
     border-top-left-radius: 5px;
     border-left: 2px outset #9D9D9D;
     border-top:  2px outset #9D9D9D;
-    margin-right: -4px;
+    margin-right: -2px;
     padding: 3px
 }
 
@@ -148,6 +148,13 @@ input[type="text"], input[type="password"], #robotDescription {
 }
 .table{    
     margin: 0 20px 0 20px;
+}
+}
+
+@media screen and (min-width: 1250px ) {
+    .gallery h2 {
+    color: red;
+        
 }
 }
 
