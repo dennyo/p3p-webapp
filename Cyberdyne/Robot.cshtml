@@ -49,10 +49,11 @@
         <div class="col-md-8">
             <h1>@robotName</h1>
                 <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
+            @if(@WebSecurity.IsAuthenticated){
             <div class="btn btn-danger btn-block" id="removeBtn">
                 <a href="~/Admin/Tools/RemoveRobot?id=@Request.QueryString["Id"]">
                 <span class="glyphicon glyphicon-remove"></span> Delete this robot
-            </a>            </div>
+            </a>            </div> }
         </div>
     </div>
     if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0){
