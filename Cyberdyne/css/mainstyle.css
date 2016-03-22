@@ -220,3 +220,13 @@ label {
 .inline {
     display: inline;
 }
+
+.featured_img {
+    padding-top: 300px;
+    max-height: 450px;
+    width: auto;
+}
+
+.featured_text {
+    
+}
