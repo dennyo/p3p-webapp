@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
 
+    var db = Database.Open("basicData");
+
     var robotId = "";
     var robotName = "";
     var mainPhoto = "";
@@ -11,7 +13,8 @@
     List<string> threeDLinks = new List<string>();
     List<string> videoLinks = new List<string>();
 
-    if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
+    if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
+    {
         robotId = Request.QueryString["ID"];
 
         Repository.Robot tempRobot = Repository.getRobot(Convert.ToInt16(robotId));
@@ -31,28 +34,64 @@
             Validation.AddFormError("BEEP BOOP. Robot is lost.");
         }
     }
-    else{
+    
+    else
+    {
         Validation.AddFormError("BEEP BOOP. Robot is lost.");
     }
     Page.Title= robotName;
+
+    if(IsPost && Request.Form["editItem"] != null)
+    {
+        string ItemId = @Request.QueryString["Id"];
+        db.Close();
+        Response.Redirect("~/Admin/Tools/EditPart?Id=" + ItemId); 
+    }
+    
+    if(IsPost && Request.Form["removeItem"] != null)
+    {
+        string removeItemId = @Request.QueryString["Id"];
+        /// DELETE STUFF///
+        //db.Execute("DELETE FROM PartReference WHERE PartId = @0", removeItemId);
+        //db.Execute("DELETE FROM Vendors WHERE PartId = @0", removeItemId);
+        //var photoId = db.QueryValue("SELECT PhotoId FROM Parts WHERE PartId = @0", removeItemId);
+        //db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photoId);
+        //db.Execute("DELETE FROM Parts WHERE PartId = @0", removeItemId);
+        //db.Close();
+        Response.Redirect("~/Admin/Tools/RemoveRobot?Id=" + removeItemId);
+    }
 }
 
 @if (!robotName.IsEmpty())
 {
-    <div class="col-md-12">
+    <div class="col-md-12">          
+        
         <div class="col-md-4">
             <div>
                 <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
         <div class="col-md-8">
-            <div>
-                <h1>@robotName</h1>
+            <h1>@robotName</h1>
                 <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
-            </div>
+
+            @if(@WebSecurity.IsAuthenticated)
+            {    
+            <form method="post">
+                <button type="submit" name="editItem" class="btn btn-warning robotBtn">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit this robot            
+                </button>            
+                
+                <button type="submit" name="removeItem" class="btn btn-danger robotBtn">
+                        <span class="glyphicon glyphicon-remove"></span> Delete this robot 
+                </button>    
+           </form>
+            }
+
         </div>
     </div>
-    if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0){
+    if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0) 
+    {
     <div class="col-md-12">
         @if (photos.Count() != 0)
         {
@@ -156,7 +195,7 @@
                 }
             </div>
         }
-    </div>
+    </div>   
     }
 }
 else 

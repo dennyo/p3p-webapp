@@ -7,23 +7,23 @@
     var fileName = "";
     var fileMime = "";
     var robotName = "";
-    var robotDescription = "";
+    var robotText = "";
     var videoLink = "";
     var threeDlink = "";
 
     if(IsPost)
     {
         Validation.RequireField("robotName", "You must provide a name for the robot");
-        Validation.RequireField("robotDescription", "You must provide a description");
+        Validation.RequireField("robotText", "You must provide a description");
         if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
         if(Request.Form["robotName"] != null) {robotName = Request.Form["robotName"];}
-        if(Request.Form["robotName"] != null) {robotDescription = Request.Form["robotDescription"];} 
+        if(Request.Form["robotText"] != null) {robotText = Request.Form["robotText"];} 
         if(Request.Form["videoLink"] != null) {videoLink= Request.Form["videoLink"];}
         if(Request.Form["threeDlink"] != null) {threeDlink= Request.Form["threeDlink"];}
         if(Validation.IsValid())
         {
             var db = Database.Open("basicData");
-            db.Execute("INSERT INTO Robots (RobotName, RobotText) VALUES (@0,@1)", robotName, robotDescription);
+            db.Execute("INSERT INTO Robots (RobotName, RobotText) VALUES (@0,@1)", robotName, robotText);
             robotID = (int)db.GetLastInsertId();
             if(videoLink != "")
             {
@@ -69,15 +69,15 @@
     <form id="robotform" method="post" enctype="multipart/form-data">
     <fieldset>
         @Html.ValidationSummary()
-            <label for="robotName">Name*</label> @Html.ValidationMessage("robotName")
+            <label for="robotName"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</label> @Html.ValidationMessage("robotName")
             <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control" placeholder="Enter the name of the robot">
             <br />
-            <label for="robotDescription">Description*</label> @Html.ValidationMessage("robotDescription")
-            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotDescription" name="robotDescription" class="form-control" rows="8" placeholder="Provide a description for the robot">@robotDescription</textarea>
+            <label for="robotText"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Description*</label> @Html.ValidationMessage("robotText")
+            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8" placeholder="Provide a description for the robot">@robotText</textarea>
             <input disabled value="4000 characters left" id="counter">
             <br />
             <br />
-            <label>Images*</label> @Html.ValidationMessage("Upload2")   
+            <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Images*</label> @Html.ValidationMessage("Upload2")   
             <div>
             @FileUpload.GetHtml(
             initialNumberOfFiles:1,
@@ -87,9 +87,9 @@
             name: "Upload2")
             </div>
             <br />
-            <label for="videoLink">Embedded video link</label>
+            <label for="videoLink"><span class="glyphicon glyphicon-link"></span>&nbsp;Embedded video link</label>
             <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
-            <label for="threeDlink">3D model link</label>
+            <label for="threeDlink"><span class="glyphicon glyphicon-link"></span>&nbsp;3D model link</label>
             <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
             <input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" />
     </fieldset>
