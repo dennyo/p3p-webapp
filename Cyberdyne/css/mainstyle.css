@@ -243,6 +243,12 @@ label {
     padding-left: 15px;
 }
 
+.floatBtn {
+    width:  max-content;
+    text-align: center;
+    min-width: 110px;
+}
+
 .featured-glyph {
     font-size: 30px;
     padding-top: 10px;

@@ -57,14 +57,6 @@
             ModelState.AddFormError("This Item does not exist in your list");
         }
     }
-
-    if(IsPost && Request.Form["editItem"] != null)
-    {
-        AntiForgery.Validate();
-        string editItemId = Request.Form["itemIdEdit"];
-        db.Close();
-        Response.Redirect("~/Admin/Tools/EditPart?Id=" + editItemId);
-    }
     if(IsPost && (Request.Form["addToRobot"] != null || Request.Form["removeFromRobot"] != null))
     {
         var tempId = Request.Form["selectedItemId"];
@@ -85,20 +77,19 @@
     <br>
         @if(isRobot)
         {
-            <div class="col-xs-2">
-                <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
-            </div>
-            <div class="col-xs-2 col-xs-offset-8">
+            <div class="col-xs-6 col-sm-2">
+                <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+            </div> 
+            <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
                 <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-            </div>   
+            </div>
         }
         else
-        {
-            <div class="col-xs-2 col-xs-offset-10">
+        {    <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn">
                 <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>
         }
-    <div class="col-md-12">
+    <div class="col-md-12" style="clear: both">
         <form method="post">
             <fieldset>
                 @AntiForgery.GetHtml()
@@ -106,7 +97,7 @@
                 {
                     <p>@message</p>
                 }
-                <h1>Add Item to list</h1>
+                <h1>Add Part</h1>
                 @Html.ValidationSummary()
                 <div class="form-group">
                     <label for="partName">Name:</label>
@@ -145,13 +136,9 @@
                                                 }
                                             }
                                         </form>),
-                    grid.Column(format: @<form method="post">
-                                            @AntiForgery.GetHtml()
-                                            <button type="submit" name="editItem" class="btn btn-warning">
-                                                <span class="glyphicon glyphicon-wrench"></span> Edit
-                                            </button>
-                                            <input type="hidden" name="itemIdEdit" value="@item.PartId">
-                                        </form>),
+                    grid.Column(format: @<div class="btn btn-warning editBtn">
+                                            <a href="Editpart?id=@item.PartId"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
+                                         </div>),
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(header: "Prices", format: @<text>@Repository.getPart(item.PartId).getVendors().Count</text>),
                     grid.Column(format: @<form method="post">

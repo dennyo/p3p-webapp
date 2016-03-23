@@ -6,10 +6,10 @@
     var mainPhoto = "";
     var robotText = "";
     List<string> photos = new List<string>();
-    List<string> codeLinks = new List<string>();
-    List<string> codeSnippets = new List<string>();
-    List<string> threeDLinks = new List<string>();
-    List<string> videoLinks = new List<string>();
+    List<string[]> codeLinks = new List<string[]>();
+    List<string[]> codeSnippets = new List<string[]>();
+    List<string[]> threeDLinks = new List<string[]>();
+    List<string[]> videoLinks = new List<string[]>();
 
     var input = "";
     var element = "";
@@ -72,8 +72,8 @@
         if(Validation.IsValid())
         {
             var db = Database.Open("basicData");
-            var updateCommand = "UPDATE CodeLinks SET link=@0 WHERE RobotId=@1 AND link=@2";
-            db.Execute(updateCommand, input, robotId, element);
+            var updateCommand = "UPDATE CodeLinks SET link=@0 WHERE Id=@1";
+            db.Execute(updateCommand, input, element);
 
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
@@ -85,8 +85,8 @@
         if(Validation.IsValid())
         {
             var db = Database.Open("basicData");
-            var deleteCommand = "DELETE FROM CodeLinks WHERE link=@0 AND RobotId=@1";
-            db.Execute(deleteCommand, element, robotId);
+            var deleteCommand = "DELETE FROM CodeLinks WHERE Id=@0";
+            db.Execute(deleteCommand, element);
 
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
@@ -101,6 +101,52 @@
         {
             var db = Database.Open("basicData");
             var insertCommand = "INSERT INTO CodeLinks (RobotId, link) VALUES(@0,@1)";
+            db.Execute(insertCommand, robotId, input);
+
+            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+        }
+    }
+
+
+    if(IsPost && !Request["editCodeSnippet"].IsEmpty())
+    {
+        Validation.RequireField("input", "Please enter something");
+
+        input = Request.Form["input"];
+        element = Request.Form["element"];
+
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            var updateCommand = "UPDATE CodeSnippets SET Text=@0 WHERE Id=@1";
+            db.Execute(updateCommand, input, element);
+
+            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+        }
+    }
+    if(IsPost && !Request["deleteCodeSnippet"].IsEmpty())
+    {
+        element = Request.Form["element"];
+
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            var deleteCommand = "DELETE FROM CodeSnippets WHERE Id=@0";
+            db.Execute(deleteCommand, element);
+
+            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+        }
+    }
+    if(IsPost && !Request["addCodeSnippet"].IsEmpty())
+    {
+        Validation.RequireField("input", "Please enter something");
+
+        input = Request.Form["input"];
+
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            var insertCommand = "INSERT INTO CodeSnippets (RobotId, Text) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
 
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
@@ -154,18 +200,18 @@
         <ul class="nav nav-tabs">
             @for (int i = 1; i <= codeLinks.Count; i++)
             {
-                <li><a data-toggle="tab" href="#@i">@i</a></li>
+                <li><a data-toggle="tab" href="#Link_@i">@i</a></li>
             }
         </ul>
 
         <div class="tab-content">
             @for (int i = 1; i <= codeLinks.Count; i++)
             {
-                <div id="@i" class="tab-pane fade">
+                <div id="Link_@i" class="tab-pane fade">
                     <form method="post" class="form-inline">
                         <div class="form-group">
-                            <input type="text" id="input" name="input" value="@codeLinks[i-1]" class="form-control">
-                            <input type="hidden" name="element" value="@codeLinks[i-1]">
+                            <input type="text" id="input" name="input" value="@codeLinks[i-1][1]" class="form-control">
+                            <input type="hidden" name="element" value="@codeLinks[i-1][0]">
                             <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-default">
                             <input type="submit" id="submit" name="deleteCodeLink" value="Delete" class="btn btn-default">
                         </div>
@@ -187,22 +233,22 @@
     <div class="container">
         <h2>Code snippets</h2>
         <ul class="nav nav-tabs">
-            @for (int i = 1; i <= codeLinks.Count; i++)
+            @for (int i = 1; i <= codeSnippets.Count; i++)
             {
-                <li><a data-toggle="tab" href="#@i">@i</a></li>
+                <li><a data-toggle="tab" href="#Snippet_@i">@i</a></li>
             }
         </ul>
 
         <div class="tab-content">
-            @for (int i = 1; i <= codeLinks.Count; i++)
+            @for (int i = 1; i <= codeSnippets.Count; i++)
             {
-                <div id="@i" class="tab-pane fade">
+                <div id="Snippet_@i" class="tab-pane fade">
                     <form method="post" class="form-inline">
                         <div class="form-group">
-                            <input type="text" id="input" name="input" value="@codeLinks[i-1]" class="form-control">
-                            <input type="hidden" name="element" value="@codeLinks[i-1]">
-                            <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-default">
-                            <input type="submit" id="submit" name="deleteCodeLink" value="Delete" class="btn btn-default">
+                            <textarea onkeyup="textCounter(this, 'counter',4000);" id="input" name="input" class="form-control" rows="8">@codeSnippets[i-1][1]</textarea>
+                            <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
+                            <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-default">
+                            <input type="submit" id="submit" name="deleteCodeSnippet" value="Delete" class="btn btn-default">
                         </div>
                     </form>
                 </div>
@@ -212,8 +258,8 @@
             @AntiForgery.GetHtml()
             @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="form-group">
-                <input type="text" id="input" name="input" value="" class="form-control">
-                <input type="submit" id="submit" name="addCodeLink" value="Add" class="btn btn-default">
+                <textarea onkeyup="textCounter(this, 'counter',4000);" id="input" name="input" class="form-control" rows="8"></textarea>
+                <input type="submit" id="submit" name="addCodeSnippet" value="Add" class="btn btn-default">
                 @Html.ValidationMessage("input")
             </div>
         </form>
