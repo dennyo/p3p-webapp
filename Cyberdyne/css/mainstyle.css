@@ -234,3 +234,9 @@ label {
 .featured_text {
     
 }
+
+.floatBtn {
+    width:  max-content;
+    text-align: center;
+    min-width: 100px;
+}
