@@ -1,0 +1,74 @@
+﻿@{
+        Layout = "~/_Layout.cshtml";
+
+    var db = Database.Open("basicData");
+
+    var partId = "";
+    var partName = "";
+    var mainPhoto = "";
+    List<string> photos = new List<string>();
+    List<string> codeLinks = new List<string>();
+    List<string> codeSnippets = new List<string>();
+    List<string> threeDLinks = new List<string>();
+    List<string> videoLinks = new List<string>();
+
+    if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
+    {
+        partId = Request.QueryString["ID"];
+
+        Repository.Part tempPart = Repository.getPart(Convert.ToInt16(partId));
+        if (tempRobot != null)
+        {
+            robotName = tempRobot.RobotName;
+            mainPhoto = tempRobot.CoverImage;
+            robotText = tempRobot.RobotText;
+            photos = tempRobot.getPhotos();
+            codeLinks = tempRobot.getCodeLinks();
+            codeSnippets = tempRobot.getCodeSnippets();
+            threeDLinks = tempRobot.getThreeDLinks();
+            videoLinks = tempRobot.getVideoLinks();
+        }
+        else
+        {
+            Validation.AddFormError("Vijf euro's? Op je muil, gauw.");
+        }
+    }
+    
+    else
+    {
+        Validation.AddFormError("Lekker in verrotte bananen knijpen.");
+    }
+    Page.Title= partName;
+
+    if(IsPost && Request.Form["editItem"] != null)
+    {
+        string ItemId = @Request.QueryString["Id"];
+        db.Close();
+        Response.Redirect("~/Admin/Tools/EditPart?Id=" + ItemId); 
+    }
+    
+    if(IsPost && Request.Form["removeItem"] != null)
+    {
+        string removeItemId = @Request.QueryString["Id"];
+        /// DELETE STUFF///
+        //db.Execute("DELETE FROM PartReference WHERE PartId = @0", removeItemId);
+        //db.Execute("DELETE FROM Vendors WHERE PartId = @0", removeItemId);
+        //var photoId = db.QueryValue("SELECT PhotoId FROM Parts WHERE PartId = @0", removeItemId);
+        //db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photoId);
+        //db.Execute("DELETE FROM Parts WHERE PartId = @0", removeItemId);
+        //db.Close();
+        Response.Redirect("~/Admin/Tools/RemoveRobot?Id=" + removeItemId);
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        
+    </body>
+</html>

@@ -5,6 +5,7 @@
     var db = Database.Open("basicData");
 
     var RobotId = Request.QueryString["Id"];
+
     string message = "";
     var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
 
@@ -43,8 +44,11 @@
             db.Execute("DELETE FROM PartReference WHERE PartId = @0", removeItemId);
             db.Execute("DELETE FROM Vendors WHERE PartId = @0", removeItemId);
             var photoId = db.QueryValue("SELECT PhotoId FROM Parts WHERE PartId = @0", removeItemId);
-            db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photoId);
             db.Execute("DELETE FROM Parts WHERE PartId = @0", removeItemId);
+            if(photoId != 1)
+            {
+                db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photoId);
+            }
             db.Close();
             Response.Redirect(Request.Url.AbsoluteUri);
         }
@@ -79,10 +83,21 @@
 
 <div class="col-md-12">
     <br>
-        <div class="col-md-10"></div>
-        <div class="col-md-2">
-            <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-        </div>
+        @if(isRobot)
+        {
+            <div class="col-xs-2">
+                <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+            </div>
+            <div class="col-xs-2 col-xs-offset-8">
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+            </div>   
+        }
+        else
+        {
+            <div class="col-xs-2 col-xs-offset-10">
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+            </div>
+        }
     <div class="col-md-12">
         <form method="post">
             <fieldset>
@@ -108,7 +123,7 @@
                 tableStyle: "table table-responsive",
                 headerStyle: "tableHeader",
                 columns: grid.Columns(
-                    grid.Column(header: "Add/Remove from Robot", format: @<form method="post">
+                    grid.Column(header: isRobot ? "Add/Remove from Robot": "", format: @<form method="post">
                                             @if(isRobot)
                                             {
                                                 var data = Database.Open("basicData");
