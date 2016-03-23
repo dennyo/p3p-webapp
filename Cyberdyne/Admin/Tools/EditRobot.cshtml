@@ -62,6 +62,10 @@
             Response.Redirect(string.Format("~/Robot?id={0}", robotId));
         }
     }
+    if(IsPost && !Request["submit2"].IsEmpty())
+    {
+        Response.Redirect(string.Format("~/Admin/Tools/ViewParts?id={0}", robotId));
+    }
     if(IsPost && !Request["editCodeLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
@@ -253,38 +257,46 @@
 <div class="col-md-12">
 <h1>Edit robot</h1>
     <form method="post" class="form-inline"> @* mist nog form ID *@
-    <fieldset>
-        @AntiForgery.GetHtml()
-        @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-        <div class="form-group">
-            <label for="robotName">Name</label></br>
-            <input type="text" id="name" name="name" value="@robotName" class="form-control">
-            @Html.ValidationMessage("name")
-        </div>
-    </fieldset>
-    <fieldset>
-        <div class="form-group">
-            <label for="robotText">Text</label></br>
-            <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8">@robotText</textarea>
-            @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
-                @Html.ValidationMessage("robotText")
-        </div>
-    </fieldset>
-    <fieldset>
-        <label>Pick a cover image</label></br>
-        @foreach (var photo in photos)
-        {
+        <fieldset>
+            @AntiForgery.GetHtml()
+            @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="form-group">
-                <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
-                <img src="~/@photo" alt="photo" width="250px" height="250px" />
+                <label for="robotName">Name</label></br>
+                <input type="text" id="name" name="name" value="@robotName" class="form-control">
+                @Html.ValidationMessage("name")
             </div>
-        }
-    </fieldset>
-    <fieldset>
-        <div class="form-group">
-            <input type="submit" id="submit" name="submit1" value="Edit" class="btn btn-default">
-        </div>
-    </fieldset>
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                <label for="robotText">Text</label></br>
+                <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8">@robotText</textarea>
+                @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
+                    @Html.ValidationMessage("robotText")
+            </div>
+        </fieldset>
+        <fieldset>
+            <label>Pick a cover image</label></br>
+            @foreach (var photo in photos)
+            {
+                <div class="form-group">
+                    <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
+                    <img src="~/@photo" alt="photo" width="250px" height="250px" />
+                </div>
+            }
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                <input type="submit" id="submit" name="submit1" value="Edit" class="btn btn-default">
+            </div>
+        </fieldset>
+    </form>
+    <form method="post" class="form-inline">
+        <fieldset>
+            <label>Edit parts for this Robot</label></br>
+            <div class="form-group">
+                <input type="submit" id="submit" name="submit2" value="Parts" class="btn btn-default">
+            </div>
+        </fieldset>
     </form>
 
     <div class="container">
