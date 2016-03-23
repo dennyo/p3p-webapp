@@ -89,7 +89,7 @@
             var data = db.Query("SELECT Id, Text FROM CodeSnippets WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{row.Id, row.Text});
+                links.Add(new string[]{(string)row.Id, row.Text});
             }
 
             db.Close();
@@ -105,7 +105,7 @@
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{row.Id, row.link});
+                links.Add(new string[]{(string)row.Id, row.link});
             }
 
             db.Close();
@@ -121,7 +121,7 @@
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{row.Id, row.link});
+                links.Add(new string[]{(string)row.Id, row.link});
             }
 
             db.Close();
