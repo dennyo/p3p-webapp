@@ -72,7 +72,7 @@
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
-                idList.Add("DisplayImage.cshtml?Id=" + row.PhotoId);
+                idList.Add(row.PhotoId);
             }
             db.Close();
             return idList;
