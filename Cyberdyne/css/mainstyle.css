@@ -121,6 +121,7 @@ span#title{
     background-size: cover;
     border: 1px solid black;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 @media screen and (max-width: 470px) {
@@ -237,6 +238,7 @@ label {
 
 .featured_text p {
     padding-left: 25px;
+    word-wrap: break-word;
 }
 
 .featured_text h2{
@@ -261,4 +263,8 @@ label {
     padding-left: 20px;
     padding-top: 9px;
     font-size: 18px;
+}
+
+.col-md-3 a:hover {
+    text-decoration: none;
 }
