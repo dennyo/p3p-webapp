@@ -85,7 +85,8 @@
             </div>
         }
         else
-        {    <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn">
+        {    
+            <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn">
                 <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>
         }
@@ -136,9 +137,7 @@
                                                 }
                                             }
                                         </form>),
-                    grid.Column(format: @<div class="btn btn-warning editBtn">
-                                            <a href="Editpart?id=@item.PartId"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
-                                         </div>),
+                    grid.Column(format: @<a href="Editpart?id=@item.PartId" class="btn btn-warning editBtn"><span class="glyphicon glyphicon-wrench"></span> Edit</a>),
                     grid.Column(columnName: "PartName", header: "Part Name", canSort: false),
                     grid.Column(header: "Prices", format: @<text>@Repository.getPart(item.PartId).getVendors().Count</text>),
                     grid.Column(format: @<form method="post">
