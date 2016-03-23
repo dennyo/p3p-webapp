@@ -239,10 +239,14 @@ label {
 .featured_text p {
     padding-left: 25px;
     word-wrap: break-word;
+    padding-bottom: 5px;
 }
 
 .featured_text h2{
-    padding-left: 15px;
+    padding-top: 12px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    background: linear-gradient(to right,rgba(9,0,0,0.75),rgba(9,0,0,0.1));
 }
 
 .floatBtn {
@@ -252,10 +256,12 @@ label {
 }
 
 .featured-glyph {
-    font-size: 30px;
-    padding-top: 10px;
-    padding-bottom: 290px;
-    padding-left: 10px;
+    font-size: 40px;
+    padding-top: 15px;
+    padding-bottom: 90px;
+    margin-bottom: 200px;
+    padding-left: 15px;
+    background: linear-gradient(rgba(9,0,0,1),rgba(9,0,0,0));
 }
 
 .non-feat-glyph {
@@ -268,3 +274,4 @@ label {
 .col-md-3 a:hover {
     text-decoration: none;
 }
+
