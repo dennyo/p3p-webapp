@@ -86,7 +86,7 @@
             List<string> links = new List<string>();
             var db = Database.Open("basicData");
 
-            var data = db.Query("SELECT link FROM CodeSnippets WHERE RobotId = @0", robotId);
+            var data = db.Query("SELECT text FROM CodeSnippets WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
                 links.Add(row.link);
