@@ -33,19 +33,38 @@
             <div class="col-md-6">
                 <div class="featured_text">
                     <h2 class="auto">@robots[count].RobotName </h2>
-                    <p>@Html.Raw(robots[count].RobotText.Replace("\n","<br />"))</p>
+                    <p>
+                    @{string automaat = Convert.ToString(Html.Raw(robots[count].RobotText.Replace("\n","<br />"))); int rij = 0;}
+                    @for(int x = 0;(x < 500 && x < automaat.Length) && (rij < 13); x++ )
+                    {
+                        if(automaat[x] == '<' && automaat[x+1] == 'b' && automaat[x+2] == 'r' && automaat[x+4] == '/' && automaat[x+5] == '>')
+                        {
+                            <br />;
+                            x += 5;
+                            rij++;
+                        }
+                        else 
+                        {
+                            @automaat[x];
+                        }
+                    }
+                    @if (rij >= 13)
+                    {
+                        <a href="~/Robot?Id=@robots[count].RobotId"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+                    }
+                   </p>
                 </div>
-            </div>
+            </div> 
             count--;
             break;
         }
         else if(count >= 0)
         {
             <div class="col-md-3">
-                <div class="gallery" style="background-image: url(@robots[count].CoverImage)"><a href="~/Robot?Id=@robots[count].RobotId">
+                <a href="~/Robot?Id=@robots[count].RobotId"><div class="gallery" style="background-image: url(@robots[count].CoverImage)">
                     @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
                     <h2 class="auto"> <span class="glyphicon glyphicon-align-left non-feat-glyph"></span>@robots[count].RobotName</h2>
-                </a></div>
+                </div></a>
             </div>
         }
          count--;
