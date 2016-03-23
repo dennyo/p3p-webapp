@@ -563,8 +563,7 @@
         <form method="post" class="form-inline" enctype="multipart/form-data">
             @AntiForgery.GetHtml()
             @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-            <div class="form-group">
-                <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Images*</label> @Html.ValidationMessage("Upload2")   
+            <div class="form-group">  
                 <div>
                     @FileUpload.GetHtml(
                     initialNumberOfFiles:1,
