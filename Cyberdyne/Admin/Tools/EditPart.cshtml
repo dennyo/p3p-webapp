@@ -7,11 +7,18 @@
     var partNo = "";
     bool isPart = false;
     Repository.Part tempPart;
-    
+    var db = Database.Open("basicData");
+
+    WebGrid grid = new WebGrid();
+
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
         partId = Request.QueryString["ID"];
         tempPart = Repository.getPart(Convert.ToInt16(partId));
+
+        var vendorData = db.Query("SELECT * FROM Vendors WHERE PartId = @0", partId);
+        grid = new WebGrid(source: vendorData, rowsPerPage: 50);
+
         if (tempPart != null)
         {
             partName = tempPart.PartName;
@@ -52,11 +59,53 @@
                 tempPart.PartNo = partNo;
             }
         }
-        else
+
+        if(IsPost && Request.Form["submitVendor"] != null)
         {
-            Validation.AddFormError("Goddamnit. Part is lost.");
-        }   
+            Validation.RequireField("vendorName", "You need to enter a Vendor Name");
+            Validation.Add("vendorName",
+                Validator.StringLength(
+                    maxLength: 400,
+                    minLength: 1,
+                    errorMessage: "The Name must be at 400 caracters at most")
+            );
+            Validation.Add("vendorLink",
+                Validator.StringLength(
+                    maxLength: 400,
+                    errorMessage: "The link cannot be longer then 400 caracters")
+            );
+            Validation.Add("price",
+                Validator.Float("This is not a number")
+            );
+            Validation.Add("purchaseLink",
+            Validator.StringLength(
+                    maxLength: 400,
+                    errorMessage: "The link cannot be longer then 400 caracters")
+            );
+
+            if(Validation.IsValid())
+            {
+                var vendorName = Request.Form["vendorName"];
+                var vendorLink = Request.Form["vendorLink"];
+                var price = Request.Form["price"];
+                var purchaseLink = Request.Form["purchaseLink"];
+                float floatPrice = 0;
+                if(price != "")
+                {
+                    floatPrice = float.Parse(price);
+                }
+
+                tempPart.addVendor(vendorName, vendorLink, floatPrice, purchaseLink);
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+
+        }
     }
+    else
+    {
+        Validation.AddFormError("Goddamnit. Part is lost.");
+    }   
+    db.Close();
 }
 
 
@@ -66,54 +115,80 @@
 
     @if(isPart)
     {
-        <form method="post" class="form-group">
-            <fieldset>
+        <div class="row">
+            <div class="col-xs-offset-10 col-xs-2 floatBtn">
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <form method="post" class="form-group">
+                <fieldset>
+                    @AntiForgery.GetHtml()
+
+                    <label for="partName">Name: @partName</label>
+                    <div class="form-inline">
+                        <input type="text" id="partName" name="partName" value="@partName" class="form-control">
+                        <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
+                    </div>
+                    @Html.ValidationMessage("partName")
+                </fieldset>
+            </form>
+
+
+            <form method="post" class="form-group">
+                <fieldset>
+                    @AntiForgery.GetHtml()
+
+                    <label for="partNo">Part Number: @partNo</label>
+                    <div class="form-inline">
+                        <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
+                        <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
+                    </div>
+                    @Html.ValidationMessage("partNo")
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="row">
+            <form method="post" class="form-group">
                 @AntiForgery.GetHtml()
+                <fieldset>
+                    <h2>Add a Vendor</h2>
+                    <div class="form-group">
+                        <label for="vendorName">Vendor Name: </label>
+                        <input type="text" id="vendorName" name="vendorName" class="form-control">
+                        @Html.ValidationMessage("vendorName")
+                        <label for="vendorLink">Link to Vendor</label>
+                        <input type="text" id="vendorLink" name="vendorLink" class="form-control">
+                        @Html.ValidationMessage("vendorLink")
+                        <label for="price">Price</label>
+                        <input type="text" id="price" name="price" class="form-control">
+                        @Html.ValidationMessage("price")
+                        <label for="purchaseLink">Link To Product</label>
+                        <input type="text" id="purchaseLink" name="purchaseLink" class="form-control">
+                        @Html.ValidationMessage("purchaseLink")
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="submitVendor" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus"> Add</span>
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
 
-                <label for="partName">Name: @partName</label>
-                <div class="form-inline">
-                    <input type="text" id="partName" name="partName" value="@partName" class="form-control">
-                    <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
-                </div>
-                @Html.ValidationMessage("partName")
-            </fieldset>
-        </form>
-
-
-        <form method="post" class="form-group">
-            <fieldset>
-                @AntiForgery.GetHtml()
-
-                <label for="partNo">Part Number: @partNo</label>
-                <div class="form-inline">
-                    <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
-                    <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
-                </div>
-                @Html.ValidationMessage("partNo")
-            </fieldset>
-        </form>
-
-
-        <form method="post" class="form-group">
-            @AntiForgery.GetHtml()
-            <fieldset>
-                <div class="form-group">
-                    <label for="vendorName">Vendor Name: </label>
-                    <input type="text" id="vendorName" name="vendorName" class="form-control">
-                    <label for="vendorLink">Link to Vendor</label>
-                    <input type="text" id="vendorLink" name="vendorLink" class="form-control">
-                    <label for="price">Price</label>
-                    <input type="text" id="price" name="price" class="form-control">
-                    <label for="purchaseLink">Link To Product</label>
-                    <input type="text" id="purchaseLink" name="purchaseLink" class="form-control">
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="submitVendor" class="btn btn-default">
-                        <span class="glyphicon glyphicon-plus"> Add</span>
-                    </button>
-                </div>
-            </fieldset>
-        </form>
+        <div class="well row">
+                    @grid.GetHtml(
+                        tableStyle: "table table-responsive",
+                        headerStyle: "tableHeader",
+                        columns: grid.Columns(
+                            grid.Column(header: "Vendor", format: @<a href="@item.VendorLink">@item.VendorName</a>),
+                            grid.Column(header: "Price", format: @<text>€@item.Price</text>),
+                            grid.Column(header: "Buy now", format: @<a href="@item.PurchaseLink">Get Here</a>)
+                        )
+                    )
+        </div>
     }
     else
     {

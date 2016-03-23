@@ -121,6 +121,7 @@ span#title{
     background-size: cover;
     border: 1px solid black;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 @media screen and (max-width: 470px) {
@@ -134,7 +135,10 @@ input[type="text"], input[type="password"], #robotText {
     #mainphoto {
         width: 200px;
     }
-
+.well {
+    color:  black;
+    min-height: 200px;
+}
 }
 
 @media screen and (min-width: 480px) and (max-width: 991px) {
@@ -155,6 +159,10 @@ input[type="text"], input[type="password"], #robotText {
     input[type="text"], input[type="password"], #robotText {
         width: 75%;
     }
+.well {
+    color:  black;
+    min-height: 175px;
+}
 
 }
 @media screen and (min-width: 991px) {
@@ -165,12 +173,10 @@ input[type="text"], input[type="password"], #robotText {
 .table{    
     margin: 0 20px 0 20px;
 }
-}
 
-@media screen and (min-width: 1250px ) {
-    .gallery h2 {
-    color: red;
-        
+.well {
+    color:  black;
+    min-height: 60px;
 }
 }
 
@@ -237,6 +243,7 @@ label {
 
 .featured_text p {
     padding-left: 25px;
+    word-wrap: break-word;
 }
 
 .featured_text h2{
@@ -261,4 +268,16 @@ label {
     padding-left: 20px;
     padding-top: 9px;
     font-size: 18px;
+}
+
+.col-md-3 a:hover {
+    text-decoration: none;
+}
+
+#addRemove {
+   display: inline;
+}
+
+.well {
+    color:  black;
 }
