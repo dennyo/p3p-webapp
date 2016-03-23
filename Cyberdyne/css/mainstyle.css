@@ -105,18 +105,21 @@ span#title{
 
 .gallery h2 {
     text-align: center;
-    font-size:  40px;
+    font-size:  30px;
     color: white;
-    padding-top: 90%;
-    padding-bottom: 5px;
+    padding-top: 85%;
+    padding-bottom: 10px;
     background: linear-gradient(rgba(9,0,0,0),rgba(9,0,0,0.9));
+    margin: 0px;
     
 }
 
 .gallery {
     background-repeat: no-repeat;
-    border:  solid, black, 20px;
+    border:  solid, black, 1px;
     background-size: cover;
+    border: 1px solid black;
+    margin-top: 20px;
 }
 
 @media screen and (max-width: 470px) {
@@ -145,6 +148,7 @@ input[type="text"], input[type="password"], #robotText {
 }
     .gallery h2 {
     padding-top: 310px;
+    margin-bottom: 0px;
 }
 
     input[type="text"], input[type="password"], #robotText {
@@ -226,17 +230,35 @@ label {
 }
 
 .featured_img {
-    padding-top: 300px;
+    padding-top: 00px;
     max-height: 450px;
     width: auto;
 }
 
-.featured_text {
-    
+.featured_text p {
+    padding-left: 25px;
 }
+.featured_text h2{
+    padding-left: 15px;
+}
+<<<<<<< HEAD
 
 .floatBtn {
     width:  max-content;
     text-align: center;
     min-width: 100px;
 }
+=======
+.featured-glyph {
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 290px;
+    padding-left: 10px;
+}
+.non-feat-glyph {
+    float: left;
+    padding-left: 20px;
+    padding-top: 9px;
+    font-size: 18px;
+}
+>>>>>>> 653f29edf44e4c167041b13988d3401efc410220
