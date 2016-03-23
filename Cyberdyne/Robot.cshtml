@@ -8,10 +8,10 @@
     var mainPhoto = "";
     var robotText = "";
     List<string> photos = new List<string>();
-    List<string> codeLinks = new List<string>();
-    List<string> codeSnippets = new List<string>();
-    List<string> threeDLinks = new List<string>();
-    List<string> videoLinks = new List<string>();
+    List<string[]> codeLinks = new List<string[]>();
+    List<string[]> codeSnippets = new List<string[]>();
+    List<string[]> threeDLinks = new List<string[]>();
+    List<string[]> videoLinks = new List<string[]>();
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
@@ -45,7 +45,7 @@
     {
         string ItemId = @Request.QueryString["Id"];
         db.Close();
-        Response.Redirect("~/Admin/Tools/EditPart?Id=" + ItemId); 
+        Response.Redirect("~/Admin/Tools/EditRobot?Id=" + ItemId); 
     }
     
     if(IsPost && Request.Form["removeItem"] != null)
@@ -147,10 +147,10 @@
         {
             <div class="col-md-8">
                 <h1>Code Snippets</h1>
-                @foreach (string codeSnippet in codeSnippets)
+                @foreach (string[] codeSnippet in codeSnippets)
                 {
                     <div>
-                        @codeSnippet
+                        @codeSnippet[1]
                     </div>
                 }
             </div>
@@ -159,11 +159,11 @@
         {
             <div class="col-md-4">
                 <h1>Videos</h1>
-                @foreach (string video in videoLinks)
+                @foreach (string[] video in videoLinks)
                 {
                     <div>
                         <iframe width="420" height="345"
-                        src="@video">
+                        src="@video[1]">
                         </iframe>
                     </div>
                 }
@@ -173,11 +173,11 @@
         {
             <div class="col-md-4">
                 <h1>3D view</h1>
-                @foreach (string threeDLink in threeDLinks)
+                @foreach (string[] threeDLink in threeDLinks)
                 {
                     <div>
                         <iframe width="420" height="345"
-                        src="@threeDLink">
+                        src="@threeDLink[1]">
                         </iframe>
                     </div>
                 }
@@ -187,10 +187,10 @@
         {
             <div class="col-md-4">
                 <h1>Links</h1>
-                @foreach (string codeLink in codeLinks)
+                @foreach (string[] codeLink in codeLinks)
                 {
                     <div>
-                        <A HREF="@codeLink">@codeLink</A>
+                        <A HREF="@codeLink[1]">@codeLink[1]</A>
                     </div>
                 }
             </div>
