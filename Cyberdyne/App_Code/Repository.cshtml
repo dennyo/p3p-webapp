@@ -72,7 +72,7 @@
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
-                idList.Add("DisplayImage.cshtml?Id=" + row.PhotoId);
+                idList.Add(row.PhotoId);
             }
             db.Close();
             return idList;
@@ -216,10 +216,17 @@
             var vendorData = db.Query("SELECT * FROM Vendors WHERE PartId = @0", partId);
             foreach(var row in vendorData)
             {
-                tempList.Add(new Vendor(row.VendorName, row.VendorLink, row.Price, row.PartId, row.PurchaseLink, row.VendorId));
+                tempList.Add(new Vendor(row.VendorName, row.VendorLink, (float)row.Price, row.PartId, row.PurchaseLink, row.VendorId));
             }
             db.Close();
             return tempList;
+        }
+
+        public void addVendor(string name, string link, float price, string purchaseLink)
+        {
+            var db = Database.Open("basicData");
+            db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, link, price, purchaseLink, partId);
+            db.Close();
         }
     }
 
@@ -288,7 +295,7 @@
 
 
 
-        public Vendor(string name,string link, float price, int partId, string purchaseLink, int vendorId)
+        public Vendor(string name, string link, float price, int partId, string purchaseLink, int vendorId)
         {
             this.name = name;
             this.link = link;

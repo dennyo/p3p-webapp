@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.IO
+@{
     Layout = "~/_Layout.cshtml";
     
     var robotId = "";
@@ -6,13 +7,19 @@
     var mainPhoto = "";
     var robotText = "";
     List<string> photos = new List<string>();
+    List<int> photoIds = new List<int>();
     List<string[]> codeLinks = new List<string[]>();
     List<string[]> codeSnippets = new List<string[]>();
     List<string[]> threeDLinks = new List<string[]>();
     List<string[]> videoLinks = new List<string[]>();
+    List<Repository.Part> parts = new List<Repository.Part>();
 
     var input = "";
     var element = "";
+
+    var fileName = "";
+    var fileMime = "";
+    int id = 0;
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
         robotId = Request.QueryString["ID"];
@@ -24,10 +31,12 @@
             mainPhoto = tempRobot.CoverImage;
             robotText = tempRobot.RobotText;
             photos = tempRobot.getPhotos();
+            photoIds = tempRobot.getPhotoIds();
             codeLinks = tempRobot.getCodeLinks();
             codeSnippets = tempRobot.getCodeSnippets();
             threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
+            parts = tempRobot.getParts();
         }
         else
         {
@@ -38,7 +47,7 @@
         Validation.AddFormError("BEEP BOOP. Robot is lost.");
     }
 
-    if(IsPost && !Request["submit1"].IsEmpty())
+    if(IsPost && !Request.Form["submit1"].IsEmpty())
     {
         Validation.RequireField("name", "You must enter a name");
         
@@ -62,11 +71,11 @@
             Response.Redirect(string.Format("~/Robot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["submit2"].IsEmpty())
+    if(IsPost && !Request.Form["submit2"].IsEmpty())
     {
         Response.Redirect(string.Format("~/Admin/Tools/ViewParts?id={0}", robotId));
     }
-    if(IsPost && !Request["editCodeLink"].IsEmpty())
+    if(IsPost && !Request.Form["editCodeLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -82,7 +91,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["deleteCodeLink"].IsEmpty())
+    if(IsPost && !Request.Form["deleteCodeLink"].IsEmpty())
     {
         element = Request.Form["element"];
 
@@ -95,7 +104,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["addCodeLink"].IsEmpty())
+    if(IsPost && !Request.Form["addCodeLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -112,7 +121,7 @@
     }
 
 
-    if(IsPost && !Request["editCodeSnippet"].IsEmpty())
+    if(IsPost && !Request.Form["editCodeSnippet"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -128,7 +137,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["deleteCodeSnippet"].IsEmpty())
+    if(IsPost && !Request.Form["deleteCodeSnippet"].IsEmpty())
     {
         element = Request.Form["element"];
 
@@ -141,7 +150,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["addCodeSnippet"].IsEmpty())
+    if(IsPost && !Request.Form["addCodeSnippet"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -158,7 +167,7 @@
     }
 
 
-    if(IsPost && !Request["editThreeDLink"].IsEmpty())
+    if(IsPost && !Request.Form["editThreeDLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -174,7 +183,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["deleteThreeDLink"].IsEmpty())
+    if(IsPost && !Request.Form["deleteThreeDLink"].IsEmpty())
     {
         element = Request.Form["element"];
 
@@ -187,7 +196,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["addThreeDLink"].IsEmpty())
+    if(IsPost && !Request.Form["addThreeDLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -204,7 +213,7 @@
     }
 
 
-    if(IsPost && !Request["editVideoLink"].IsEmpty())
+    if(IsPost && !Request.Form["editVideoLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -220,7 +229,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["deleteVideoLink"].IsEmpty())
+    if(IsPost && !Request.Form["deleteVideoLink"].IsEmpty())
     {
         element = Request.Form["element"];
 
@@ -233,7 +242,7 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
-    if(IsPost && !Request["addVideoLink"].IsEmpty())
+    if(IsPost && !Request.Form["addVideoLink"].IsEmpty())
     {
         Validation.RequireField("input", "Please enter something");
 
@@ -248,6 +257,75 @@
             Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
         }
     }
+
+
+    /*if(IsPost && !Request["deletePhoto"].IsEmpty())
+    {
+        element = Request.Form["element"];
+
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            var deleteCommand = "DELETE FROM VideoLinks WHERE Id=@0";
+            db.Execute(deleteCommand, element);
+
+            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+        }
+    }*/
+    if(IsPost && !Request.Form["addPhoto"].IsEmpty())
+    {
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
+            for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
+            {
+                var uploadedFile = Request.Files[imageCount];
+                fileName = Path.GetFileName(uploadedFile.FileName);
+                if(fileName != String.Empty)
+                {
+                    fileMime = uploadedFile.ContentType;
+                    if(fileMime.StartsWith("image"))
+                    {
+                        var fileStream = uploadedFile.InputStream;
+                        var fileLength = uploadedFile.ContentLength;                       
+                        byte[] fileContent = new byte[fileLength];
+                        fileStream.Read(fileContent, 0, fileLength);
+                        var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
+                        db.Execute(sql, fileContent, fileMime);
+                        id = (int)db.GetLastInsertId();
+                        db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotId, id );
+                    }
+                }
+            }
+
+            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+        }
+    }
+    /*for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
+            {
+                var uploadedFile = Request.Files[imageCount];
+                fileName = Path.GetFileName(uploadedFile.FileName);
+                if(fileName != String.Empty)
+                {
+                    fileMime = uploadedFile.ContentType;
+                    if(fileMime.StartsWith("image"))
+                    {
+                        var fileStream = uploadedFile.InputStream;
+                        var fileLength = uploadedFile.ContentLength;                       
+                        byte[] fileContent = new byte[fileLength];
+                        fileStream.Read(fileContent, 0, fileLength);
+                        var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
+                        db.Execute(sql, fileContent, fileMime);
+                        id = (int)db.GetLastInsertId();
+                        db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
+                        if(imageCount==0)
+                        {
+                            db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
+                        }
+                    }
+                }
+            }*/
 
     Page.Title = String.Format("Edit {0}", robotName);
 }
@@ -276,13 +354,24 @@
         </fieldset>
         <fieldset>
             <label>Pick a cover image</label></br>
-            @foreach (var photo in photos)
-            {
-                <div class="form-group">
-                    <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
-                    <img src="~/@photo" alt="photo" width="250px" height="250px" />
-                </div>
-            }
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">Toggle photos</button>
+            <div id="PhotoToggle" class="collapse">
+                @foreach (var photo in photos)
+                {
+                    <div class="form-group">
+                        @if(photo == mainPhoto)
+                        {
+                             <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
+                        }
+                        else
+                        {
+                            <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
+                        }
+                        <img src="~/@photo" alt="photo" width="250px" height="250px" />
+                    </div>
+                }
+            </div>
+            
         </fieldset>
         <fieldset>
             <div class="form-group">
@@ -442,6 +531,48 @@
             <div class="form-group">
                 <input type="text" id="input" name="input" value="" class="form-control">
                 <input type="submit" id="submit" name="addVideoLink" value="Add" class="btn btn-default">
+                @Html.ValidationMessage("input")
+            </div>
+        </form>
+    </div>
+
+
+    <div class="container">
+        <h2>Photos</h2>
+        <ul class="nav nav-tabs">
+            @for (int i = 1; i <= photoIds.Count; i++)
+            {
+                <li><a data-toggle="tab" href="#Photo_@i">@i</a></li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            @for (int i = 1; i <= photoIds.Count; i++)
+            {
+                <div id="Photo_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline">
+                        <div class="form-group">
+                            <img src="~/@photos[i-1]" alt="photo" id="photo" class="img-responsive" />
+                            <input type="hidden" name="element" value="@photoIds[i-1]">
+                            <input type="submit" id="submit" name="deletePhoto" value="Delete" class="btn btn-default">
+                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+        <form method="post" class="form-inline" enctype="multipart/form-data">
+            @AntiForgery.GetHtml()
+            @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+            <div class="form-group">  
+                <div>
+                    @FileUpload.GetHtml(
+                    initialNumberOfFiles:1,
+                    allowMoreFilesToBeAdded:true,
+                    includeFormTag:false,
+                    uploadText: "Upload2",
+                    name: "Upload2")
+                </div>
+                <input type="submit" id="submit" name="addPhoto" value="Add" class="btn btn-default">
                 @Html.ValidationMessage("input")
             </div>
         </form>

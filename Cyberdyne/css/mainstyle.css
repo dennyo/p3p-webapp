@@ -135,7 +135,10 @@ input[type="text"], input[type="password"], #robotText {
     #mainphoto {
         width: 200px;
     }
-
+.well {
+    color:  black;
+    min-height: 200px;
+}
 }
 
 @media screen and (min-width: 480px) and (max-width: 991px) {
@@ -156,6 +159,10 @@ input[type="text"], input[type="password"], #robotText {
     input[type="text"], input[type="password"], #robotText {
         width: 75%;
     }
+.well {
+    color:  black;
+    min-height: 175px;
+}
 
 }
 @media screen and (min-width: 991px) {
@@ -166,12 +173,10 @@ input[type="text"], input[type="password"], #robotText {
 .table{    
     margin: 0 20px 0 20px;
 }
-}
 
-@media screen and (min-width: 1250px ) {
-    .gallery h2 {
-    color: red;
-        
+.well {
+    color:  black;
+    min-height: 60px;
 }
 }
 
@@ -275,3 +280,13 @@ label {
     text-decoration: none;
 }
 
+<<<<<<< HEAD
+=======
+#addRemove {
+   display: inline;
+}
+
+.well {
+    color:  black;
+}
+>>>>>>> f75b734cda4908acd73d50294bbd543839755250
