@@ -51,7 +51,7 @@
         }
 
         //return list with photoids corresponded with this robot
-        public List<string> getPhotos()
+        public List<string[]> getPhotos()
         {
             List<string> PhotoIDs = new List<string>();
             var db = Database.Open("basicData");
@@ -65,7 +65,7 @@
         }
 
         //return list with links to code
-        public List<string> getCodeLinks()
+        public List<string[]> getCodeLinks()
         {
             List<string[]> links = new List<string>();
             var db = Database.Open("basicData");
@@ -81,9 +81,9 @@
         }
 
         //retrun list with codesnippets
-        public List<string> getCodeSnippets()
+        public List<string[]> getCodeSnippets()
         {
-            List<string> links = new List<string>();
+            List<string[]> links = new List<string>();
             var db = Database.Open("basicData");
 
             var data = db.Query("SELECT Id, Text FROM CodeSnippets WHERE RobotId = @0", robotId);
@@ -97,9 +97,9 @@
         }
 
         //return list with video links
-        public List<string> getVideoLinks()
+        public List<string[]> getVideoLinks()
         {
-            List<string> links = new List<string>();
+            List<string[]> links = new List<string>();
             var db = Database.Open("basicData");
 
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
@@ -113,9 +113,9 @@
         }
 
         //return list with 3D links
-        public List<string> getThreeDLinks()
+        public List<string[]> getThreeDLinks()
         {
-            List<string> links = new List<string>();
+            List<string[]> links = new List<string>();
             var db = Database.Open("basicData");
 
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
