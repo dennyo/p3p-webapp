@@ -6,18 +6,18 @@
     var partName = "";
     var partNo = "";
     bool isPart = false;
+    bool partEdit = false;
+    int editPartId = 0;
+
     Repository.Part tempPart;
     var db = Database.Open("basicData");
-
-    WebGrid grid = new WebGrid();
+    List<Repository.Vendor> Vendors = new List<Repository.Vendor>();
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
         partId = Request.QueryString["ID"];
         tempPart = Repository.getPart(Convert.ToInt16(partId));
-
-        var vendorData = db.Query("SELECT * FROM Vendors WHERE PartId = @0", partId);
-        grid = new WebGrid(source: vendorData, rowsPerPage: 50);
+        Vendors = tempPart.getVendors();
 
         if (tempPart != null)
         {
@@ -86,9 +86,9 @@
             if(Validation.IsValid())
             {
                 var vendorName = Request.Form["vendorName"];
-                var vendorLink = Request.Form["vendorLink"];
-                var price = Request.Form["price"];
-                var purchaseLink = Request.Form["purchaseLink"];
+                var vendorLink = Request.Form["vendorLink"].ToLower();
+                var price = Request.Form["price"].Replace(',', '.');
+                var purchaseLink = Request.Form["purchaseLink"].ToLower();
                 float floatPrice = 0;
                 if(price != "")
                 {
@@ -98,14 +98,64 @@
                 tempPart.addVendor(vendorName, vendorLink, floatPrice, purchaseLink);
                 Response.Redirect(Request.Url.AbsoluteUri);
             }
+        }
 
-            if(IsPost && Request.Form["removeVendor"] != null)
+        if(IsPost && Request.Form["removeVendor"] != null)
+        {
+            AntiForgery.Validate();
+            var removeId = Request.Form["removeVendorId"];
+            db.Execute("DELETE FROM Vendors WHERE VendorId = @0", removeId);
+            db.Close();
+            Response.Redirect(Request.Url.AbsoluteUri);
+        }
+
+        if(IsPost && Request.Form["editVendor"] != null)
+        {
+            var editId = Request.Form["editVendorId"];
+            if(editId.IsInt())
             {
-                AntiForgery.Validate();
-                var removeId = Request.Form["removeVendorId"];
-                db.Execute("DELETE FROM Vendors WHERE VendorId = @0", removeId);
+                partEdit = true;
+                editPartId = Convert.ToInt32(editId);
             }
-
+        }
+        if(IsPost && Request.Form["saveVendor"] != null)
+        {
+            AntiForgery.Validate();
+            Validation.RequireField("vendorName", "You need to enter a Vendor Name");
+            Validation.Add("vendorName",
+                Validator.StringLength(
+                    maxLength: 400,
+                    minLength: 1,
+                    errorMessage: "The Name must be at 400 caracters at most")
+            );
+            Validation.Add("vendorLink",
+                Validator.StringLength(
+                    maxLength: 400,
+                    errorMessage: "The link cannot be longer then 400 caracters")
+            );
+            Validation.Add("price",
+                Validator.Float("This is not a number")
+            );
+            Validation.Add("purchaseLink",
+            Validator.StringLength(
+                    maxLength: 400,
+                    errorMessage: "The link cannot be longer then 400 caracters")
+            );
+            if(Validation.IsValid())
+            {
+                partEdit = false;
+                var vendorId = Request.Form["vendorId"];
+                Repository.Vendor tempVendor = Repository.getVendor(Convert.ToInt32(vendorId));
+                tempVendor.Name = Request.Form["vendorName"];
+                tempVendor.Link = Request.Form["vendorLink"].ToLower();
+                var price = Request.Form["price"].Replace(',', '.');
+                tempVendor.PurchaseLink = Request.Form["purchaseLink"].ToLower();
+                if(price != "")
+                {
+                    tempVendor.Price = float.Parse(price);
+                }
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
         }
     }
     else
@@ -123,11 +173,14 @@
     @if(isPart)
     {
         <div class="row">
-            <div class="col-xs-offset-10 col-xs-2 floatBtn">
+            <div class="col-xs-6 col-sm-2">
+                <a href="~/Admin/Tools/ViewParts" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+            </div> 
+            <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
                 <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>
         </div>
-        
+        <br>
         <div class="row">
             <form method="post" class="form-group">
                 <fieldset>
@@ -156,52 +209,103 @@
                 </fieldset>
             </form>
         </div>
-
+        
         <div class="row">
-            <form method="post" class="form-group">
-                @AntiForgery.GetHtml()
-                <fieldset>
-                    <h2>Add a Vendor</h2>
-                    <div class="form-group">
-                        <label for="vendorName">Vendor Name: </label>
-                        <input type="text" id="vendorName" name="vendorName" class="form-control">
-                        @Html.ValidationMessage("vendorName")
-                        <label for="vendorLink">Link to Vendor</label>
-                        <input type="text" id="vendorLink" name="vendorLink" class="form-control">
-                        @Html.ValidationMessage("vendorLink")
-                        <label for="price">Price</label>
-                        <input type="text" id="price" name="price" class="form-control">
-                        @Html.ValidationMessage("price")
-                        <label for="purchaseLink">Link To Product</label>
-                        <input type="text" id="purchaseLink" name="purchaseLink" class="form-control">
-                        @Html.ValidationMessage("purchaseLink")
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="submitVendor" class="btn btn-default">
-                            <span class="glyphicon glyphicon-plus"></span> Add
-                        </button>
-                    </div>
-                </fieldset>
-            </form>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addVendorCollapse">Add a Vendor</button>
+            <div class="collapse" id="addVendorCollapse">
+                <form method="post" class="form-group">
+                    @AntiForgery.GetHtml()
+                    <fieldset>
+                        <h2>Add a Vendor</h2>
+                        <div class="form-group">
+                            <label for="vendorName">Vendor Name: </label>
+                            <input type="text" id="vendorName" name="vendorName" class="form-control">
+                            @Html.ValidationMessage("vendorName")
+                        </div>
+                        <div class="form-group">
+                            <label for="vendorLink">Link to Vendor</label>
+                            <input type="text" id="vendorLink" name="vendorLink" class="form-control">
+                            @Html.ValidationMessage("vendorLink")
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" id="price" name="price" class="form-control">
+                            @Html.ValidationMessage("price")
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseLink">Link To Product</label>
+                            <input type="text" id="purchaseLink" name="purchaseLink" class="form-control">
+                            @Html.ValidationMessage("purchaseLink")
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="submitVendor" class="btn btn-default">
+                                <span class="glyphicon glyphicon-plus"></span> Add
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
         </div>
-
+        <br>
         <div class="well row">
-                    @grid.GetHtml(
-                        tableStyle: "table table-responsive",
-                        headerStyle: "tableHeader",
-                        columns: grid.Columns(
-                            grid.Column(header: "Vendor", format: @<a href="@item.VendorLink">@item.VendorName</a>),
-                            grid.Column(header: "Price", format: @<text>€@item.Price</text>),
-                            grid.Column(header: "Buy now", format: @<a href="@item.PurchaseLink">Get Here</a>),
-                            grid.Column(format: @<form method="post">
-                                                    @AntiForgery.GetHtml()
-                                                    <button type="submit" class="btn btn-danger" name="removeVendor">
-                                                        <span class="glyphicon glyphicon-remove"></span> Remove
-                                                    </button>
-                                                    <input type="hidden" name="removeVendorId" value="@item.VendorId"/>
-                                                </form>)
-                        )
-                    )
+            @foreach(Repository.Vendor vendor in Vendors)
+            {
+                <div class="row">
+                    @if(!partEdit)
+                    {
+                        <div class="col-xs-12 col-md-2 col-sm-6">
+                            Name: @vendor.Name
+                        </div>
+                        <div class="col-xs-12 col-md-3 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">@vendor.Link</a></div>
+                        <div class="col-xs-12 col-md-1 col-sm-6">Price: €@vendor.Price</div>
+                        <div class="col-md-3 col-xs-12 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">@vendor.PurchaseLink</a></div>  
+                        <div class="col-md-1 col-xs-12 col-sm-4">
+                            <form method="post">
+                                @AntiForgery.GetHtml()
+                                <button type="submit" class="btn btn-warning" name="editVendor">
+                                    <span class="glyphicon glyphicon-pencil"></span> Edit
+                                </button>
+                                <input type="hidden" name="editVendorId" value="@vendor.VendorId"/>
+                            </form>
+                        </div> 
+                        <div class="col-md-2 col-xs-12 col-sm-4">
+                            <form method="post">
+                                @AntiForgery.GetHtml()
+                                <button type="submit" class="btn btn-danger" name="removeVendor">
+                                    <span class="glyphicon glyphicon-remove"></span> Remove
+                                </button>
+                                <input type="hidden" name="removeVendorId" value="@vendor.VendorId"/>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post">
+                            @AntiForgery.GetHtml()
+                            <div class="col-xs-12 col-md-2 col-sm-6">
+                                <input type="text" name="vendorName" id="vendorName" class="form-control" value="@vendor.Name">
+                                @Html.ValidationMessage("vendorName")
+                            </div>
+                            <div class="col-xs-12 col-md-3 col-sm-6">
+                                <input type="text" name="vendorLink" id="vendorLink" class="form-control" value="@vendor.Link">
+                                @Html.ValidationMessage("vendorLink")
+                            </div>
+                            <div class="col-xs-12 col-md-1 col-sm-6">
+                                <input type="text" name="price" id="price" class="form-control" value="@vendor.Price">
+                                @Html.ValidationMessage("price")
+                            </div>
+                            <div class="col-md-3 col-xs-12 col-sm-6">
+                                <input type="text" name="purchaseLink" id="purchaseLink" class="form-control" value="@vendor.PurchaseLink">
+                                @Html.ValidationMessage("purchaseLink")
+                            </div>  
+                            <div class="col-md-2 col-xs-12 col-sm-4">
+                                <button type="submit" class="btn btn-success" name="saveVendor"><span class="glyphicon glyphicon-save"></span> Save</button>
+                            </div>
+                            <input type="hidden" name="vendorId" value="@vendor.VendorId">
+                        </form>
+                    }  
+                </div>
+            }
         </div>
     }
     else
