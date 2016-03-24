@@ -27,7 +27,7 @@ margin-bottom: 5px;
     min-height: 450px;
 }
 
-.container > .col-md-12, .col-md-6 div {
+.container > .col-md-12, .col-md-6 > div {
     /*border-radius:  10px;  
     border: 2px solid #292929; */
     margin-bottom: 20px; 
@@ -109,7 +109,7 @@ span#title{
     color: white;
     padding-top: 40%;
     padding-bottom: 10px;
-    background: linear-gradient(rgba(9,0,0,0),rgba(9,0,0,1));
+    background: linear-gradient(rgba(9,0,0,0),rgba(9,0,0,0.9));
     margin: 0px;
     margin-top: 40%;
     
@@ -117,11 +117,15 @@ span#title{
 
 .gallery {
     background-repeat: no-repeat;
-    border:  solid, black, 1px;
     background-size: cover;
     border: 1px solid black;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+#mainphoto {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 @media screen and (max-width: 470px) {
@@ -129,16 +133,12 @@ span#title{
     font-size: 30px;
 }
 input[type="text"], input[type="password"], #robotText {
-    width: 100%;
+    width: 50%;
 }
 
     #mainphoto {
         width: 200px;
     }
-.well {
-    color:  black;
-    min-height: 200px;
-}
 }
 
 @media screen and (min-width: 480px) and (max-width: 991px) {
@@ -157,7 +157,8 @@ input[type="text"], input[type="password"], #robotText {
 }
 
     input[type="text"], input[type="password"], #robotText {
-        width: 75%;
+    min-width: 300px;
+    max-width: 375px;
     }
 .well {
     color:  black;
@@ -173,16 +174,11 @@ input[type="text"], input[type="password"], #robotText {
 .table{    
     margin: 0 20px 0 20px;
 }
-
-.well {
-    color:  black;
-    min-height: 60px;
-}
 }
 
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
-      width: 300px;
+      width: 250px;
       margin: auto;
   }
 
@@ -243,15 +239,16 @@ label {
 
 .featured_text p {
     padding-left: 25px;
+    padding-right: 5px;
     word-wrap: break-word;
     padding-bottom: 5px;
 }
 
-.featured_text h2{
+.box-title{
     padding-top: 12px;
     padding-left: 20px;
-    padding-bottom: 10px;
-    background: linear-gradient(to right,rgba(9,0,0,0.75),rgba(9,0,0,0.1));
+    padding-bottom: 12px;
+    background: linear-gradient(to right,rgba(9,0,0,0.6),rgba(9,0,0,0.1));
 }
 
 .floatBtn {
@@ -266,7 +263,7 @@ label {
     padding-bottom: 90px;
     margin-bottom: 200px;
     padding-left: 15px;
-    background: linear-gradient(rgba(9,0,0,1),rgba(9,0,0,0));
+    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
 }
 
 .non-feat-glyph {
@@ -280,8 +277,6 @@ label {
     text-decoration: none;
 }
 
-<<<<<<< HEAD
-=======
 #addRemove {
    display: inline;
 }
@@ -289,4 +284,72 @@ label {
 .well {
     color:  black;
 }
->>>>>>> f75b734cda4908acd73d50294bbd543839755250
+
+.box-padding {
+    padding-bottom: 10px;
+}
+
+.robot-title{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: linear-gradient(to right,rgba(9,0,0,0.2), rgba(9,0,0,0.7),rgba(9,0,0,0.2));
+    text-align: center;
+    font-size: 45px;
+}
+
+input[type="radio"] {
+    display: inline;
+    height: 15px;
+    width: 15px;
+    margin-top: 85px;
+}
+
+.tab {
+    background-color: #cdcdcd;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tab-content img {
+    width: 200px;
+    margin: 10px 0px;
+}
+
+.radio-inline {
+    width: 235px;
+   margin-bottom: 10px;
+    height:  225px;
+}
+.radio-inline span {
+    width:  225px;
+    height: 225px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.radio-inline img {
+    max-width:  220px;
+    max-height: 220px;
+}
+
+.tab-content {
+    margin-bottom: 20px;
+}
+
+.file-upload input {
+    font-size:  14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.file-upload-buttons a {
+    color:  white;
+}
+
+.file-upload-buttons {
+    margin-bottom: 10px;
+}
+
+.form-control{
+    display: inline-block;
+}

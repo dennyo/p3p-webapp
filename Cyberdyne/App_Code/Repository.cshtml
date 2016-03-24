@@ -151,7 +151,7 @@
             foreach(var part in partIds)
             {
                 var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", part.PartId);
-                partList.Add(new Part(partData.PartId, partData.PartName, partData.PartNo, partData.PhotoId));
+                partList.Add(new Part(partData.PartId, partData.PartName, partData.PartNo, Convert.ToString(partData.PhotoId)));
             }
             db.Close();
             return partList;
