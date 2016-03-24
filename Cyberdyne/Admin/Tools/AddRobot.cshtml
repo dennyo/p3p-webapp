@@ -77,11 +77,12 @@
             <input disabled value="4000 characters left" id="counter">
             <br />
             <br />
-            <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Images*</label> @Html.ValidationMessage("Upload2")   
+            <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Cover image*</label> @Html.ValidationMessage("Upload2") 
+            <p><span id="required">*More images can be added through edit robot</span></p> 
             <div>
             @FileUpload.GetHtml(
             initialNumberOfFiles:1,
-            allowMoreFilesToBeAdded:true,
+            allowMoreFilesToBeAdded:false,
             includeFormTag:false,
             uploadText: "Upload2",
             name: "Upload2")
