@@ -320,7 +320,7 @@
 
 <div class="col-md-12">
 <h1>Edit robot</h1>
-    <form method="post" class="form-inline"> @* mist nog form ID *@
+    <form method="post"> @* mist nog form ID *@
         <fieldset>
             @AntiForgery.GetHtml()
             @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
@@ -333,18 +333,20 @@
         <fieldset>
             <div class="form-group">
                 <label for="robotText">Text</label></br>
-                <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50">@robotText</textarea>
+                <textarea id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50">@robotText</textarea>
                 @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
                     @Html.ValidationMessage("robotText")
             </div>
         </fieldset>
         <fieldset>
             <label>Pick a cover image</label></br>
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">Toggle photos</button>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">
+                <span class="glyphicon glyphicon-eye-open"></span> Toggle images
+            </button>
             <div id="PhotoToggle" class="collapse">
                 @foreach (var photo in photos)
                 {
-                    <div class="form-group">
+                        <label class="radio-inline">
                         @if(photo == mainPhoto)
                         {
                              <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
@@ -353,236 +355,225 @@
                         {
                             <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
                         }
-                        <img src="~/@photo" alt="photo" width="250px" height="250px" />
-                    </div>
-                }
-            </div>
-            
-        </fieldset>
-        <fieldset>
-            <div class="form-group">
-                <input type="submit" id="submit" name="editMain" value="Edit" class="btn btn-default">
+                        <span><img src="~/@photo" alt="photo" class="img-responsive" /></span>
+                        </label>
+                }<br>
+                <button type="submit" id="submit" name="submit1" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span> Choose Photo
+                </button>
             </div>
         </fieldset>
-    </form>
-</div>
+    </form><br>
+    <label>View/Delete Photos</label>
+        <ul class="nav nav-tabs">
+            @for (int i = 1; i <= photoIds.Count; i++)
+            {
+                <li class="tab"><a data-toggle="tab" href="#Photo_@i">@i</a></li>
+            }
+        </ul>
 
-<div class="col-md-12">
+        <div class="tab-content">
+            @for (int i = 1; i <= photoIds.Count; i++)
+            {
+                <div id="Photo_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline">
+                        <div class="form-group">
+                            <img src="~/@photos[i-1]" alt="photo" id="photo" class="img-responsive" />
+                            <input type="hidden" name="element" value="@photoIds[i-1]">
+                            <input type="hidden" name="elementPhoto" value="@photos[i-1]">
+                            <input type="submit" id="submit" name="deletePhoto" value="Delete Photo" class="btn btn-default">                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+        <form method="post" class="form-inline" enctype="multipart/form-data">
+            @AntiForgery.GetHtml()
+            <div class="form-group">
+                <label>Add Images</label>  
+                <div>
+                    @FileUpload.GetHtml(
+                    initialNumberOfFiles:1,
+                    allowMoreFilesToBeAdded:true,
+                    includeFormTag:false,
+                    uploadText: "Upload2",
+                    name: "Upload2")
+                </div>
+                <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                </button>
+            </div>
+        </form>
+    <br>
     <form method="post" class="form-inline">
         <fieldset>
             <label>Make this robot your favourite!</label></br>
             <div class="form-group">
-                <input type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-default">
+                <button type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-star"></span> Favourite
+                </button>
             </div>
         </fieldset>
     </form>
     <label>View parts for this robot</label></br>
     <p>@parts.Count Part(s) have been added</p>
-    <a href="~/Admin/Tools/Viewparts?Id=@robotId" class="btn btn-default">Edit Parts</a>
-</div>
+    <a href="~/Admin/Tools/Viewparts?Id=@robotId" class="btn btn-primary">Edit Parts</a>
 
-<div class="col-md-12">
     <h2>Links</h2>
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#Link_plus">+</a></li>
+        <li class="tab active"><a data-toggle="tab" href="#Link_plus">+</a></li>
         @for (int i = 1; i <= codeLinks.Count; i++)
         {
-            <li><a data-toggle="tab" href="#Link_@i">@i</a></li>
+            <li class="tab"><a data-toggle="tab" href="#Link_@i">@i</a></li>
         }
     </ul>
 
     <div class="tab-content">
         <div id="Link_plus" class="tab-pane fade in active">
-            <form method="post" class="form-inline">
+            <form method="post" class="form-inline"><br>
                 @AntiForgery.GetHtml()
-                @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                <div class="form-group">
+               <div class="form-group">
                     <input type="text" id="input" name="input" value="" class="form-control">
-                    <input type="submit" id="submit" name="addCodeLink" value="Add" class="btn btn-default">
+                    <button type="submit" id="submit" name="addCodeLink" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span> Add
+                    </button>
                     @Html.ValidationMessage("linkAdd")
                 </div>
             </form>
         </div>
         @for (int i = 1; i <= codeLinks.Count; i++)
-        {
-            <div id="Link_@i" class="tab-pane fade">
-                @AntiForgery.GetHtml()
-                @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                <form method="post" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" id="input" name="input" value="@codeLinks[i-1][1]" class="form-control">
-                        <input type="hidden" name="element" value="@codeLinks[i-1][0]">
-                        <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-default">
-                        <input type="submit" id="submit" name="deleteCodeLink" value="Delete" class="btn btn-default">
-                        @Html.ValidationMessage("linkEdit")
-                    </div>
-                </form>
-            </div>
-        }
-    </div>
+            {
+                <div id="Link_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline"><br>
+                            <input type="text" id="input" name="input" value="@codeLinks[i-1][1]" class="form-control">
+                            <input type="hidden" name="element" value="@codeLinks[i-1][0]">
+                            <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-primary">
+                            <button type="submit" id="submit" name="deleteCodeLink"class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </button>
+                    </form><br>
+                </div>
+            }
 
 
-    <h2>Code snippets</h2>
+    <label>Code snippets</label>
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#Snippet_plus">+</a></li>
+        <li class="tab active"><a data-toggle="tab" href="#Snippet_plus">+</a></li>
         @for (int i = 1; i <= codeSnippets.Count; i++)
         {
-            <li><a data-toggle="tab" href="#Snippet_@i">@i</a></li>
+            <li class="tab"><a data-toggle="tab" href="#Snippet_@i">@i</a></li>
         }
     </ul>
 
     <div class="tab-content">
         <div id="Snippet_plus" class="tab-pane fade in active">
-            <form method="post" class="form-inline">
+            <form method="post" class="form-inline"><br>
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
                     <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50"></textarea>
-                    <input type="submit" id="submit" name="addCodeSnippet" value="Add" class="btn btn-default">
+                    <button type="submit" id="submit" name="addCodeSnippet"class="btn btn-success">
+                       <span class="glyphicon glyphicon-plus"></span> Add
+                   </button>
                     @Html.ValidationMessage("snippetAdd")
                 </div>
-            </form>
+            </form><br>
         </div>
         @for (int i = 1; i <= codeSnippets.Count; i++)
-        {
-            <div id="Snippet_@i" class="tab-pane fade">
-                <form method="post" class="form-inline">
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                    <div class="form-group">
-                        <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50">@codeSnippets[i-1][1]</textarea>
-                        <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
-                        <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-default">
-                        <input type="submit" id="submit" name="deleteCodeSnippet" value="Delete" class="btn btn-default">
-                        @Html.ValidationMessage("snippetEdit")
-                    </div>
-                </form>
-            </div>
-        }
+            {
+                <div id="Snippet_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline"><br>
+                        <div class="form-group">
+                            <textarea onkeyup="textCounter(this, 'counter',4000);" id="input" name="input" class="form-control" rows="8">@codeSnippets[i-1][1]</textarea>
+                            <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
+                            <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-primary">
+                            <button type="submit" id="submit" name="deleteCodeSnippet"class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </button>
+                        </div>
+                    </form><br>
+                </div>
+            }
     </div>
 
 
-    <h2>3D links</h2>
+    <label>3D links</label>
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#ThreeD_plus">+</a></li>
+        <li class="tab active"><a data-toggle="tab" href="#ThreeD_plus">+</a></li>
         @for (int i = 1; i <= threeDLinks.Count; i++)
         {
-            <li><a data-toggle="tab" href="#ThreeD_@i">@i</a></li>
+            <li class="tab"><a data-toggle="tab" href="#ThreeD_@i">@i</a></li>
         }
     </ul>
 
     <div class="tab-content">
         <div id="ThreeD_plus" class="tab-pane fade in active">
-            <form method="post" class="form-inline">
+            <form method="post" class="form-inline"><br>
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
                     <input type="text" id="input" name="input" value="" class="form-control">
-                    <input type="submit" id="submit" name="addThreeDLink" value="Add" class="btn btn-default">
+                    <button type="submit" id="submit" name="addThreeDLink" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
                     @Html.ValidationMessage("threeDAdd")
                 </div>
-            </form>
+            </form><br>
         </div>
         @for (int i = 1; i <= threeDLinks.Count; i++)
-        {
-            <div id="ThreeD_@i" class="tab-pane fade">
-                <form method="post" class="form-inline">
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                    <div class="form-group">
-                        <input type="text" id="input" name="input" value="@threeDLinks[i-1][1]" class="form-control">
-                        <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
-                        <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-default">
-                        <input type="submit" id="submit" name="deleteThreeDLink" value="Delete" class="btn btn-default">
-                        @Html.ValidationMessage("threeDEdit")
-                    </div>
-                </form>
-            </div>
-        }
+            {
+                <div id="ThreeD_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline"><br>
+                        <div class="form-group">
+                            <input type="text" id="input" name="input" value="@threeDLinks[i-1][1]" class="form-control">
+                            <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
+                            <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-primary">
+                            <button type="submit" id="submit" name="deleteThreeDLink"class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </button>
+                        </div>
+                    </form><br>
+                </div>
+            }
     </div>
 
 
-    <h2>Video links</h2>
+    <label>Video links</label>
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#Video_plus">+</a></li>
+        <li class="tab active"><a data-toggle="tab" href="#Video_plus">+</a></li>
         @for (int i = 1; i <= videoLinks.Count; i++)
         {
-            <li><a data-toggle="tab" href="#Video_@i">@i</a></li>
+            <li class="tab"><a data-toggle="tab" href="#Video_@i">@i</a></li>
         }
     </ul>
 
     <div class="tab-content">
         <div id="Video_plus" class="tab-pane fade in active">
-            <form method="post" class="form-inline">
+            <form method="post" class="form-inline"><br>
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
                     <input type="text" id="input" name="input" value="" class="form-control">
-                    <input type="submit" id="submit" name="addVideoLink" value="Add" class="btn btn-default">
+                    <button type="submit" id="submit" name="addVideoLink" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
                     @Html.ValidationMessage("videoAdd")
                 </div>
             </form>
         </div>
         @for (int i = 1; i <= videoLinks.Count; i++)
-        {
-            <div id="Video_@i" class="tab-pane fade">
-                <form method="post" class="form-inline">
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                    <div class="form-group">
-                        <input type="text" id="input" name="input" value="@videoLinks[i-1][1]" class="form-control">
-                        <input type="hidden" name="element" value="@videoLinks[i-1][0]">
-                        <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-default">
-                        <input type="submit" id="submit" name="deleteVideoLink" value="Delete" class="btn btn-default">
-                        @Html.ValidationMessage("videoEdit")
-                    </div>
-                </form>
-            </div>
-        }
-    </div>
-
-
-    <h2>Photos</h2>
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#Photo_plus">+</a></li>
-        @for (int i = 1; i <= photoIds.Count; i++)
-        {
-            <li><a data-toggle="tab" href="#Photo_@i">@i</a></li>
-        }
-    </ul>
-
-    <div class="tab-content">
-        <div id="Photo_plus" class="tab-pane fade in active">
-            <form method="post" class="form-inline" enctype="multipart/form-data">
-                @AntiForgery.GetHtml()
-                @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                <div class="form-group">  
-                    <div>
-                        @FileUpload.GetHtml(
-                        initialNumberOfFiles:1,
-                        allowMoreFilesToBeAdded:true,
-                        includeFormTag:false,
-                        uploadText: "Upload2",
-                        name: "Upload2")
-                    </div>
-                    <input type="submit" id="submit" name="addPhoto" value="Add" class="btn btn-default">
+            {
+                <div id="Video_@i" class="tab-pane fade">
+                    <form method="post" class="form-inline"><br>
+                        <div class="form-group">
+                            <input type="text" id="input" name="input" value="@videoLinks[i-1][1]" class="form-control">
+                            <input type="hidden" name="element" value="@videoLinks[i-1][0]">
+                            <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-primary">
+                            <button type="submit" id="submit" name="deleteVideoLink"class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </button>
+                        </div>
+                    </form><br>
                 </div>
-            </form>
-        </div>
-        @for (int i = 1; i <= photoIds.Count; i++)
-        {
-            <div id="Photo_@i" class="tab-pane fade">
-                <form method="post" class="form-inline">
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                    <div class="form-group">
-                        <img src="~/@photos[i-1]" alt="photo" id="photo" class="img-responsive" />
-                        <input type="hidden" name="element" value="@photoIds[i-1]">
-                        <input type="hidden" name="elementPhoto" value="@photos[i-1]">
-                        <input type="submit" id="submit" name="deletePhoto" value="Delete" class="btn btn-default">
-                    </div>
-                </form>
-            </div>
-        }
+            }
     </div>
 </div>

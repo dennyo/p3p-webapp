@@ -169,7 +169,7 @@ input[type="text"], input[type="password"], #robotText {
 @media screen and (min-width: 991px) {
 
 input[type="text"], input[type="password"], #robotText {
-    width: 50%;
+    min-width: 500px;
 }
 .table{    
     margin: 0 20px 0 20px;
