@@ -16,6 +16,7 @@
 
     var input = "";
     var element = "";
+    var elementPhoto = "";
 
     var fileName = "";
     var fileMime = "";
@@ -68,7 +69,7 @@
             var updateCommand = "UPDATE Robots SET RobotName=@0, RobotText=@1, PhotoId=@2 WHERE RobotId=@3";
             db.Execute(updateCommand, robotName, robotText, mainPhoto, robotId);
             db.Close();
-            Response.Redirect(string.Format("~/Robot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["submit2"].IsEmpty())
@@ -88,7 +89,7 @@
             var updateCommand = "UPDATE CodeLinks SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["deleteCodeLink"].IsEmpty())
@@ -101,7 +102,7 @@
             var deleteCommand = "DELETE FROM CodeLinks WHERE Id=@0";
             db.Execute(deleteCommand, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["addCodeLink"].IsEmpty())
@@ -116,7 +117,7 @@
             var insertCommand = "INSERT INTO CodeLinks (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
@@ -134,7 +135,7 @@
             var updateCommand = "UPDATE CodeSnippets SET Text=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["deleteCodeSnippet"].IsEmpty())
@@ -147,7 +148,7 @@
             var deleteCommand = "DELETE FROM CodeSnippets WHERE Id=@0";
             db.Execute(deleteCommand, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["addCodeSnippet"].IsEmpty())
@@ -162,7 +163,7 @@
             var insertCommand = "INSERT INTO CodeSnippets (RobotId, Text) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
@@ -180,7 +181,7 @@
             var updateCommand = "UPDATE ThreeDFiles SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["deleteThreeDLink"].IsEmpty())
@@ -208,7 +209,7 @@
             var insertCommand = "INSERT INTO ThreeDFiles (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
@@ -226,7 +227,7 @@
             var updateCommand = "UPDATE VideoLinks SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["deleteVideoLink"].IsEmpty())
@@ -239,7 +240,7 @@
             var deleteCommand = "DELETE FROM VideoLinks WHERE Id=@0";
             db.Execute(deleteCommand, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
     if(IsPost && !Request.Form["addVideoLink"].IsEmpty())
@@ -254,24 +255,26 @@
             var insertCommand = "INSERT INTO VideoLinks (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
 
-    /*if(IsPost && !Request["deletePhoto"].IsEmpty())
+    if(IsPost && !Request["deletePhoto"].IsEmpty())
     {
         element = Request.Form["element"];
 
-        if(Validation.IsValid())
+        if(Validation.IsValid() && element != "1")
         {
             var db = Database.Open("basicData");
-            var deleteCommand = "DELETE FROM VideoLinks WHERE Id=@0";
+            var deleteCommand = "DELETE FROM Photos WHERE PhotoId=@0";
+            var deleteCommand2 = "DELETE FROM PhotoReference WHERE PhotoId=@0";
+            db.Execute(deleteCommand2, element);
             db.Execute(deleteCommand, element);
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
-    }*/
+    }
     if(IsPost && !Request.Form["addPhoto"].IsEmpty())
     {
         if(Validation.IsValid())
@@ -299,33 +302,9 @@
                 }
             }
 
-            Response.Redirect(string.Format("~/Admin/Tools/EditRobot?id={0}", robotId));
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
-    /*for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
-            {
-                var uploadedFile = Request.Files[imageCount];
-                fileName = Path.GetFileName(uploadedFile.FileName);
-                if(fileName != String.Empty)
-                {
-                    fileMime = uploadedFile.ContentType;
-                    if(fileMime.StartsWith("image"))
-                    {
-                        var fileStream = uploadedFile.InputStream;
-                        var fileLength = uploadedFile.ContentLength;                       
-                        byte[] fileContent = new byte[fileLength];
-                        fileStream.Read(fileContent, 0, fileLength);
-                        var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
-                        db.Execute(sql, fileContent, fileMime);
-                        id = (int)db.GetLastInsertId();
-                        db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
-                        if(imageCount==0)
-                        {
-                            db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
-                        }
-                    }
-                }
-            }*/
 
     Page.Title = String.Format("Edit {0}", robotName);
 }
@@ -554,6 +533,7 @@
                         <div class="form-group">
                             <img src="~/@photos[i-1]" alt="photo" id="photo" class="img-responsive" />
                             <input type="hidden" name="element" value="@photoIds[i-1]">
+                            <input type="hidden" name="elementPhoto" value="@photos[i-1]">
                             <input type="submit" id="submit" name="deletePhoto" value="Delete" class="btn btn-default">
                         </div>
                     </form>
