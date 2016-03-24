@@ -87,7 +87,7 @@
     {
         Validation.RequireField("linkEdit", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["linkEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -116,7 +116,7 @@
     {
         Validation.RequireField("linkAdd", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["linkAdd"];
 
         if(Validation.IsValid())
         {
@@ -133,7 +133,7 @@
     {
         Validation.RequireField("snippetEdit", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["snippetEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -162,7 +162,7 @@
     {
         Validation.RequireField("snippetAdd", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["snippetAdd"];
 
         if(Validation.IsValid())
         {
@@ -179,7 +179,7 @@
     {
         Validation.RequireField("threeDEdit", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["threeDEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -208,7 +208,7 @@
     {
         Validation.RequireField("threeDAdd", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["threeDAdd"];
 
         if(Validation.IsValid())
         {
@@ -225,7 +225,7 @@
     {
         Validation.RequireField("videoEdit", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["videoEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -254,7 +254,7 @@
     {
         Validation.RequireField("videoAdd", "Please enter something");
 
-        input = Request.Form["input"];
+        input = Request.Form["videoAdd"];
 
         if(Validation.IsValid())
         {
@@ -397,7 +397,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <input type="text" id="input" name="input" value="" class="form-control">
+                    <input type="text" id="input" name="linkAdd" value="" class="form-control">
                     <input type="submit" id="submit" name="addCodeLink" value="Add" class="btn btn-default">
                     @Html.ValidationMessage("linkAdd")
                 </div>
@@ -410,7 +410,7 @@
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <form method="post" class="form-inline">
                     <div class="form-group">
-                        <input type="text" id="input" name="input" value="@codeLinks[i-1][1]" class="form-control">
+                        <input type="text" id="input" name="linkEdit" value="@codeLinks[i-1][1]" class="form-control">
                         <input type="hidden" name="element" value="@codeLinks[i-1][0]">
                         <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-default">
                         <input type="submit" id="submit" name="deleteCodeLink" value="Delete" class="btn btn-default">
@@ -437,7 +437,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50"></textarea>
+                    <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="snippetAdd" class="form-control col-md-12" rows="8" cols="50"></textarea>
                     <input type="submit" id="submit" name="addCodeSnippet" value="Add" class="btn btn-default">
                     @Html.ValidationMessage("snippetAdd")
                 </div>
@@ -450,7 +450,7 @@
                     @AntiForgery.GetHtml()
                     @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <div class="form-group">
-                        <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50">@codeSnippets[i-1][1]</textarea>
+                        <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="snippetEdit" class="form-control col-md-12" rows="8" cols="50">@codeSnippets[i-1][1]</textarea>
                         <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
                         <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-default">
                         <input type="submit" id="submit" name="deleteCodeSnippet" value="Delete" class="btn btn-default">
@@ -477,7 +477,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <input type="text" id="input" name="input" value="" class="form-control">
+                    <input type="text" id="input" name="threeDAdd" value="" class="form-control">
                     <input type="submit" id="submit" name="addThreeDLink" value="Add" class="btn btn-default">
                     @Html.ValidationMessage("threeDAdd")
                 </div>
@@ -490,7 +490,7 @@
                     @AntiForgery.GetHtml()
                     @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <div class="form-group">
-                        <input type="text" id="input" name="input" value="@threeDLinks[i-1][1]" class="form-control">
+                        <input type="text" id="input" name="threeDEdit" value="@threeDLinks[i-1][1]" class="form-control">
                         <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
                         <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-default">
                         <input type="submit" id="submit" name="deleteThreeDLink" value="Delete" class="btn btn-default">
@@ -517,7 +517,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <input type="text" id="input" name="input" value="" class="form-control">
+                    <input type="text" id="input" name="videoAdd" value="" class="form-control">
                     <input type="submit" id="submit" name="addVideoLink" value="Add" class="btn btn-default">
                     @Html.ValidationMessage("videoAdd")
                 </div>
@@ -530,7 +530,7 @@
                     @AntiForgery.GetHtml()
                     @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <div class="form-group">
-                        <input type="text" id="input" name="input" value="@videoLinks[i-1][1]" class="form-control">
+                        <input type="text" id="input" name="videoEdit" value="@videoLinks[i-1][1]" class="form-control">
                         <input type="hidden" name="element" value="@videoLinks[i-1][0]">
                         <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-default">
                         <input type="submit" id="submit" name="deleteVideoLink" value="Delete" class="btn btn-default">
