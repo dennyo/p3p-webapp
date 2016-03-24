@@ -225,6 +225,28 @@
         public void addVendor(string name, string link, float price, string purchaseLink)
         {
             var db = Database.Open("basicData");
+            if(link.Length >= 5)
+            {
+                if(!link.Substring(0, 5).Contains("http"))
+                {
+                    link = "https://" + link;
+                }
+            }
+            else
+            {
+                link = "";
+            }
+            if(purchaseLink.Length >= 5)
+            {
+                if(!purchaseLink.Substring(0, 8).Contains("http"))
+                {
+                    purchaseLink = "https://" + purchaseLink;
+                }
+            }
+            else
+            {
+                purchaseLink = "";
+            }
             db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, link, price, purchaseLink, partId);
             db.Close();
         }
@@ -256,7 +278,18 @@
             set{
                 var db = Database.Open("basicData");
                 link = value;
-                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", value, vendorId);
+                if(link.Length >= 5)
+                {
+                    if(!link.Substring(0, 5).Contains("http"))
+                    {
+                        link = "https://" + link;
+                    }
+                }
+                else
+                {
+                    link = "";
+                }
+                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", link, vendorId);
                 db.Close();
             }
         }
@@ -278,7 +311,18 @@
             set{
                 var db = Database.Open("basicData");
                 purchaseLink = value;
-                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", value, vendorId);
+                if(purchaseLink.Length >= 5)
+                {
+                    if(!purchaseLink.Substring(0, 5).Contains("http"))
+                    {
+                        purchaseLink = "https://" + purchaseLink;
+                    }
+                }
+                else
+                {
+                    purchaseLink = "";
+                }
+                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", purchaseLink, vendorId);
                 db.Close();
             }
         }
@@ -297,6 +341,28 @@
 
         public Vendor(string name, string link, float price, int partId, string purchaseLink, int vendorId)
         {
+            if(link.Length >= 5)
+            {
+                if(!link.Substring(0, 5).Contains("http"))
+                {
+                    link = "https://" + link;
+                }
+            }
+            else
+            {
+                link = "";
+            }
+            if(purchaseLink.Length >= 5)
+            {
+                if(!purchaseLink.Substring(0, 8).Contains("http"))
+                {
+                    purchaseLink = "https://" + purchaseLink;
+                }
+            }
+            else
+            {
+                purchaseLink = "";
+            }
             this.name = name;
             this.link = link;
             this.price = price;
@@ -386,5 +452,14 @@
         }
         db.Close();
         return "";
+    }
+
+    public static Vendor getVendor(int vendorId)
+    {
+        var db = Database.Open("basicData");
+        var vendorData = db.QuerySingle("SELECT * FROM Vendors WHERE VendorId = @0", vendorId);
+        Vendor tempVendor = new Vendor(vendorData.VendorName, vendorData.VendorLink, (float)vendorData.Price, vendorData.PartId, vendorData.PurchaseLink, vendorData.VendorId);
+        db.Close();
+        return tempVendor;
     }
 }

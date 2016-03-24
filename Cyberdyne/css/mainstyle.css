@@ -133,16 +133,12 @@ span#title{
     font-size: 30px;
 }
 input[type="text"], input[type="password"], #robotText {
-    width: 100%;
+    width: 50%;
 }
 
     #mainphoto {
         width: 200px;
     }
-.well {
-    color:  black;
-    min-height: 200px;
-}
 }
 
 @media screen and (min-width: 480px) and (max-width: 991px) {
@@ -161,7 +157,8 @@ input[type="text"], input[type="password"], #robotText {
 }
 
     input[type="text"], input[type="password"], #robotText {
-        width: 75%;
+    min-width: 300px;
+    max-width: 375px;
     }
 .well {
     color:  black;
@@ -172,21 +169,16 @@ input[type="text"], input[type="password"], #robotText {
 @media screen and (min-width: 991px) {
 
 input[type="text"], input[type="password"], #robotText {
-    width: 50%;
+    min-width: 500px;
 }
 .table{    
     margin: 0 20px 0 20px;
-}
-
-.well {
-    color:  black;
-    min-height: 60px;
 }
 }
 
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
-      width: 300px;
+      width: 250px;
       margin: auto;
   }
 
@@ -303,4 +295,61 @@ label {
     background: linear-gradient(to right,rgba(9,0,0,0.2), rgba(9,0,0,0.7),rgba(9,0,0,0.2));
     text-align: center;
     font-size: 45px;
+}
+
+input[type="radio"] {
+    display: inline;
+    height: 15px;
+    width: 15px;
+    margin-top: 85px;
+}
+
+.tab {
+    background-color: #cdcdcd;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tab-content img {
+    width: 200px;
+    margin: 10px 0px;
+}
+
+.radio-inline {
+    width: 235px;
+   margin-bottom: 10px;
+    height:  225px;
+}
+.radio-inline span {
+    width:  225px;
+    height: 225px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.radio-inline img {
+    max-width:  220px;
+    max-height: 220px;
+}
+
+.tab-content {
+    margin-bottom: 20px;
+}
+
+.file-upload input {
+    font-size:  14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.file-upload-buttons a {
+    color:  white;
+}
+
+.file-upload-buttons {
+    margin-bottom: 10px;
+}
+
+.form-control{
+    display: inline-block;
 }

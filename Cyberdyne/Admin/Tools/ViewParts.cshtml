@@ -6,11 +6,6 @@
 
     var RobotId = Request.QueryString["Id"];
 
-    string message = "";
-    var hostUrl = Request.Url.GetComponents(UriComponents.SchemeAndServer, UriFormat.Unescaped);
-
-    var partData = db.Query("SELECT * FROM Parts");
-    var grid = new WebGrid(source: partData, rowsPerPage: 50);
     List<Repository.Part> parts = Repository.getAllParts();
     var partName = "";
     bool isRobot = false;
@@ -28,9 +23,19 @@
     {
         AntiForgery.Validate();
         Validation.RequireField("partName", "You have to enter a name for the part you're about to add");
+        Validation.Add("partName",
+            Validator.StringLength(
+                maxLength: 400,
+                minLength: 1,
+                errorMessage: "The name cannot contain more then 400 caracters"
+            )
+        );
         partName = Request.Form["partName"];
-        db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);
-        db.Close();
+        if(Validation.IsValid())
+        {
+            db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);
+            db.Close();
+        }
         Response.Redirect(Request.Url.AbsoluteUri);
     }
 
@@ -94,16 +99,12 @@
         <form method="post">
             <fieldset>
                 @AntiForgery.GetHtml()
-                @if(!message.IsEmpty())
-                {
-                    <p>@message</p>
-                }
                 <h1>Add Part</h1>
-                @Html.ValidationSummary()
                 <div class="form-group">
                     <label for="partName">Name:</label>
                     <input type="text" id="partName" name="partName" value="@partName" class="form-control">
                 </div>
+                @Html.ValidationMessage("partName")
                 <div class="form-group">
                     <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
                 </div>
@@ -113,7 +114,7 @@
         <div class="well">
             @foreach(Repository.Part part in parts)
             { 
-                <div class="col-md-12"> 
+                <div class="row"> 
                     <div class="col-xs-12 col-md-3 col-sm-6">Name: @part.PartName</div>
                     <div class="col-xs-12 col-md-3 col-sm-6">Prices: @Repository.getPart(part.PartId).getVendors().Count</div>
                     @if(isRobot)
@@ -143,9 +144,7 @@
                         </div>   
                     } 
                     <div class="col-md-2 col-xs-12 col-sm-4">
-                        <div class="btn btn-warning editBtn">
-                            <a href="Editpart?id=@part.PartId"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
-                        </div>                   
+                        <a href="Editpart?id=@part.PartId" class="btn btn-warning editBtn"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
                     </div>                                
                     <div class="col-md-2 col-xs-12 col-sm-4">
                         <form method="post">
@@ -155,11 +154,9 @@
                             </button>
                             <input type="hidden" name="itemIdRemove" value="@part.PartId"> 
                          </form>
-                    </div>
-                                    
-                      
+                    </div>       
               </div>
             }
-</div>
+        </div>
     </div>
 </div>
