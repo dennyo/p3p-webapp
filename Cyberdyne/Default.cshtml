@@ -4,7 +4,7 @@
     var db = Database.Open("basicData");
     List<Repository.Robot> robots = Repository.getLastRobots();
     var intro = Repository.getTextElement(1);
-    if(IsPost)
+    if(IsPost && Request.Form["intro"] != null)
     {
         intro = Request.Form["intro"];
         db.Execute("UPDATE TextElements SET ElementText= @0 WHERE ElementID = 1", intro);

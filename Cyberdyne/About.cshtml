@@ -5,7 +5,7 @@
     List<string> textElements = new List<string> {Repository.getTextElement(2), Repository.getTextElement(3), Repository.getTextElement(4)};
     int id = Convert.ToInt16(Request.QueryString["edit"]);
     var elementText = Repository.getTextElement(id);
-    if(IsPost)
+    if(IsPost && Request.Form["submit"] != null)
     {
         elementText = Request.Form["elementText"];
         db.Execute("UPDATE TextElements SET ElementText= @0 WHERE ElementID = @1", elementText, id);
