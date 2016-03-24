@@ -12,62 +12,68 @@
         Response.Redirect("~/About");
     }
 }
-<div class="col-md-6">
-   <div>
-       <h2>About Me</h2>
-        @if(Request.QueryString["edit"] == "2" && WebSecurity.IsAuthenticated)
-        {
-            <form id="aboutform" method="post">
-                <fieldset>
-                    <textarea id="elemntText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
-                    <button type="submit" name="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                    </button> 
-                </fieldset>
-            </form>
-        }
-        else
-        {
-            <p> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
-            if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=2"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
-        }
-  </div>
-</div>
-<div class="col-md-6">
-   <div>
-       <h2>About Foppele Inc.</h2>
-        @if(Request.QueryString["edit"] == "3" && WebSecurity.IsAuthenticated)
-        {
-            <form id="aboutform" method="post">
-                <fieldset>
-                    <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
-                    <button type="submit" name="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                    </button> 
-                </fieldset>
-            </form>
-        }
-        else
-        {
-           <p> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
-           if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=3"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
-        }
-       <h2>Contact</h2>
-       @if(Request.QueryString["edit"] == "4" && WebSecurity.IsAuthenticated)
-        {
-            <form id="aboutform" method="post">
-                <fieldset>
-                    <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
-                    <button type="submit" name="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                    </button> 
-                </fieldset>
-            </form>
-        }
-        else
-        {
-            <p> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
-            if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=4"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
-        }
-  </div>
+<div class="col-md-12">
+    <div class="col-md-6">
+       <div>
+           <h2 class="box-title">About Me</h2>
+            @if(Request.QueryString["edit"] == "2" && WebSecurity.IsAuthenticated)
+            {
+                <form id="aboutform" method="post">
+                    <fieldset>
+                        <textarea id="elemntText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                        <button type="submit" name="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                        </button> 
+                    </fieldset>
+                </form>
+            }
+            else
+            {
+                <p> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
+                if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=2"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+            }
+      </div>
+    </div>
+    <div class="col-md-6">
+       <div class="box-padding">
+           <h2 class="box-title">About Foppele Inc.</h2>
+            @if(Request.QueryString["edit"] == "3" && WebSecurity.IsAuthenticated)
+            {
+                <form id="aboutform" method="post">
+                    <fieldset>
+                        <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                        <button type="submit" name="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                        </button> 
+                    </fieldset>
+                </form>
+            }
+            else
+            {
+               <p> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
+               if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=3"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+            }
+        </div>
+    </div>
+        <div class="col-md-6"> 
+            <div class="box-padding">
+           <h2 class="box-title">Contact</h2>
+           @if(Request.QueryString["edit"] == "4" && WebSecurity.IsAuthenticated)
+            {
+                <form id="aboutform" method="post">
+                    <fieldset>
+                        <textarea id="elementText" name="elementText" class="form-control" rows="10" >@elementText</textarea> <br />
+                        <button type="submit" name="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                        </button> 
+                    </fieldset>
+                </form>
+            }
+            else
+            {
+                <p> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
+                if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=4"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+            }
+      </div>
+    </div>
 </div>

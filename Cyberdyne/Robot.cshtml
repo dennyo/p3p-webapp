@@ -131,7 +131,7 @@
 
                 @if(@WebSecurity.IsAuthenticated)
                 {    
-                    <form method="post">
+                    <form method="post" class="content-padding">
                         <button type="submit" name="editItem" class="btn btn-warning robotBtn">
                             <span class="glyphicon glyphicon-pencil"></span> Edit this robot            
                         </button>            
@@ -143,113 +143,72 @@
                 }
             </div>
         </div>
-    
-    @if (photos.Count() != 0 || codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0) 
+        </div>
+    <div class="col-md-12">
+    @if (codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0) 
     {
-        @*if (photos.Count() != 0)
-        {
-            int count = 0;           
-            <div class="col-md-4">
-                <h1>Photos</h1>
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        @foreach (string photo in photos)
-                        {
-                            if(count==0) 
-                            {
-                                <li data-target="#myCarousel" data-slide-to="@count" class="active"></li>
-                            }
-                            else
-                            {
-                                <li data-target="#myCarousel" data-slide-to="@count"></li>
-                            }
-                            count++;
-                        }
-                        @{count = 0;}
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        @foreach(string photo in photos)
-                        {
-                            if(count==0)
-                            {
-                                <div class="item active">
-                                    <img src="@photo"/>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="item">
-                                   <img src="@photo" />
-                                </div>
-                            }
-                            count++;
-                        }
-                    </div>
-                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                      <span class="glyphicon glyphicon-chevron-left"></span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                      <span class="glyphicon glyphicon-chevron-right"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-                </div>                
-        } *@
         if (codeSnippets.Count() != 0)
         {
-            <div class="col-md-8">
-                <h1>Code Snippets</h1>
-                @foreach (string[] codeSnippet in codeSnippets)
-                {
-                    <div>
-                        <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
-                    </div>
-                }
+            <div class="col-md-6">
+                <div class="box-padding">
+                    <h2 class="box-title">Code Snippets</h2>
+                    @foreach (string[] codeSnippet in codeSnippets)
+                    {
+                        <div class="content-padding">
+                            <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
+                        </div>
+                    }
+                </div>
             </div>
         }
         if (videoLinks.Count() != 0)
         {
-            <div class="col-md-4">
-                <h1>Videos</h1>
-                @foreach (string[] video in videoLinks)
-                {
-                    <div>
-                        <iframe width="420" height="345"
-                        src="@video[1]">
-                        </iframe>
-                    </div>
-                }
+            <div class="col-md-6">
+                <div class="box-padding">
+                    <h2 class="box-title">Videos</h2>
+                    @foreach (string[] video in videoLinks)
+                    {
+                        <div class="content-padding">
+                            <iframe width="420" height="345"
+                            src="@video[1]">
+                            </iframe>
+                        </div>
+                    }
+                </div>
             </div>
         }
         if (threeDLinks.Count() != 0)
         {
-            <div class="col-md-4">
-                <h1>3D view</h1>
-                @foreach (string[] threeDLink in threeDLinks)
-                {
-                    <div>
-                        <iframe width="420" height="345"
-                        src="@threeDLink[1]">
-                        </iframe>
-                    </div>
-                }
+            <div class="col-md-6">
+                <div class="box-padding">
+                    <h2 class="box-title">3D view</h2>
+                    @foreach (string[] threeDLink in threeDLinks)
+                    {
+                        <div class="content-padding">
+                            <iframe width="420" height="345"
+                            src="@threeDLink[1]">
+                            </iframe>
+                        </div>
+                    }
+                </div>
             </div>
         }
         if (codeLinks.Count() != 0)
         {
-            <div class="col-md-4">
-                <h1>Links</h1>
-                @foreach (string[] codeLink in codeLinks)
-                {
-                    <div>
-                        <A HREF="@codeLink[1]">@codeLink[1]</A>
-                    </div>
-                }
+            <div class="col-md-6">
+                <div class="box-padding">
+                    <h2 class="box-title">Web links</h2>  
+                    @foreach (string[] codeLink in codeLinks)
+                    {
+                        <div class="content-padding">
+                            <A HREF="@codeLink[1]">@codeLink[1]</A>
+                        </div>
+                    }
+                </div>
             </div>
         }  
     }
-        </div>
+    </div>
 }
         
 else 
