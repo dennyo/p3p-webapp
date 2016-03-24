@@ -288,6 +288,10 @@ label {
 .box-padding {
     padding-bottom: 10px;
 }
+.content-padding {
+    padding-left: 25px;
+    padding-right: 15px;
+}
 
 .robot-title{
     padding-top: 12px;
@@ -352,4 +356,8 @@ input[type="radio"] {
 
 .form-control{
     display: inline-block;
+}
+
+.margin-btw {
+    margin-bottom: 16px;
 }

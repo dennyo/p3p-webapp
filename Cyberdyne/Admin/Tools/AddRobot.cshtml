@@ -70,7 +70,7 @@
     <fieldset>
         @Html.ValidationSummary()
             <label for="robotName"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</label> @Html.ValidationMessage("robotName")
-            <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control" placeholder="Enter the name of the robot">
+            <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control margin-btw" placeholder="Enter the name of the robot">
             <br />
             <label for="robotText"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Description*</label> @Html.ValidationMessage("robotText")
             <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8" placeholder="Provide a description for the robot">@robotText</textarea>
@@ -79,7 +79,7 @@
             <br />
             <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Cover image*</label> @Html.ValidationMessage("Upload2") 
             <p><span id="required">*More images can be added through edit robot</span></p> 
-            <div>
+            <div class="margin-btw">
             @FileUpload.GetHtml(
             initialNumberOfFiles:1,
             allowMoreFilesToBeAdded:false,
@@ -87,11 +87,10 @@
             uploadText: "Upload2",
             name: "Upload2")
             </div>
-            <br />
             <label for="videoLink"><span class="glyphicon glyphicon-link"></span>&nbsp;Embedded video link</label>
-            <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
+            <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
             <label for="threeDlink"><span class="glyphicon glyphicon-link"></span>&nbsp;3D model link</label>
-            <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
+            <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
             @*<input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" /> *@
             <button type="submit" name="buttonUpload2" class="btn btn-default">
                 <span class="glyphicon glyphicon-save"></span> Upload
