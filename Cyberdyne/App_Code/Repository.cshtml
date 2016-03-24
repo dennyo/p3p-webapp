@@ -250,6 +250,21 @@
             db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, link, price, purchaseLink, partId);
             db.Close();
         }
+
+        public int getQuantity(int robotId)
+        {
+            var db = Database.Open("basicData");
+            var quantity = db.QueryValue("SELECT Quantity FROM PartReference WHERE PartId = @0 AND RobotId = @1", partId, robotId);
+            db.Close();
+            if(quantity != null)
+            {
+                return Convert.ToInt32(quantity);
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 
     public class Vendor
