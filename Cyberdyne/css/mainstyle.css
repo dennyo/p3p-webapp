@@ -124,6 +124,11 @@ span#title{
     margin-bottom: 20px;
 }
 
+#mainphoto {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
 @media screen and (max-width: 470px) {
     .gallery h2 {
     font-size: 30px;
@@ -247,10 +252,10 @@ label {
     padding-bottom: 5px;
 }
 
-.featured_text h2{
+.robot-name{
     padding-top: 12px;
     padding-left: 20px;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     background: linear-gradient(to right,rgba(9,0,0,0.75),rgba(9,0,0,0.1));
 }
 

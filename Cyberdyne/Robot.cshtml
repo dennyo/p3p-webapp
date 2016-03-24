@@ -71,8 +71,9 @@
                 <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
-        <div class="col-md-8">
-            <h1>@robotName</h1>
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <h2 class="robot-name">@robotName</h2>
                 <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
 
             @if(@WebSecurity.IsAuthenticated)
