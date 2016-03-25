@@ -4,7 +4,7 @@
     var db = Database.Open("basicData");
     List<Repository.Robot> robots = Repository.getLastRobots();
     var intro = Repository.getTextElement(1);
-    if(IsPost)
+    if(IsPost && Request.QueryString["edit"] == "1")
     {
         intro = Request.Form["intro"];
         db.Execute("UPDATE TextElements SET ElementText= @0 WHERE ElementID = 1", intro);
@@ -14,7 +14,7 @@
 }
 <div id="introduction" class="col-md-12">
     <h1>Introduction</h1>
-    @if(Request.QueryString["edit"] == "true")
+    @if(Request.QueryString["edit"] == "1")
     {
         <form id="homepageform" method="post">
             <fieldset>
@@ -28,7 +28,7 @@
     else 
     {
         <p> @Html.Raw(intro.Replace("\n","<br />"))</p>
-        if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=true"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+        if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=1"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
     }
 
 </div>

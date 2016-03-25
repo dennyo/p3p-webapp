@@ -163,15 +163,16 @@
         }
         if (videoLinks.Count() != 0)
         {
+            
             <div class="col-md-6">
                 <div class="box-padding">
                     <h2 class="box-title">Videos</h2>
                     @foreach (string[] video in videoLinks)
                     {
                         <div class="content-padding">
-                            <iframe width="420" height="345"
-                            src="@video[1]">
-                            </iframe>
+                            <div class="h_iframe">
+                                <iframe height="2" width="2" src="@video[1]"></iframe>
+                            </div>
                         </div>
                     }
                 </div>

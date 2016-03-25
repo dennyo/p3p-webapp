@@ -17,11 +17,11 @@
     var input = "";
     var element = "";
     var elementPhoto = "";
-
+    bool isFavourite = false;
     var fileName = "";
     var fileMime = "";
     int id = 0;
-
+    
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
         robotId = Request.QueryString["ID"];
 
@@ -38,6 +38,7 @@
             threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
             parts = tempRobot.getParts();
+            isFavourite = tempRobot.isFavourite();
         }
         else
         {
@@ -47,6 +48,7 @@
     else{
         Validation.AddFormError("BEEP BOOP. Robot is lost.");
     }
+
 
     if(IsPost && Request.Form["editMain"] != null)
     {
@@ -356,7 +358,7 @@
             <div id="PhotoToggle" class="collapse">
                 @foreach (var photo in photos)
                 {
-                    <label class="form-inline">
+                    <label class="radio-inline">
                         @if(photo == mainPhoto)
                         {
                              <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
@@ -365,7 +367,7 @@
                         {
                             <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
                         }
-                        <span><img src="~/@photo" alt="photo" class="img-responsive" /></span>
+                        <span><img src="~/@photo" alt="photo" /></span>
                         </label>
                 }<br>
                 <button type="submit" id="choosePhoto" name="choosePhoto" class="btn btn-success">
@@ -374,7 +376,7 @@
             </div>
             
         </fieldset>
-        <fieldset>
+        <fieldset><br>
             <div class="form-group">
                 <label>Add Images</label>  
                 <div>
@@ -391,17 +393,27 @@
             </div>
         </fieldset>
     </form>
-    <form method="post" class="form-inline">
-        <fieldset>
-            <label>Make this robot your favourite!</label></br>
-            <div class="form-group">
-                <input type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-default">
-            </div>
-        </fieldset>
-    </form>
+    <label>Make this robot your favourite!</label></br>
+                @if(isFavourite)
+                {
+                    <p>This robot is already your favourite.</p><br>
+                }
+                else
+                {
+                    <form method="post" class="form-inline">
+                        <fieldset>
+                            <button type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-star"></span> Favourite
+                            </button>
+                        </fieldset>
+                    </form>
+                }
+
     <label>View parts for this robot</label></br>
     <p>@parts.Count Part(s) have been added</p>
-    <a href="~/Admin/Tools/Viewparts?Id=@robotId" class="btn btn-default">Edit Parts</a>
+    <a href="~/Admin/Tools/Viewparts?Id=@robotId" class="btn btn-primary">
+        <span class="glyphicon glyphicon-list"></span> Edit Parts
+    </a>
 
     <h2>Links</h2>
     <ul class="nav nav-tabs">

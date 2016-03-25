@@ -156,6 +156,21 @@
             db.Close();
             return partList;
         }
+
+        //check if robot is favourite
+        public bool isFavourite()
+        {
+            var db = Database.Open("basicData");
+            var fav = db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+            if(fav == RobotId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public class Part
