@@ -80,12 +80,12 @@
             <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Cover image*</label> @Html.ValidationMessage("Upload2") 
             <p><span id="required">*More images can be added through edit robot</span></p> 
             <div class="margin-btw">
-            @FileUpload.GetHtml(
-            initialNumberOfFiles:1,
-            allowMoreFilesToBeAdded:false,
-            includeFormTag:false,
-            uploadText: "Upload2",
-            name: "Upload2")
+                @FileUpload.GetHtml(
+                initialNumberOfFiles:1,
+                allowMoreFilesToBeAdded:false,
+                includeFormTag:false,
+                uploadText: "Upload2",
+                name: "Upload2")
             </div>
             <label for="videoLink"><span class="glyphicon glyphicon-link"></span>&nbsp;Embedded video link</label>
             <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>

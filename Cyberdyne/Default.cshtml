@@ -4,6 +4,7 @@
     var db = Database.Open("basicData");
     List<Repository.Robot> robots = Repository.getLastRobots();
     var intro = Repository.getTextElement(1);
+
     if(IsPost && Request.QueryString["edit"] == "1")
     {
         intro = Request.Form["intro"];
@@ -12,6 +13,7 @@
     }
     db.Close();
 }
+
 <div id="introduction" class="col-md-12">
     <h1>Introduction</h1>
     @if(Request.QueryString["edit"] == "1")

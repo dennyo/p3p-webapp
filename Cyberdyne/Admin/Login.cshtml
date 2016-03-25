@@ -1,8 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = "Login";
-    Page.ShowTitle = "false";
-    Page.Description = "Enter your credentials to log in";
     
     var userName = "";
     var password = "";
@@ -52,7 +50,7 @@
         @Html.ValidationSummary("Log in was unsuccesful. please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
         <h1>Login</h1>
         <div class="form-group">
-            <label for="userName">UserName</label>
+            <label for="userName">User Name</label>
             <input type="text" id="userName" name="userName" value="@userName" class="form-control">
             @Html.ValidationMessage("userName")
         </div>

@@ -5,6 +5,7 @@
     List<string> textElements = new List<string> {Repository.getTextElement(2), Repository.getTextElement(3), Repository.getTextElement(4)};
     int id = Convert.ToInt16(Request.QueryString["edit"]);
     var elementText = Repository.getTextElement(id);
+
     if(IsPost)
     {
         elementText = Request.Form["elementText"];
@@ -12,6 +13,7 @@
         Response.Redirect("~/About");
     }
 }
+
 <div class="col-md-12">
     <div class="col-md-6">
        <div>

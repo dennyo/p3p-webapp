@@ -46,39 +46,75 @@
             }
         }
     }
+
+    if(IsPost && Request.Form["removeUser"] != null && Roles.IsUserInRole("God"))
+    {
+        var tempUserId = Request.Form["removeUserId"];
+        var tempUserName = Request.Form["removeUserName"];
+        Roles.RemoveUserFromRole(tempUserName, "Admin");
+        db.Execute("DELETE FROM webpages_Membership WHERE UserId = @0", tempUserId);
+        db.Execute("DELETE FROM UserProfile WHERE UserId = @0", tempUserId);
+    }
 }
 <div class="col-md-12">
-<form method="post">
-    @AntiForgery.GetHtml()
-    <fieldset>
-        <h1>Change Password</h1>
-        @if(!passwordMessage.IsEmpty())
-        {
-            <p>@passwordMessage</p>
-        }
-        <div class="form-group">
-            <label for="oldPassword">Old Password</label>
-            <input type="password" name="oldPassword" id="oldPassword" value="@oldPassword" class="form-control">
-            @Html.ValidationMessage("oldPassword")
+    <form method="post">
+        @AntiForgery.GetHtml()
+        <fieldset>
+            <h1>Change Password</h1>
+            @if(!passwordMessage.IsEmpty())
+            {
+                <p>@passwordMessage</p>
+            }
+            <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" name="oldPassword" id="oldPassword" value="@oldPassword" class="form-control">
+                @Html.ValidationMessage("oldPassword")
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" name="newPassword" id="newPassword" value="@newPassword" class="form-control">
+                @Html.ValidationMessage("newPassword")
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">Confirm new password</label>
+                <input type="password" name="confirmNewPassword" id="confirmNewPassword" value="@confirmNewPassword" class="form-control">
+                @Html.ValidationMessage("confirmNewPassword")
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submitPassword" name="submitPassword" value="Change Password" class="btn btn-default">
+            </div>
+        </fieldset>
+    </form>
+    <br>
+    @if(Roles.IsUserInRole("God"))
+    {       
+        var users = db.Query("SELECT * FROM UserProfile WHERE UserId != @0", WebSecurity.CurrentUserId);
+        <div class="well">
+            <div class="row">
+                <div class="col-xs-6"><strong>Name</strong></div>
+                <div class="col-xs-6"><a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a></div>
+            </div>
+            <br>
+            @foreach(var user in users)
+            {
+                string[] roles = Roles.GetRolesForUser(user.UserName);
+                if(!roles.Contains("God"))
+                {
+                    <div class="row">
+                        <div class="col-xs-6">@user.UserName</div>
+                        <div class="col-xs-6">
+                            <form method="post">
+                                <button type="submit" name="removeUser" id="removeUser" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-remove"></span> Remove
+                                </button>
+                                <input type="hidden" name="removeUserId" id="removeUserId" value="@user.UserId">
+                                <input type="hidden" name="removeUserName" id="removeUserName" value="@user.UserName">
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                }
+            }
         </div>
-        <div class="form-group">
-            <label for="newPassword">New Password</label>
-            <input type="password" name="newPassword" id="newPassword" value="@newPassword" class="form-control">
-            @Html.ValidationMessage("newPassword")
-        </div>
-        <div class="form-group">
-            <label for="confirmNewPassword">Confirm new password</label>
-            <input type="password" name="confirmNewPassword" id="confirmNewPassword" value="@confirmNewPassword" class="form-control">
-            @Html.ValidationMessage("confirmNewPassword")
-        </div>
-        <div class="form-group">
-            <input type="submit" id="submitPassword" name="submitPassword" value="Change Password" class="btn btn-default">
-        </div>
-    </fieldset>
-</form>
-<br>
-@if(Roles.IsUserInRole("God"))
-{
-    <a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a>
-}
+    }
 </div>
