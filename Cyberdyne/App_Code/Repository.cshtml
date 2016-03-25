@@ -162,6 +162,7 @@
         {
             var db = Database.Open("basicData");
             var fav = db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+            db.Close();
             if(fav == RobotId)
             {
                 return true;
@@ -491,5 +492,15 @@
         Vendor tempVendor = new Vendor(vendorData.VendorName, vendorData.VendorLink, (float)vendorData.Price, vendorData.PartId, vendorData.PurchaseLink, vendorData.VendorId);
         db.Close();
         return tempVendor;
+    }
+
+    public static Robot getFavRobot() 
+    {
+        var db = Database.Open("basicData");
+        var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+        var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
+        Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId.ToString());
+        db.Close();
+        return favRobot;
     }
 }

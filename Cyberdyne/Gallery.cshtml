@@ -4,7 +4,7 @@
 
     int rows = 0;
     List<Repository.Robot> robots = Repository.getAllRobots();
-    
+    Repository.Robot favRobot = Repository.getFavRobot();
     if(robots.Count > 0)
     {
         rows = robots.Count / 4;
@@ -16,27 +16,24 @@
     int count = robots.Count - 1;
     
 }
-
-@for(int i = 0; i < rows; i++)
+@foreach(Repository.Robot robot in robots)
 {
-    <div class="col-md-12">
-    @for(int j = 0; j < 4; j++)
+    if(robot.RobotId == favRobot.RobotId)
     {
-        if (count == robots.Count - 1)
-        {
-             <div class="col-md-6"><a href="~/Robot?Id=@robots[count].RobotId">
-                <div class="gallery featured_img" style="background-image: url(@robots[count].CoverImage)">
-                    <p class="featured-glyph"><span class="glyphicon glyphicon-bookmark"></span></p>
-                    @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
-                </div></a>
+            <div class="col-md-6">
+                <a href="~/Robot?Id=@robot.RobotId">
+                    <div class="gallery featured_img">
+                        <img class="img-responsive" src="@robot.CoverImage" />
+                    </div>
+                </a>
             </div>
             <div class="col-md-6">
                 <div class="featured_text">
-                    <h2 class="box-title"> @robots[count].RobotName </h2>
+                    <h2 class="box-title">@robot.RobotName</h2>
                     <p>
-                    @{string automaat = Convert.ToString(Html.Raw(robots[count].RobotText.Replace("\n","<br />"))); int rij = 0;}
+                    @{string automaat = Convert.ToString(Html.Raw(robot.RobotText.Replace("\n","<br />"))); int rij = 0; bool linkExists = false;}
                     @for(int x = 0;(x <= 500 && x < automaat.Length) && (rij <= 12); x++ )
-                    {
+                    {                       
                         if (x < 500 && rij < 12) {
                             if(automaat[x] == '<' && automaat[x+1] == 'b' && automaat[x+2] == 'r' && automaat[x+4] == '/' && automaat[x+5] == '>')
                             {
@@ -49,25 +46,35 @@
                                 @automaat[x];
                             }
                         }
-                        else if (x == 500 || rij == 12)
-                        {
-                            <a href="~/Robot?Id=@robots[count].RobotId"><span class="glyphicon glyphicon-option-horizontal"></span></a>
+                        else if ((x == 500 || rij == 12 ) && !linkExists)
+                        {                          
+                            <a href="~/Robot?Id=@robot.RobotId"> Read More...</a>
+                            linkExists = true;
                         }
                     }
                    </p>
                 </div>
             </div> 
-            count--;
-            break;
-        }
-        else if(count >= 0)
+    }    
+}
+
+@for(int i = 0; i < rows; i++)
+{
+    <div class="col-md-12">
+    @for(int j = 0; j < 4; j++)
+    {
+        if(count >= 0)
         {
+            if(robots[count].RobotId == favRobot.RobotId){j--;}
+            else
+            {
             <div class="col-md-3">
                 <a href="~/Robot?Id=@robots[count].RobotId"><div class="gallery" style="background-image: url(@robots[count].CoverImage)">
                     @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
                     <h2 class="auto"> <span class="glyphicon glyphicon-align-left non-feat-glyph"></span>@robots[count].RobotName</h2>
                 </div></a>
             </div>
+            }
         }
          count--;
     }    

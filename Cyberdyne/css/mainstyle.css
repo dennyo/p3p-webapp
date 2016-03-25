@@ -135,6 +135,16 @@ input[type="text"], input[type="password"], #robotText {
     #mainphoto {
         width: 200px;
     }
+.gallery h2 {
+    font-size: 15px;
+}
+.gallery h2 span {
+   margin-top: -10px;
+}
+
+.box-title {
+    font-size:  18px;
+}
 }
 
 @media screen and (min-width: 480px) and (max-width: 991px) {
@@ -231,6 +241,14 @@ label {
 .featured_img {
     max-height: 450px;
     width: auto;
+    display:inline-block;
+    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
+}
+
+.featured_img img {
+  position:relative;
+  z-index:-1;
+  display:block;
 }
 
 .featured_text p {
@@ -238,6 +256,10 @@ label {
     padding-right: 5px;
     word-wrap: break-word;
     padding-bottom: 5px;
+}
+
+.featured_text p a{
+    color:  #9D9D9D;
 }
 
 .box-title{
@@ -253,14 +275,6 @@ label {
     min-width: 110px;
 }
 
-.featured-glyph {
-    font-size: 40px;
-    padding-top: 15px;
-    padding-bottom: 90px;
-    margin-bottom: 200px;
-    padding-left: 15px;
-    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
-}
 
 .non-feat-glyph {
     float: left;
