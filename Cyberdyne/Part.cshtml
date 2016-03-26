@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+
+    var partId = Request.QueryString["Id"];
+    if(!partId.IsInt())
+    {
+        partId = 0;
+    }
+    Repository.Part localPart = Repository.getPart(Convert.ToInt32(partId));
+}
+
+<div class="col-md-12">
+    
+</div>

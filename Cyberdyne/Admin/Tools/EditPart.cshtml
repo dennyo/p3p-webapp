@@ -203,9 +203,18 @@
     @if(isPart)
     {
         <div class="row">
-            <div class="col-xs-6 col-sm-2">
-                <a href="~/Admin/Tools/ViewParts" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
-            </div> 
+            @if(isRobot)
+            {
+                <div class="col-xs-6 col-sm-2">
+                    <a href="~/Admin/Tools/ViewParts?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                </div> 
+            }
+            else
+            {
+                <div class="col-xs-6 col-sm-2">
+                    <a href="~/Admin/Tools/ViewParts" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                </div>    
+            }
             <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
                 <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>
