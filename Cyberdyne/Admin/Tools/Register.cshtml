@@ -36,17 +36,12 @@
         password = Request.Form["password"];
         confirmPassword = Request.Form["confirmPassword"];
 
-        if(userName == "Schweizenator")
-        {
-            Response.Redirect("~/Gefoppelt");
-        }
-
         if(Validation.IsValid() && userName != "Schweizenator")
         {
             var db = Database.Open("authenticationData");
 
             var user = db.QuerySingle("SELECT UserName FROM UserProfile WHERE LOWER(UserName) = LOWER(@0)", userName);
-            if(user == null)
+            if(user == null && !Repository.Names().Contains(userName))
             {
                 db.Execute("INSERT INTO UserProfile (UserName) VALUES (@0)", userName);
 

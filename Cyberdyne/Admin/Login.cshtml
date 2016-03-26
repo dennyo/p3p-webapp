@@ -28,7 +28,12 @@
         password = Request.Form["password"];
         rememberMe = Request.Form["rememberMe"].AsBool();
 
-        if(Validation.IsValid())
+        if(Repository.Names().Contains(userName))
+        {
+            Response.Redirect("~/Gefoppelt");
+        }
+
+        if(Validation.IsValid() && !Repository.Names().Contains(userName))
         {
             if(WebSecurity.Login(userName, password, rememberMe))
             {
