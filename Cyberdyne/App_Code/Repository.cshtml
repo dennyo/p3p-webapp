@@ -281,6 +281,13 @@
                 return 0;
             }
         }
+
+        public void setQuantity(int robotId, int quantity)
+        {
+            var db = Database.Open("basicData");
+            db.Execute("UPDATE PartReference SET Quantity = @0 WHERE RobotId = @1 AND PartId = @2", quantity, robotId, partId);
+            db.Close();
+        }
     }
 
     public class Vendor

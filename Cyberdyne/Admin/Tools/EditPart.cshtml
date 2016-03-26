@@ -5,13 +5,26 @@
     var partId = "";
     var partName = "";
     var partNo = "";
+    int quantity = 0;
     bool isPart = false;
     bool partEdit = false;
+    bool isRobot = false;
+    var robotId = Request.QueryString["RobotId"];
     int editPartId = 0;
 
     Repository.Part tempPart;
     var db = Database.Open("basicData");
     List<Repository.Vendor> Vendors = new List<Repository.Vendor>();
+
+    if(!robotId.IsEmpty() && robotId.IsInt())
+    {
+        var queryData = db.QuerySingle("SELECT RobotId FROM Robots WHERE RobotId = @0", robotId);
+        if(queryData != null)
+        {
+            isRobot = true;
+            robotId = Request.QueryString["RobotId"];
+        }
+    }
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
@@ -23,6 +36,10 @@
         {
             partName = tempPart.PartName;
             partNo = tempPart.PartNo;
+            if(isRobot)
+            {
+                quantity = tempPart.getQuantity(Convert.ToInt32(robotId));
+            }
             isPart = true;
         }
         else
@@ -45,6 +62,7 @@
                 tempPart.PartName = partName;
             }
         }
+
         if(IsPost && Request.Form["submitPartNo"] != null)
         {
             Validation.Add("partNo", 
@@ -57,6 +75,18 @@
             {
                 partNo = Request.Form["partNo"];
                 tempPart.PartNo = partNo;
+            }
+        }
+
+        if(IsPost && Request.Form["submitQuantity"] != null)
+        {
+            Validation.Add("quantity", 
+                Validator.Integer("This is not a valid number"));
+
+            if(Validation.IsValid())
+            {
+                quantity = Convert.ToInt32(Request.Form["quantity"]);
+                tempPart.setQuantity(Convert.ToInt32(robotId), quantity);
             }
         }
 
@@ -208,6 +238,22 @@
                     @Html.ValidationMessage("partNo")
                 </fieldset>
             </form>
+
+            @if(isRobot)
+            {
+                <form method="post" class="form-group">
+                    <fieldset>
+                        @AntiForgery.GetHtml()
+                        <h2>This quantity corresponds to robot: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
+                        <label for="quantity">Quantity: @quantity</label>
+                        <div class="form-inline">
+                            <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control">
+                            <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info">
+                        </div>
+                        @Html.ValidationMessage("quantity")
+                    </fieldset>
+                </form>
+            }
         </div>
         
         <div class="row">
@@ -253,13 +299,11 @@
                 <div class="row">
                     @if(!partEdit)
                     {
+                        <div class="col-xs-12 col-md-2 col-sm-6">Name: @vendor.Name</div>
+                        <div class="col-xs-12 col-md-2 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">Test</a></div>
+                        <div class="col-xs-12 col-md-2 col-sm-6">Price: €@vendor.Price</div>
+                        <div class="col-xs-12 col-md-2 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">Test</a></div>  
                         <div class="col-xs-12 col-md-2 col-sm-6">
-                            Name: @vendor.Name
-                        </div>
-                        <div class="col-xs-12 col-md-3 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">@vendor.Link</a></div>
-                        <div class="col-xs-12 col-md-1 col-sm-6">Price: €@vendor.Price</div>
-                        <div class="col-md-3 col-xs-12 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">@vendor.PurchaseLink</a></div>  
-                        <div class="col-md-1 col-xs-12 col-sm-4">
                             <form method="post">
                                 @AntiForgery.GetHtml()
                                 <button type="submit" class="btn btn-warning" name="editVendor">
@@ -268,7 +312,7 @@
                                 <input type="hidden" name="editVendorId" value="@vendor.VendorId"/>
                             </form>
                         </div> 
-                        <div class="col-md-2 col-xs-12 col-sm-4">
+                        <div class="col-xs-12 col-md-2 col-sm-6">
                             <form method="post">
                                 @AntiForgery.GetHtml()
                                 <button type="submit" class="btn btn-danger" name="removeVendor">
@@ -283,22 +327,22 @@
                         <form method="post">
                             @AntiForgery.GetHtml()
                             <div class="col-xs-12 col-md-2 col-sm-6">
-                                <input type="text" name="vendorName" id="vendorName" class="form-control" value="@vendor.Name">
+                                <input type="text" name="vendorName" id="vendorName" class="form-control form-width-override" value="@vendor.Name">
                                 @Html.ValidationMessage("vendorName")
                             </div>
-                            <div class="col-xs-12 col-md-3 col-sm-6">
-                                <input type="text" name="vendorLink" id="vendorLink" class="form-control" value="@vendor.Link">
+                            <div class="col-xs-12 col-md-2 col-sm-6">
+                                <input type="text" name="vendorLink" id="vendorLink" class="form-control form-width-override" value="@vendor.Link">
                                 @Html.ValidationMessage("vendorLink")
                             </div>
-                            <div class="col-xs-12 col-md-1 col-sm-6">
-                                <input type="text" name="price" id="price" class="form-control" value="@vendor.Price">
+                            <div class="col-xs-12 col-md-2 col-sm-6">
+                                <input type="text" name="price" id="price" class="form-control form-width-override" value="@vendor.Price">
                                 @Html.ValidationMessage("price")
                             </div>
-                            <div class="col-md-3 col-xs-12 col-sm-6">
-                                <input type="text" name="purchaseLink" id="purchaseLink" class="form-control" value="@vendor.PurchaseLink">
+                            <div class="col-xs-12 col-md-2 col-sm-6">
+                                <input type="text" name="purchaseLink" id="purchaseLink" class="form-control form-width-override" value="@vendor.PurchaseLink">
                                 @Html.ValidationMessage("purchaseLink")
                             </div>  
-                            <div class="col-md-2 col-xs-12 col-sm-4">
+                            <div class="col-xs-12 col-md-4 col-sm-4">
                                 <button type="submit" class="btn btn-success" name="saveVendor"><span class="glyphicon glyphicon-save"></span> Save</button>
                             </div>
                             <input type="hidden" name="vendorId" value="@vendor.VendorId">

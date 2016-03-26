@@ -177,6 +177,9 @@ input[type="text"], input[type="password"], #robotText {
 input[type="text"], input[type="password"], #robotText {
     min-width: 500px;
 }
+input[type="text"].form-width-override {
+    min-width: 0px;
+}
 .table{    
     margin: 0 20px 0 20px;
 }
