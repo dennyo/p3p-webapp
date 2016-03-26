@@ -12,6 +12,7 @@
     List<string[]> codeSnippets = new List<string[]>();
     List<string[]> threeDLinks = new List<string[]>();
     List<string[]> videoLinks = new List<string[]>();
+    List<Repository.Part> parts = new List<Repository.Part>();
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
@@ -28,6 +29,7 @@
             codeSnippets = tempRobot.getCodeSnippets();
             threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
+            parts = tempRobot.getParts();
         }
         else
         {
@@ -208,6 +210,22 @@
                 </div>
             </div>
         }  
+    }
+    @if(parts.Count > 0)
+    {
+        <div class="col-md-12">
+            <div class="well row">
+                <div class="col-xs-6"><strong>Part</strong></div>
+                <div class="col-xs-6"><strong>Quantity</strong></div>
+                @foreach(var part in parts)
+                {
+                    <a href="~/Part?Id=@part.PartId">
+                        <div class="col-xs-6">@part.PartName</div>
+                        <div class="col-xs-6">@part.getQuantity(Convert.ToInt32(robotId))</div>
+                    </a>
+                }
+            </div>
+        </div>
     }
     </div>
 }

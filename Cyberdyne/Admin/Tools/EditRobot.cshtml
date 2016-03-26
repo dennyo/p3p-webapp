@@ -318,7 +318,7 @@
                 }
             }
 
-            Response.Redirect(Request.Url.AbsoluteUri);
+            //Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
@@ -352,7 +352,7 @@
             </button>
         </fieldset>
         </form><br>
-        <form>
+        <form method="post">
           <fieldset>
             <label>Pick a cover image</label></br>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">Toggle photos</button>
@@ -377,6 +377,8 @@
             </div>
             
         </fieldset>
+       </form>
+       <form method="post" enctype="multipart/form-data">
         <fieldset><br>
             <div class="form-group">
                 <label>Add Images</label>  
@@ -572,4 +574,5 @@
                 </div>}
         </div>
     </div>
+</div>
 </div>

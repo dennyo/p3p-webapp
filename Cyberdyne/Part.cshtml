@@ -4,11 +4,58 @@
     var partId = Request.QueryString["Id"];
     if(!partId.IsInt())
     {
-        partId = 0;
+        partId = "0";
     }
     Repository.Part localPart = Repository.getPart(Convert.ToInt32(partId));
+
+    Page.Title = localPart.PartName;
 }
 
 <div class="col-md-12">
-    
+    @if(localPart != null)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <img src="~/@localPart.CoverPhoto" alt="none"/>
+            </div>
+            <div class="col-md-6">
+                <h2>Part Name: @localPart.PartName</h2>
+                <h2>Part No: @if(localPart.PartNo != null){@localPart.PartNo}else{<text>Not available</text>}</h2>
+            </div>
+        </div>   
+        <div class="well row">
+            <div class="col-xs-4"><strong>Vendor</strong></div>
+            <div class="col-xs-4"><strong>Price</strong></div>
+            <div class="col-xs-4"><strong>Buy</strong></div>
+            <br>
+            @foreach(var vendor in localPart.getVendors())
+            {
+                <div class="col-xs-4">
+                    @if(vendor.Link.IsEmpty())
+                    {
+                        <text>@vendor.Name</text>
+                    }
+                    else
+                    {
+                        <a href="@vendor.Link">@vendor.Name</a>
+                    }
+                </div>
+                <div class="col-xs-4">€@vendor.Price</div>
+                <div class="col-xs-4">
+                    @if(vendor.PurchaseLink.IsEmpty())
+                    {
+                        <text>No Link available</text>
+                    }
+                    else
+                    {
+                        <a href="@vendor.PurchaseLink">Here</a>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h1>There is no part here</h1>   
+    }
 </div>
