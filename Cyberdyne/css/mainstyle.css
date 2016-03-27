@@ -254,23 +254,32 @@ label {
     display: inline;
 }
 
-.featured_img {
+.featured_img, .robotimg {
     max-height: 450px;
     width: auto;
-    display:inline-block;
-    border:  none;    
+    display: inline-block;
+    border:  none;  
+    position: relative;
+    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));  
+}   
+
+.gradient {
+    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
 }
 
-a .featured_img {
-    background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
-      z-index:-1;
+.featured_img img, .robotimg img {
+  position:relative;
+  border:  1px solid black;
+  display: block;
+  max-height: 450px;
 }
 
 .featured_img img {
-  position:relative;
-  border:  1px solid black;
-  display:block;
-  max-height: 450px;
+      z-index:-1;   
 }
 
 .homeGallery {
