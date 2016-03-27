@@ -1,8 +1,14 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     background-image: url('../Cyberdyne background.jpg');
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
+    margin-bottom: 150px;
 }
 #header, .container , #footer {  
     display: block;  
@@ -20,6 +26,13 @@ margin-bottom: 5px;
 #footer {
     overflow: hidden;
     color:  white;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 140px;
 }
 
 .container {
