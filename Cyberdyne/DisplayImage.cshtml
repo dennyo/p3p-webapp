@@ -5,13 +5,7 @@
         id = Request["Id"].AsInt();
         var db = Database.Open("basicData");
         var sql = "Select * From Photos Where PhotoId = @0";
-        //var sql = "SELECT * FROM FileUploading Where FileId = @0";
         var file = db.QuerySingle(sql, id);
-        /*if(file.MimeType.StartsWith("image/")){
-            Response.AddHeader("content-disposition", "inline; filename=" + file.FileName);
-        } else {
-            Response.AddHeader("content-disposition", "attachment; filename=" + file.FileName);
-        }*/
         Response.ContentType = file.MimeType;
         Response.BinaryWrite((byte[])file.Photo);
         db.Close();
