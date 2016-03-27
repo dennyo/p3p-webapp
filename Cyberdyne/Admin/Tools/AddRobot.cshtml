@@ -2,20 +2,23 @@
 @{ 
     Page.Title = "Add Robot";
     Layout = "~/_Layout.cshtml";
-    int id = 0;
     int robotID = 0;
-    var fileName = "";
-    var fileMime = "";
     var robotName = "";
     var robotText = "";
     var videoLink = "";
     var threeDlink = "";
+    bool succesPhoto = false;
 
     if(IsPost)
     {
         Validation.RequireField("robotName", "You must provide a name for the robot");
         Validation.RequireField("robotText", "You must provide a description");
         if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
+        else
+        {
+            if(!Request.Files[0].ContentType.StartsWith("image")){Validation.AddFormError("The given file is not an image");}
+            if(Request.Files[0].ContentLength > 4000000){Validation.AddFormError("The file cannot exeed 4MB");}   
+        }
         if(Request.Form["robotName"] != null) {robotName = Request.Form["robotName"];}
         if(Request.Form["robotText"] != null) {robotText = Request.Form["robotText"];} 
         if(Request.Form["videoLink"] != null) {videoLink= Request.Form["videoLink"];}
@@ -33,33 +36,35 @@
             {
                 db.Execute("INSERT INTO ThreeDFiles (RobotId, link) VALUES (@0,@1)", robotID, threeDlink);
             }
-            for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
+            if(Request.Files.Count > 0)
             {
-                var uploadedFile = Request.Files[imageCount];
-                fileName = Path.GetFileName(uploadedFile.FileName);
-                if(fileName != String.Empty)
+                var uploadedFile = Request.Files[0];
+                var fileName = Path.GetFileName(uploadedFile.FileName);
+                if(fileName != string.Empty)
                 {
-                    fileMime = uploadedFile.ContentType;
-                    if(fileMime.StartsWith("image"))
+                    var fileType = uploadedFile.ContentType;
+                    if(fileType.StartsWith("image"))
                     {
                         var fileStream = uploadedFile.InputStream;
-                        var fileLength = uploadedFile.ContentLength;                       
-                        byte[] fileContent = new byte[fileLength];
-                        fileStream.Read(fileContent, 0, fileLength);
-                        var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
-                        db.Execute(sql, /*fileName, */fileContent, fileMime);
-                        id = (int)db.GetLastInsertId();
-                        db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
-                        if(imageCount==0)
+                        var fileLength = uploadedFile.ContentLength;
+                        if(fileLength <= 4000000)
                         {
+                            byte[] fileContent = new byte[fileLength];
+                            fileStream.Read(fileContent, 0, fileLength);
+                            db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)",fileContent, fileType);
+                            int id = (int)db.GetLastInsertId();
+                            db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
                             db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
                         }
                     }
                 }
             }
+            else
+            {
+                db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", 1, robotID);
+            }
             db.Close();
-            string url = "~/Robot?id=" + robotID;
-            Response.Redirect(url);   
+            Response.Redirect("~/Robot?Id=" + robotID);
         } 
     }
 }
