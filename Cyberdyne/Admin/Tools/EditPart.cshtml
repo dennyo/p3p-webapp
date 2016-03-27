@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.IO
+@{
     Page.Title = "Edit Part";
     Layout = "~/_Layout.cshtml";
     
@@ -12,7 +13,8 @@
     var robotId = Request.QueryString["RobotId"];
     int editPartId = 0;
 
-    Repository.Part tempPart;
+
+    Repository.Part tempPart = new Repository.Part(0, "N/A", "N/A", "DisplayImage.cshtml?Id=1");
     var db = Database.Open("basicData");
     List<Repository.Vendor> Vendors = new List<Repository.Vendor>();
 
@@ -187,6 +189,36 @@
                 Response.Redirect(Request.Url.AbsoluteUri);
             }
         }
+
+        if(IsPost && Request.Form["addPhoto"] != null)
+        {
+            var uploadedPhoto = Request.Files[0];
+            var fileName = Path.GetFileName(uploadedPhoto.FileName);
+            if(fileName != string.Empty)
+            {
+                var fileType = uploadedPhoto.ContentType;
+                if(fileType.StartsWith("image"))
+                {
+                    var fileStream = uploadedPhoto.InputStream;
+                    var fileLenght = uploadedPhoto.ContentLength;
+                    if(fileLenght <= 4000000)
+                    {
+                        byte[] fileContent = new byte[fileLenght];
+                        fileStream.Read(fileContent, 0, fileLenght);
+                        db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)", fileContent, fileType);
+                        int newPhotoId = (int)db.GetLastInsertId();
+                        tempPart.setCoverPhoto(newPhotoId);
+                        db.Close();
+                        Response.Redirect(Request.Url.AbsoluteUri);
+                    }
+                    else
+                    {
+                        //give error that file is too big
+                        ModelState.AddError("addPhoto", "The file cannot be larger then 4MB");
+                    }
+                }
+            }
+        }
     }
     else
     {
@@ -221,48 +253,69 @@
         </div>
         <br>
         <div class="row">
-            <form method="post" class="form-group">
-                <fieldset>
-                    @AntiForgery.GetHtml()
+            <div class="col-md-6">
+                <div class="row">
+                    <form method="post" class="form-group">
+                        <fieldset>
+                            @AntiForgery.GetHtml()
 
-                    <label for="partName">Name: @partName</label>
-                    <div class="form-inline">
-                        <input type="text" id="partName" name="partName" value="@partName" class="form-control">
-                        <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
-                    </div>
-                    @Html.ValidationMessage("partName")
-                </fieldset>
-            </form>
+                            <label for="partName">Name: @partName</label>
+                            <div class="form-inline">
+                                <input type="text" id="partName" name="partName" value="@partName" class="form-control form-width-override">
+                                <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
+                            </div>
+                            @Html.ValidationMessage("partName")
+                        </fieldset>
+                    </form>
 
 
-            <form method="post" class="form-group">
-                <fieldset>
-                    @AntiForgery.GetHtml()
+                    <form method="post" class="form-group">
+                        <fieldset>
+                            @AntiForgery.GetHtml()
 
-                    <label for="partNo">Part Number: @partNo</label>
-                    <div class="form-inline">
-                        <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control">
-                        <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
-                    </div>
-                    @Html.ValidationMessage("partNo")
-                </fieldset>
-            </form>
+                            <label for="partNo">Part Number: @partNo</label>
+                            <div class="form-inline">
+                                <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control form-width-override">
+                                <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
+                            </div>
+                            @Html.ValidationMessage("partNo")
+                        </fieldset>
+                    </form>
 
-            @if(isRobot)
-            {
-                <form method="post" class="form-group">
-                    <fieldset>
-                        @AntiForgery.GetHtml()
-                        <h2>This quantity corresponds to robot: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
-                        <label for="quantity">Quantity: @quantity</label>
-                        <div class="form-inline">
-                            <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control">
-                            <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info">
-                        </div>
-                        @Html.ValidationMessage("quantity")
-                    </fieldset>
-                </form>
-            }
+                    @if(isRobot)
+                    {
+                        <form method="post" class="form-group">
+                            <fieldset>
+                                @AntiForgery.GetHtml()
+                                <h2>This quantity corresponds to robot: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
+                                <label for="quantity">Quantity: @quantity</label>
+                                <div class="form-inline">
+                                    <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control form-width-override">
+                                    <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info">
+                                </div>
+                                @Html.ValidationMessage("quantity")
+                            </fieldset>
+                        </form>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <img src="~/@tempPart.CoverPhoto" width="auto" height="100px" alt="photo"/>
+                    <form method="post" enctype="multipart/form-data" class="form-group">
+                        @Html.ValidationSummary()
+                        @FileUpload.GetHtml(
+                            initialNumberOfFiles: 1,
+                            allowMoreFilesToBeAdded: false,
+                            includeFormTag: false,
+                            uploadText: "Upload"
+                        )
+                        <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
+                            <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+                        </button>
+                    </form>   
+                </div>
+            </div>
         </div>
         
         <div class="row">

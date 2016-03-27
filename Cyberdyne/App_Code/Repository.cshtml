@@ -208,13 +208,6 @@
         public string CoverPhoto 
         {
             get{return coverPhoto;}
-            set{
-                var db = Database.Open("basicData");
-                string basicString = "DisplayImage?Id=";
-                coverPhoto = basicString + value;
-                db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", coverPhoto, partId);
-                db.Close();
-            }
         }
 
         public Part(int partId, string partName, string partNo, string coverPhoto)
@@ -288,6 +281,19 @@
             db.Execute("UPDATE PartReference SET Quantity = @0 WHERE RobotId = @1 AND PartId = @2", quantity, robotId, partId);
             db.Close();
         }
+
+        public void setCoverPhoto(int photoId)
+        {
+            var db = Database.Open("BasicData");
+            int currentId = Convert.ToInt32(coverPhoto.Substring(23));
+            db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", photoId, partId);
+                if(currentId != 1)
+                {
+                    db.Execute("DELETE FROM Photos WHERE PhotoId = @0", currentId);   
+                }
+            db.Close();
+        }
+        
     }
 
     public class Vendor
