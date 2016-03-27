@@ -245,13 +245,25 @@ label {
     max-height: 450px;
     width: auto;
     display:inline-block;
+    border:  none;    
+}
+
+a .featured_img {
     background: linear-gradient(rgba(9,0,0,0.9),rgba(9,0,0,0));
+      z-index:-1;
 }
 
 .featured_img img {
   position:relative;
-  z-index:-1;
+  border:  1px solid black;
   display:block;
+  max-height: 450px;
+}
+
+.homeGallery {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;   
 }
 
 .featured_text p {

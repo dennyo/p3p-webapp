@@ -71,10 +71,9 @@
             <h2 class="robot-title">@robotName</h2>  
         </div>        
         <div class="col-md-6">
-            <div class="gallery featured_img" style="background-image: url(@mainPhoto)">
-                <!--img src="@*mainPhoto*@" alt="photo" id="mainphoto" class="img-responsive" /-->
-                <p class="featured-glyph"></p>
-            </div>
+            <div class="gallery featured_img">
+                        <img class="img-responsive" src="@mainPhoto" />
+                    </div>
             @if (photos.Count() != 0)
             {
                 int count = 0;  
@@ -102,13 +101,13 @@
                                 if(count==0)
                                 {
                                     <div class="item active">
-                                        <img src="@photo"/>
+                                        <img src="~/@photo"/>
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="item">
-                                       <img src="@photo" />
+                                       <img src="~/@photo" />
                                     </div>
                                 }
                                 count++;

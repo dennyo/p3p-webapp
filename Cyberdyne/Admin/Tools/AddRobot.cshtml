@@ -38,26 +38,34 @@
             }
             if(Request.Files.Count > 0)
             {
-                var uploadedFile = Request.Files[0];
-                var fileName = Path.GetFileName(uploadedFile.FileName);
-                if(fileName != string.Empty)
+                var imageCount = Request.Files.Count;
+                for(int i=0;i< imageCount;i++)
                 {
-                    var fileType = uploadedFile.ContentType;
-                    if(fileType.StartsWith("image"))
+                    var uploadedFile = Request.Files[i];
+                    var fileName = Path.GetFileName(uploadedFile.FileName);
+                    if(fileName != string.Empty)
                     {
-                        var fileStream = uploadedFile.InputStream;
-                        var fileLength = uploadedFile.ContentLength;
-                        if(fileLength <= 4000000)
+                        var fileType = uploadedFile.ContentType;
+                        if(fileType.StartsWith("image"))
                         {
-                            byte[] fileContent = new byte[fileLength];
-                            fileStream.Read(fileContent, 0, fileLength);
-                            db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)",fileContent, fileType);
-                            int id = (int)db.GetLastInsertId();
-                            db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
-                            db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
+                            var fileStream = uploadedFile.InputStream;
+                            var fileLength = uploadedFile.ContentLength;
+                            if(fileLength <= 4000000)
+                            {
+                                byte[] fileContent = new byte[fileLength];
+                                fileStream.Read(fileContent, 0, fileLength);
+                                db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)",fileContent, fileType);
+                                int id = (int)db.GetLastInsertId();
+                                db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotID, id );
+                                if(i==0)
+                                {
+                                    db.Execute("UPDATE Robots SET PhotoID = @0 WHERE RobotID = @1", id, robotID);
+                                }                         
+                            }
                         }
-                    }
+                    } 
                 }
+                
             }
             else
             {
@@ -82,12 +90,11 @@
             <input disabled value="4000 characters left" id="counter">
             <br />
             <br />
-            <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Cover image*</label> @Html.ValidationMessage("Upload2") 
-            <p><span id="required">*More images can be added through edit robot</span></p> 
+            <label><span class="glyphicon glyphicon-picture"></span>&nbsp;Images*</label> @Html.ValidationMessage("Upload2") 
             <div class="margin-btw">
                 @FileUpload.GetHtml(
                 initialNumberOfFiles:1,
-                allowMoreFilesToBeAdded:false,
+                allowMoreFilesToBeAdded:true,
                 includeFormTag:false,
                 uploadText: "Upload2",
                 name: "Upload2")
