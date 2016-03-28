@@ -7,6 +7,8 @@
     var robotText = "";
     var videoLink = "";
     var threeDlink = "";
+    var codeLink = "";
+    var codeSnippet = "";
     bool succesPhoto = false;
 
     if(IsPost)
@@ -23,6 +25,8 @@
         if(Request.Form["robotText"] != null) {robotText = Request.Form["robotText"];} 
         if(Request.Form["videoLink"] != null) {videoLink= Request.Form["videoLink"];}
         if(Request.Form["threeDlink"] != null) {threeDlink= Request.Form["threeDlink"];}
+        if(Request.Form["codeLink"] != null) {codeLink= Request.Form["codeLink"];}
+        if(Request.Form["codeSnippet"] != null) {codeSnippet= Request.Form["codeSnippet"];}
         if(Validation.IsValid())
         {
             var db = Database.Open("basicData");
@@ -35,6 +39,14 @@
             if(threeDlink != "")
             {
                 db.Execute("INSERT INTO ThreeDFiles (RobotId, link) VALUES (@0,@1)", robotID, threeDlink);
+            }
+            if(codeLink != "")
+            {
+                db.Execute("INSERT INTO CodeLinks (RobotId, link) VALUES (@0,@1)", robotID, codeLink);
+            }
+            if(codeSnippet != "")
+            {
+                db.Execute("INSERT INTO CodeSnippets (RobotId, text) VALUES (@0,@1)", robotID, codeSnippet);
             }
             if(Request.Files.Count > 0)
             {
@@ -99,15 +111,21 @@
                 uploadText: "Upload2",
                 name: "Upload2")
             </div>
-            <label for="videoLink"><span class="glyphicon glyphicon-link"></span>&nbsp;Embedded video link</label>
+            <label for="videoLink"><span class="glyphicon glyphicon-film"></span> Embedded video link</label>
             <input type="text" id="videoLink" name="videoLink" value="@videoLink" class="form-control margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123"> <br/>
-            <label for="threeDlink"><span class="glyphicon glyphicon-link"></span>&nbsp;3D model link</label>
+            <label for="threeDlink"><span class="glyphicon glyphicon-link"></span> 3D model link</label>
             <input type="text" id="threeDlink" name="threeDlink" value="@threeDlink" class="form-control margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP"> <br/>
+            <label for="codeLink"><span class="glyphicon glyphicon-link"></span> Code link</label>
+            <input type="text" id="codeLink" name="codeLink" value="@codeLink" class="form-control margin-btw" placeholder="e.g. https://github.com/username/repository"> <br />
+            <label for="codeLink"><span class="glyphicon glyphicon-font"></span> Code Snippet</label>
+            <textarea onkeyup="textCounter(this, 'counter2',4000);" id="codeSnippet" name="codeSnippet" class="form-control" rows="8" placeholder="Provide a description for the robot">@codeSnippet</textarea>
+            <input disabled value="4000 characters left" id="counter2">
+            <br />
             @*<input type="submit" name="buttonUpload2" value="Submit" class="btn btn-default" /> *@
             <button type="submit" name="buttonUpload2" class="btn btn-default">
                 <span class="glyphicon glyphicon-save"></span> Upload
             </button>
-            <input type="hidden" name="buttonUpload2"> 
+            <input type="hidden" name="buttonUpload2"> <br /><br />
     </fieldset>
   </form>
 </div>

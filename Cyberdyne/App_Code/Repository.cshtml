@@ -172,6 +172,23 @@
                 return false;
             }
         }
+
+        //make links for robot
+        public static string makeLink(string link)
+        {
+        if(link.Length >= 5)
+        {
+            if(!link.Substring(0, 5).Contains("http"))
+            {
+                link = "https://" + link;
+            }
+        }
+        else
+        {
+            link = "";
+        }
+        return link;
+        }
     }
 
     public class Part

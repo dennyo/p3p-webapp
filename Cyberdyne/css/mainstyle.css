@@ -217,7 +217,7 @@ input[type="text"].form-width-override {
     text-decoration: none;
 }
 
-#counter {
+#counter, #counter2 {
     background-color: rgba(0,0,0,0);
     border:  none;
     color: white;
