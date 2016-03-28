@@ -87,7 +87,7 @@
             var data = db.Query("SELECT Id, link FROM CodeLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -119,7 +119,7 @@
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -135,7 +135,7 @@
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -523,4 +523,19 @@
         return names;
     }
     
+    public static string makeLink(string link)
+    {
+        if(link.Length >= 5)
+        {
+            if(!link.Substring(0, 5).Contains("http"))
+            {
+                link = "https://" + link;
+            }
+        }
+        else
+        {
+            link = "";
+        }
+        return link;
+    }
 }
