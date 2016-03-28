@@ -30,7 +30,7 @@
     else 
     {
         <p> @Html.Raw(intro.Replace("\n","<br />"))</p>
-        if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=1"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+        if(WebSecurity.IsAuthenticated){<a class="btn btn-warning editBtn "href="?edit=1"><span class="glyphicon glyphicon-wrench"></span> Edit text</a>}
     }
 
 </div>
