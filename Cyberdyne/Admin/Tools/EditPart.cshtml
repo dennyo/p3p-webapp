@@ -126,9 +126,17 @@
                 {
                     floatPrice = float.Parse(price);
                 }
-
-                tempPart.addVendor(vendorName, vendorLink, floatPrice, purchaseLink);
-                Response.Redirect(Request.Url.AbsoluteUri);
+                var vendorQuery = db.QuerySingle("SELECT * FROM Vendors WHERE LOWER(VendorName) = LOWER(@0) AND PartId = @1", vendorName, partId);
+                if(vendorQuery == null)
+                {
+                    tempPart.addVendor(vendorName, vendorLink, floatPrice, purchaseLink);
+                    db.Close();
+                    Response.Redirect(Request.Url.AbsoluteUri);
+                }
+                else
+                {
+                    ModelState.AddFormError("This Vendor already exists, please edit the existing vendor");
+                }
             }
         }
 
@@ -318,7 +326,9 @@
             </div>
         </div>
         
+        
         <div class="row">
+            @Html.ValidationSummary()
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addVendorCollapse">Add a Vendor</button>
             <div class="collapse" id="addVendorCollapse">
                 <form method="post" class="form-group">
@@ -355,63 +365,68 @@
             </div>
         </div>
         <br>
-        <div class="well row">
-            @foreach(Repository.Vendor vendor in Vendors)
-            {
-                <div class="row">
-                    @if(!partEdit)
-                    {
-                        <div class="col-xs-12 col-md-2 col-sm-6">Name: @vendor.Name</div>
-                        <div class="col-xs-12 col-md-2 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">Test</a></div>
-                        <div class="col-xs-12 col-md-2 col-sm-6">Price: €@vendor.Price</div>
-                        <div class="col-xs-12 col-md-2 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">Test</a></div>  
-                        <div class="col-xs-12 col-md-2 col-sm-6">
-                            <form method="post">
-                                @AntiForgery.GetHtml()
-                                <button type="submit" class="btn btn-warning" name="editVendor">
-                                    <span class="glyphicon glyphicon-wrench"></span> Edit
-                                </button>
-                                <input type="hidden" name="editVendorId" value="@vendor.VendorId"/>
-                            </form>
-                        </div> 
-                        <div class="col-xs-12 col-md-2 col-sm-6">
-                            <form method="post">
-                                @AntiForgery.GetHtml()
-                                <button type="submit" class="btn btn-danger" name="removeVendor">
-                                    <span class="glyphicon glyphicon-remove"></span> Remove
-                                </button>
-                                <input type="hidden" name="removeVendorId" value="@vendor.VendorId"/>
-                            </form>
-                        </div>
-                    }
-                    else
-                    {
-                        <form method="post">
-                            @AntiForgery.GetHtml()
-                            <div class="col-xs-12 col-md-2 col-sm-6">
-                                <input type="text" name="vendorName" id="vendorName" class="form-control form-width-override" value="@vendor.Name">
-                                @Html.ValidationMessage("vendorName")
-                            </div>
-                            <div class="col-xs-12 col-md-2 col-sm-6">
-                                <input type="text" name="vendorLink" id="vendorLink" class="form-control form-width-override" value="@vendor.Link">
-                                @Html.ValidationMessage("vendorLink")
-                            </div>
-                            <div class="col-xs-12 col-md-2 col-sm-6">
-                                <input type="text" name="price" id="price" class="form-control form-width-override" value="@vendor.Price">
-                                @Html.ValidationMessage("price")
-                            </div>
-                            <div class="col-xs-12 col-md-2 col-sm-6">
-                                <input type="text" name="purchaseLink" id="purchaseLink" class="form-control form-width-override" value="@vendor.PurchaseLink">
-                                @Html.ValidationMessage("purchaseLink")
-                            </div>  
-                            <div class="col-xs-12 col-md-4 col-sm-4">
-                                <button type="submit" class="btn btn-success" name="saveVendor"><span class="glyphicon glyphicon-save"></span> Save</button>
-                            </div>
-                            <input type="hidden" name="vendorId" value="@vendor.VendorId">
-                        </form>
-                    }  
-                </div>
-            }
+        <div class="panel panel-primary">
+            <div class="panel-heading">Vendors</div>
+            <div class="list-group">
+                @foreach(Repository.Vendor vendor in Vendors)
+                {
+                    <div class="list-group-item">
+                        <div class="row">
+                            @if(!partEdit)
+                            {
+                                <div class="col-xs-12 col-md-2 col-sm-6">Name: @vendor.Name</div>
+                                <div class="col-xs-12 col-md-2 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">Test</a></div>
+                                <div class="col-xs-12 col-md-2 col-sm-6">Price: €@vendor.Price</div>
+                                <div class="col-xs-12 col-md-2 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">Test</a></div>  
+                                <div class="col-xs-12 col-md-2 col-sm-6">
+                                    <form method="post">
+                                        @AntiForgery.GetHtml()
+                                        <button type="submit" class="btn btn-warning" name="editVendor">
+                                            <span class="glyphicon glyphicon-wrench"></span> Edit
+                                        </button>
+                                        <input type="hidden" name="editVendorId" value="@vendor.VendorId"/>
+                                    </form>
+                                </div> 
+                                <div class="col-xs-12 col-md-2 col-sm-6">
+                                    <form method="post">
+                                        @AntiForgery.GetHtml()
+                                        <button type="submit" class="btn btn-danger" name="removeVendor">
+                                            <span class="glyphicon glyphicon-remove"></span> Remove
+                                        </button>
+                                        <input type="hidden" name="removeVendorId" value="@vendor.VendorId"/>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <form method="post">
+                                    @AntiForgery.GetHtml()
+                                    <div class="col-xs-12 col-md-2 col-sm-6">
+                                        <input type="text" name="vendorName" id="vendorName" class="form-control form-width-override" value="@vendor.Name">
+                                        @Html.ValidationMessage("vendorName")
+                                    </div>
+                                    <div class="col-xs-12 col-md-2 col-sm-6">
+                                        <input type="text" name="vendorLink" id="vendorLink" class="form-control form-width-override" value="@vendor.Link">
+                                        @Html.ValidationMessage("vendorLink")
+                                    </div>
+                                    <div class="col-xs-12 col-md-2 col-sm-6">
+                                        <input type="text" name="price" id="price" class="form-control form-width-override" value="@vendor.Price">
+                                        @Html.ValidationMessage("price")
+                                    </div>
+                                    <div class="col-xs-12 col-md-2 col-sm-6">
+                                        <input type="text" name="purchaseLink" id="purchaseLink" class="form-control form-width-override" value="@vendor.PurchaseLink">
+                                        @Html.ValidationMessage("purchaseLink")
+                                    </div>  
+                                    <div class="col-xs-12 col-md-4 col-sm-4">
+                                        <button type="submit" class="btn btn-success" name="saveVendor"><span class="glyphicon glyphicon-save"></span> Save</button>
+                                    </div>
+                                    <input type="hidden" name="vendorId" value="@vendor.VendorId">
+                                </form>
+                            }
+                        </div>  
+                    </div>
+                }
+            </div>
         </div>
     }
     else

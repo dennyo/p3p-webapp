@@ -89,32 +89,38 @@
     @if(Roles.IsUserInRole("God"))
     {       
         var users = db.Query("SELECT * FROM UserProfile WHERE UserId != @0", WebSecurity.CurrentUserId);
-        <div class="well">
-            <div class="row">
-                <div class="col-xs-6"><strong>Name</strong></div>
-                <div class="col-xs-6"><a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a></div>
-            </div>
-            <br>
-            @foreach(var user in users)
-            {
-                string[] roles = Roles.GetRolesForUser(user.UserName);
-                if(!roles.Contains("God"))
-                {
-                    <div class="row">
-                        <div class="col-xs-6">@user.UserName</div>
-                        <div class="col-xs-6">
-                            <form method="post">
-                                <button type="submit" name="removeUser" id="removeUser" class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span> Remove
-                                </button>
-                                <input type="hidden" name="removeUserId" id="removeUserId" value="@user.UserId">
-                                <input type="hidden" name="removeUserName" id="removeUserName" value="@user.UserName">
-                            </form>
-                        </div>
-                    </div>
-                    <br>
-                }
-            }
+        <div class="panel panel-primary">
+            <div class="panel-heading">Users</div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 80%">User Name</th>
+                        <th><a href="~/Admin/Tools/Register" class="btn btn-success">Add new user</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var user in users)
+                    {
+                        string[] roles = Roles.GetRolesForUser(user.UserName);
+                        if(!roles.Contains("God"))
+                        {
+                            <tr>
+                                <td style="width: 80%">@user.UserName</td>
+                                <td>
+                                    <form method="post">
+                                        <button type="submit" name="removeUser" id="removeUser" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-remove"></span> Remove
+                                        </button>
+                                        <input type="hidden" name="removeUserId" id="removeUserId" value="@user.UserId">
+                                        <input type="hidden" name="removeUserName" id="removeUserName" value="@user.UserName">
+                                    </form>
+                                </td>
+                            </tr>   
+                        }
+                    }
+                </tbody>
+            </table>
         </div>
     }
 </div>

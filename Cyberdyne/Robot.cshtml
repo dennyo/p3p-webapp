@@ -213,18 +213,25 @@
     }
     @if(parts.Count > 0)
     {
-        <div class="col-md-12">
-            <div class="well row">
-                <div class="col-xs-6"><strong>Part</strong></div>
-                <div class="col-xs-6"><strong>Quantity</strong></div>
-                @foreach(var part in parts)
-                {
-                    <a href="~/Part?Id=@part.PartId">
-                        <div class="col-xs-6">@part.PartName</div>
-                        <div class="col-xs-6">@part.getQuantity(Convert.ToInt32(robotId))</div>
-                    </a>
-                }
-            </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Parts</div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td><strong>Part Name</strong></td>
+                        <td><strong>Quantity</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(Repository.Part part in parts)
+                    {
+                        <tr onclick="document.location = '/Part?Id=@part.PartId'">
+                            <td>@part.PartName</td>
+                            <td>@part.getQuantity(Convert.ToInt32(robotId))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     }
     </div>

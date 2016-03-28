@@ -23,35 +23,48 @@
                 <h2>Part No: @if(localPart.PartNo != null){@localPart.PartNo}else{<text>Not available</text>}</h2>
             </div>
         </div>   
-        <div class="well row">
-            <div class="col-xs-4"><strong>Vendor</strong></div>
-            <div class="col-xs-4"><strong>Price</strong></div>
-            <div class="col-xs-4"><strong>Buy</strong></div>
-            <br>
-            @foreach(var vendor in localPart.getVendors())
-            {
-                <div class="col-xs-4">
-                    @if(vendor.Link.IsEmpty())
-                    {
-                        <text>@vendor.Name</text>
-                    }
-                    else
-                    {
-                        <a href="@vendor.Link">@vendor.Name</a>
-                    }
-                </div>
-                <div class="col-xs-4">€@vendor.Price</div>
-                <div class="col-xs-4">
-                    @if(vendor.PurchaseLink.IsEmpty())
-                    {
-                        <text>No Link available</text>
-                    }
-                    else
-                    {
-                        <a href="@vendor.PurchaseLink">Here</a>
-                    }
-                </div>
-            }
+        <br>
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Vendors</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td><strong>Vendor</strong></td>
+                            <td><strong>Price</strong></td>
+                            <td><strong>Buy</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(Repository.Vendor vendor in localPart.getVendors())
+                        {
+                            <tr>
+                                <td>
+                                    @if(!vendor.Link.IsEmpty())
+                                    {
+                                        <a href="@vendor.Link" class="btn btn-link">@vendor.Name</a>
+                                    }
+                                    else
+                                    {
+                                        @vendor.Name
+                                    }
+                                </td>
+                                <td>€@vendor.Price</td>
+                                <td>
+                                    @if(!vendor.PurchaseLink.IsEmpty())
+                                    {
+                                        <a href="@vendor.PurchaseLink" class="btn btn-link">Buy Here</a>
+                                    }
+                                    else
+                                    {
+                                        <text>No link available</text>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     }
     else

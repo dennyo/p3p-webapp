@@ -193,9 +193,6 @@ input[type="text"], input[type="password"], #robotText {
 input[type="text"].form-width-override {
     min-width: 0px;
 }
-.table{    
-    margin: 0 20px 0 20px;
-}
 }
 
 .carousel-inner > .item > img,
@@ -225,10 +222,6 @@ input[type="text"].form-width-override {
 
 th {
     color: #292929;
-}
-
-.table {
-    color:  black;
 }
 
 label {
@@ -422,4 +415,16 @@ input[type="radio"] {
     left:0;
     width:100%;
     height:100%;
+}
+
+.list-group {
+    color: #000;
+}
+
+.table {
+    color: #000;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #BDBDBD;
 }
