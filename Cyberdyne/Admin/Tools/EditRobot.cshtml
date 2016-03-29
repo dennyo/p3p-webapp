@@ -297,7 +297,13 @@
 
 
 <div class="col-md-12">
-<h1>Edit robot</h1><span id="required">* Required Fields</span>
+<h1>Edit robot</h1>
+<div class="col-xs-6 col-sm-2">
+    <a href="~/Robot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+</div>
+<br/>
+<br/>
+<span id="required">* Required Fields</span>
     <form method="post" class="form-inline"> @* mist nog form ID *@
         <fieldset>
             @AntiForgery.GetHtml()
