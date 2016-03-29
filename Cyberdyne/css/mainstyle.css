@@ -256,7 +256,6 @@ label {
 
 .featured_img, .robotimg {
     max-height: 450px;
-    width: 100%;
     display: inline-block;
     border:  none;  
     position: relative;
