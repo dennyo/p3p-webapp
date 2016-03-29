@@ -142,11 +142,7 @@
         @foreach(string photo in photos)
         {
             <div class="photogalleryItem">
-<<<<<<< HEAD
-                <img src="@photo?size=medium" alt="photo"/>
-=======
-                <img src="/@photo" alt="photo" class="img-responsive"/>
->>>>>>> 5ba52ae337729d9b130746505d3ff385a80865e5
+                <img src="@photo?size=medium" alt="photo" class="img-responsive"/>
                 <div class="galleyTools">
                     <form method="post">
                         @AntiForgery.GetHtml()
