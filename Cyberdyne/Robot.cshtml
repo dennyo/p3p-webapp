@@ -12,6 +12,7 @@
     List<string[]> codeSnippets = new List<string[]>();
     List<string[]> threeDLinks = new List<string[]>();
     List<string[]> videoLinks = new List<string[]>();
+    List<Repository.Part> parts = new List<Repository.Part>();
 
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) 
     {
@@ -28,6 +29,7 @@
             codeSnippets = tempRobot.getCodeSnippets();
             threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
+            parts = tempRobot.getParts();
         }
         else
         {
@@ -69,9 +71,9 @@
             <h2 class="robot-title">@robotName</h2>  
         </div>        
         <div class="col-md-6">
-            <div class="gallery featured_img" style="background-image: url(@mainPhoto)">
-                <!--img src="@*mainPhoto*@" alt="photo" id="mainphoto" class="img-responsive" /-->
-                <p class="featured-glyph"></p>
+            <div class="gallery robotimg">
+                <div class="gradient"></div>
+                <img class="img-responsive" src="@mainPhoto" alt="mainPhoto"/>
             </div>
             @if (photos.Count() != 0)
             {
@@ -100,13 +102,13 @@
                                 if(count==0)
                                 {
                                     <div class="item active">
-                                        <img src="@photo"/>
+                                        <img src="~/@photo" alt="photo"/>
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="item">
-                                       <img src="@photo" />
+                                       <img src="~/@photo" alt="photo"/>
                                     </div>
                                 }
                                 count++;
@@ -147,66 +149,92 @@
     <div class="col-md-12">
     @if (codeSnippets.Count() != 0 || videoLinks.Count() != 0 || threeDLinks.Count() != 0 || codeLinks.Count() != 0) 
     {
-        if (codeSnippets.Count() != 0)
-        {
-            <div class="col-md-6">
-                <div class="box-padding">
-                    <h2 class="box-title">Code Snippets</h2>
-                    @foreach (string[] codeSnippet in codeSnippets)
-                    {
-                        <div class="content-padding">
-                            <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
-                        </div>
-                    }
+        <div class="row">
+            @if (codeSnippets.Count() != 0)
+            {
+                <div class="col-md-6">
+                    <div class="box-padding">
+                        <h2 class="box-title">Code Snippets</h2>
+                        @foreach (string[] codeSnippet in codeSnippets)
+                        {
+                            <div class="content-padding">
+                                <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
-        if (videoLinks.Count() != 0)
-        {
-            <div class="col-md-6">
-                <div class="box-padding">
-                    <h2 class="box-title">Videos</h2>
-                    @foreach (string[] video in videoLinks)
-                    {
-                        <div class="content-padding">
-                            <iframe width="420" height="345"
-                            src="@video[1]">
-                            </iframe>
-                        </div>
-                    }
+            }
+            @if (videoLinks.Count() != 0)
+            {
+            
+                <div class="col-md-6">
+                    <div class="box-padding">
+                        <h2 class="box-title">Videos</h2>
+                        @foreach (string[] video in videoLinks)
+                        {
+                            <div class="content-padding">
+                                <div class="h_iframe">
+                                    <iframe height="2" width="2" src="@video[1]"></iframe>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
-        if (threeDLinks.Count() != 0)
-        {
-            <div class="col-md-6">
-                <div class="box-padding">
-                    <h2 class="box-title">3D view</h2>
-                    @foreach (string[] threeDLink in threeDLinks)
-                    {
-                        <div class="content-padding">
-                            <iframe width="420" height="345"
-                            src="@threeDLink[1]">
-                            </iframe>
-                        </div>
-                    }
+            }
+            @if (threeDLinks.Count() != 0)
+            {
+                <div class="col-md-6">
+                    <div class="box-padding">
+                        <h2 class="box-title">3D view</h2>
+                        @foreach (string[] threeDLink in threeDLinks)
+                        {
+                            <div class="content-padding">
+                                <iframe width="420" height="345"
+                                src="@threeDLink[1]">
+                                </iframe>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
-        if (codeLinks.Count() != 0)
-        {
-            <div class="col-md-6">
-                <div class="box-padding">
-                    <h2 class="box-title">Web links</h2>  
-                    @foreach (string[] codeLink in codeLinks)
-                    {
-                        <div class="content-padding">
-                            <A HREF="@codeLink[1]">@codeLink[1]</A>
-                        </div>
-                    }
+            }
+            @if (codeLinks.Count() != 0)
+            {
+                <div class="col-md-6">
+                    <div class="box-padding">
+                        <h2 class="box-title">Web links</h2>  
+                        @foreach (string[] codeLink in codeLinks)
+                        {
+                            <div class="content-padding">
+                                <A HREF="@codeLink[1]">@codeLink[1]</A>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }  
+            }
+        </div>  
+    }
+    @if(parts.Count > 0)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">Parts</div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td><strong>Part Name</strong></td>
+                        <td><strong>Quantity</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(Repository.Part part in parts)
+                    {
+                        <tr onclick="document.location = '/Part?Id=@part.PartId'">
+                            <td>@part.PartName</td>
+                            <td>@part.getQuantity(Convert.ToInt32(robotId))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
     </div>
 }

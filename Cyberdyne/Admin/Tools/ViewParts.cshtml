@@ -8,6 +8,7 @@
 
     List<Repository.Part> parts = Repository.getAllParts();
     var partName = "";
+    string message = "";
     bool isRobot = false;
 
     if(!RobotId.IsEmpty() && RobotId.IsInt())
@@ -33,9 +34,18 @@
         partName = Request.Form["partName"];
         if(Validation.IsValid())
         {
-            db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);
-            db.Close();
+            var part = db.QuerySingle("SELECT * FROM Parts WHERE PartName = @0", partName);
+
+            if(part == null)
+            {
+                db.Execute("INSERT INTO Parts (PartName, PhotoId) VALUES (@0, 1)", partName);  
+            }
+            else
+            {
+                message = "This part already exists"; 
+            }
         }
+        db.Close();
         Response.Redirect(Request.Url.AbsoluteUri);
     }
 
@@ -62,6 +72,7 @@
             ModelState.AddFormError("This Item does not exist in your list");
         }
     }
+
     if(IsPost && (Request.Form["addToRobot"] != null || Request.Form["removeFromRobot"] != null))
     {
         var tempId = Request.Form["selectedItemId"];
@@ -74,12 +85,6 @@
         {
             db.Execute("DELETE FROM PartReference WHERE PartId = @0 AND RobotId = @1", tempId, RobotId);
         }
-    }
-    if(IsPost && Request.Form["toggleQuantityEdit"] != null)
-    {
-        var tempId = Request.Form["editQuantityId"];
-        var quantity = Request.Form["editQuantity"];
-        db.Execute("UPDATE Quantity FROM PartReference WHERE PartId = @0 AND RobotId = @1", tempId, RobotId);
     }
     db.Close();
 }
@@ -103,77 +108,87 @@
         }
     <div class="col-md-12" style="clear: both">
         <form method="post">
-            <fieldset>
-                @AntiForgery.GetHtml()
-                <h1>Add Part</h1>
-                <div class="form-group">
-                    <label for="partName">Name:</label>
-                    <input type="text" id="partName" name="partName" value="@partName" class="form-control">
-                </div>
-                @Html.ValidationMessage("partName")
-                <div class="form-group">
-                    <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
-                </div>
-            </fieldset>
-        </form>
-        <h2>Parts</h2>
-        <div class="well">
-            @foreach(Repository.Part part in parts)
-            { 
-                <div class="row"> 
-                    <div class="col-xs-12 col-md-3 col-sm-6">Name: @part.PartName</div>
-                    <div class="col-xs-12 col-md-3 col-sm-6">Prices: @Repository.getPart(part.PartId).getVendors().Count</div>
-                    @if(isRobot)
-                    {
-                        @*<div class="col-md-2 col-xs-12 col-sm-4">
-                            <form method="post" class="form-inline">
-                                <label for="editQuantity">Quantity:</label>
-                                <input type="text" id="editQuantity" name="editQuantity" value="@part.getQuantity(Convert.ToInt32(RobotId))" class="form-control">
-                                <input type="hidden" id="editQuantityId" name="editQuantityId" value="@part.PartId">
-                                <button type="submit" name="toggleQuantityEdit" class="btn btn-info">
-                                    <span class="glyphicon glyphicon-pencil"></span> Set
-                                </button>
-                            </form>
-                        </div>*@
-                             
-                        <div class="col-md-2 col-xs-12 col-sm-4">
-                            <form method="post" id="addRemove">
-                            @{
-                                var data = Database.Open("basicData");
-                                var queryData = db.QuerySingle("SELECT PartId FROM PartReference WHERE PartId = @0 AND RobotId = @1", part.PartId, RobotId);
-                                data.Close();
-                                if(queryData == null)
-                                {
-                                    <button type="submit" name="addToRobot" class="btn btn-success editBtn">
-                                    <span class="glyphicon glyphicon-plus"></span> Add to robot
-                                    </button>
-                                    <input type="hidden" name="selectedItemId" value="@part.PartId">
-                                }
-                                else
-                                {
-                                    <button type="submit" name="removeFromRobot" class="btn btn-primary editBtn">
-                                        <span class="glyphicon glyphicon-remove"></span> Remove from robot
-                                    </button>
-                                    <input type="hidden" name="selectedItemId" value="@part.PartId">
-                                }
-                             }
-                            </form>
-                        </div>   
-                    } 
-                    <div class="col-md-2 col-xs-12 col-sm-4">
-                        <a href="Editpart?id=@part.PartId" class="btn btn-warning editBtn"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
-                    </div>                                
-                    <div class="col-md-2 col-xs-12 col-sm-4">
-                        <form method="post">
-                            @AntiForgery.GetHtml()
-                            <button type="submit" name="removeItem" class="btn btn-danger editBtn">
-                                <span class="glyphicon glyphicon-remove"></span> Delete part
-                            </button>
-                            <input type="hidden" name="itemIdRemove" value="@part.PartId"> 
-                         </form>
-                    </div>       
-              </div>
+            @Html.ValidationSummary("there are some errors", excludeFieldErrors: true, htmlAttributes: null)
+            @AntiForgery.GetHtml()
+            <h1>Add Part</h1>
+            <div class="form-group">
+                <label for="partName">Name:</label>
+                <input type="text" id="partName" name="partName" value="@partName" class="form-control">
+            </div>
+            @if(!message.IsEmpty())
+            {
+                <text>@message</text> 
             }
+            <div class="form-group">
+                <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+            </div>
+        </form>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Parts</div>
+            <div class="list-group">
+                @foreach(Repository.Part part in parts)
+                {
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-2 col-sm-4">Name: @part.PartName</div>
+                            <div class="col-xs-12 col-md-2 col-sm-4">Prices: @Repository.getPart(part.PartId).getVendors().Count</div>
+                            @if(isRobot)
+                            {
+                                <div class="col-xs-12 col-md-2 col-sm-4">Quantity: @part.getQuantity(Convert.ToInt32(RobotId))</div>
+                            }
+                            @if(isRobot)
+                            {                            
+                                <div class="col-md-2 col-xs-12 col-sm-4">
+                                    <form method="post" id="addRemove">
+                                    @{
+                                        var data = Database.Open("basicData");
+                                        var queryData = db.QuerySingle("SELECT PartId FROM PartReference WHERE PartId = @0 AND RobotId = @1", part.PartId, RobotId);
+                                        data.Close();
+                                        if(queryData == null)
+                                        {
+                                            <button type="submit" name="addToRobot" class="btn btn-success editBtn">
+                                            <span class="glyphicon glyphicon-plus"></span> Add to robot
+                                            </button>
+                                            <input type="hidden" name="selectedItemId" value="@part.PartId">
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" name="removeFromRobot" class="btn btn-primary editBtn">
+                                                <span class="glyphicon glyphicon-remove"></span> Remove from robot
+                                            </button>
+                                            <input type="hidden" name="selectedItemId" value="@part.PartId">
+                                        }
+                                     }
+                                    </form>
+                                </div>   
+                            } 
+                            @if(isRobot)
+                            {
+                                 <div class="col-md-2 col-xs-12 col-sm-4">
+                                    <a href="Editpart?id=@part.PartId&RobotId=@RobotId" class="btn btn-warning editBtn"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
+                                </div>   
+                            }
+                            else
+                            {
+                                <div class="col-md-2 col-xs-12 col-sm-4 col-md-offset-2">
+                                    <a href="Editpart?id=@part.PartId" class="btn btn-warning editBtn"><span class="glyphicon glyphicon-wrench"></span> Edit</a>
+                                </div>      
+                            }                        
+                            <div class="col-md-2 col-xs-12 col-sm-4">
+                                <form method="post">
+                                    @AntiForgery.GetHtml()
+                                    <button type="submit" name="removeItem" class="btn btn-danger editBtn">
+                                        <span class="glyphicon glyphicon-remove"></span> Delete part
+                                    </button>
+                                    <input type="hidden" name="itemIdRemove" value="@part.PartId"> 
+                                 </form>
+                            </div>
+                        </div>     
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
+

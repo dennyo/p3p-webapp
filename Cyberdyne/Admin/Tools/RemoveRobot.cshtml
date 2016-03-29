@@ -38,10 +38,17 @@
                     {
                         db.Execute("DELETE FROM Photos WHERE PhotoId = @0", photo.PhotoId);
                     }
+                    var favRobot = db.QueryValue("SELECT RobotId FROM FavouriteRobot");
                     db.Execute("DELETE FROM Robots WHERE RobotId = @0", robotId);   
+                    if (favRobot == Convert.ToInt32(robotId))
+                    {
+                        var newFav = db.QueryValue("SELECT MAX(RobotId) FROM Robots");
+                        db.Execute("UPDATE FavouriteRobot SET RobotId = @0", newFav);
+                    }
                 }
 
                 db.Close();
+                Response.Redirect("~/Gallery");
             }
         } 
     }  
@@ -52,7 +59,7 @@
         <p>Are you sure you want to delete this robot? This can NOT be undone.</p>     
         <div class="col-md-4">
             <div>
-                <img src="@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
+                <img src="~/@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
         <div class="col-md-8">

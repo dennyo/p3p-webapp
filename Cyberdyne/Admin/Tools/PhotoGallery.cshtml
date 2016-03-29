@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+
+    Page.Title = "Photos";
+
+    List<string> photos = Repository.getAllPhotos();
+    bool isRobot = false;
+    Repository.Robot robot = new Repository.Robot(0, "", "", "");
+
+    int robotId = Request.QueryString["Id"].AsInt();
+
+    if(robotId != 0)
+    {
+        if(Repository.getRobot(robotId) != null)
+        {
+            isRobot = true;
+            robot = Repository.getRobot(robotId);
+        }
+    }
+
+    if(IsPost && Request.Form["addPhoto"] != null && isRobot)
+    {
+        AntiForgery.Validate();
+        if(Validation.IsValid())
+        {
+            var photoId = Request.Form["PhotoId"].AsInt();
+            if(Request.Form["robotState"].AsBool() == true)
+            {
+                //remove Photo from robot 
+                robot.removePhoto(photoId);
+            }
+            else
+            {
+                //add photo to robot
+                robot.addPhoto(photoId);
+            }
+            Response.Redirect(Request.Url.AbsoluteUri);   
+        }
+    }
+
+    if(IsPost && Request.Form["removePhoto"] != null)
+    {
+        AntiForgery.Validate();
+        if(Validation.IsValid())
+        {
+            var photoId = Request.Form["PhotoId"].AsInt();
+            var db = Database.Open("basicData");
+            var photo = db.QuerySingle("SELECT PhotoId FROM Photos WHERE PhotoId = @0", photoId);
+            if(photos != null)
+            {
+                db.Execute("UPDATE Robots SET PhotoId = 1 WHERE PhotoId = @0", photoId);
+                db.Execute("DELETE FROM PhotoReference WHERE PhotoId = @0 AND PhotoId != 1", photoId);
+                db.Execute("DELETE FROM Photos WHERE PhotoId = @0 AND PhotoId != 1", photoId);
+                db.Close();
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+
+            db.Close();
+        }
+    }
+
+    if(IsPost && Request.Form["addPhoto"] != null)
+    {
+        if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
+        else
+        {
+            if(!Request.Files[0].ContentType.StartsWith("image")){Validation.AddFormError("The given file is not an image");}
+            if(Request.Files[0].ContentLength > 4000000){Validation.AddFormError("The file cannot exeed 4MB");}   
+        }
+        if(Validation.IsValid())
+        {
+            var db = Database.Open("basicData");
+            for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
+            {
+                var uploadedFile = Request.Files[imageCount];
+                var fileName = Path.GetFileName(uploadedFile.FileName);
+                if(fileName != String.Empty)
+                {
+                    var fileType = uploadedFile.ContentType;
+                    if(fileType.StartsWith("image"))
+                    {
+                        var fileStream = uploadedFile.InputStream;
+                        var fileLength = uploadedFile.ContentLength;
+                        if(fileLength <= 4000000)
+                        {
+                            byte[] fileContent = new byte[fileLength];
+                            fileStream.Read(fileContent, 0, fileLength);
+                            db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)", fileContent, fileType);
+                            db.Close();
+                            Response.Redirect(Request.Url.AbsoluteUri);
+                        }        
+                    }
+                    else
+                    {
+                        Validation.AddFormError("The file is not an image");
+                    }
+                }
+            }
+            db.Close();
+            Response.Redirect(Request.Url.AbsoluteUri);
+        }
+    }
+}
+
+
+<div class="col-md-12">
+    <div class="row">
+        @if(isRobot)
+        {
+            <div class="col-xs-6 col-sm-2">
+                <a href="~/Admin/Tools/EditRobot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+            </div> 
+            <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-6  col-sm-offset-10 col-sm-2 floatBtn">
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+            </div>  
+        }
+    </div>
+    @if(isRobot)
+    {
+        <h1>Select Photos for @robot.RobotName</h1>
+    }
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+            @FileUpload.GetHtml(
+                initialNumberOfFiles:1,
+                allowMoreFilesToBeAdded:true,
+                includeFormTag:false,
+                name: "Upload"
+            )
+            <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
+                <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+            </button>
+        </form>
+    </div>
+    <div class="row">
+        @foreach(string photo in photos)
+        {
+            <div class="photogalleryItem">
+                <img src="/@photo" alt="photo"/>
+                <div class="galleyTools">
+                    <form method="post">
+                        @AntiForgery.GetHtml()
+                        @if(isRobot)
+                        {
+                            if(robot.hasPhoto(photo.Substring(16).AsInt()))
+                            {
+                                <button name="addPhoto" type="submit" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-plus"></span> Remove from Robot
+                                </button>
+                                <input type="hidden" name="robotState" value="true">
+                            }
+                            else
+                            {
+                                <button name="addPhoto" type="submit" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-plus"></span> Add to Robot
+                                </button>
+                                <input type="hidden" name="robotState" value="false">
+                            }
+                        }
+                        <button name="removePhoto" type="submit" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Delete
+                        </button>
+                        <input type="hidden" value="@photo.Substring(16)" name="PhotoId"/>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

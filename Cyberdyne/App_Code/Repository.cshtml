@@ -87,7 +87,7 @@
             var data = db.Query("SELECT Id, link FROM CodeLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -119,7 +119,7 @@
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -135,7 +135,7 @@
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), row.link});
+                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
             }
 
             db.Close();
@@ -155,6 +155,73 @@
             }
             db.Close();
             return partList;
+        }
+
+        //check if robot is favourite
+        public bool isFavourite()
+        {
+            var db = Database.Open("basicData");
+            var fav = db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+            db.Close();
+            if(fav == RobotId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //make links for robot
+        public static string makeLink(string link)
+        {
+            if(link.Length >= 5)
+            {
+                if(!link.Substring(0, 5).Contains("http"))
+                {
+                    link = "https://" + link;
+                }
+            }
+            else
+            {
+                link = "";
+            }
+            return link;
+        }
+
+        //return if the robot already has a given photo
+        public bool hasPhoto(int photoId)
+        {
+            var db = Database.Open("basicData");
+            var photo = db.QuerySingle("SELECT * FROM PhotoReference WHERE PhotoId = @0 AND RobotId = @1", photoId, robotId);
+            db.Close();
+            if(photo != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void addPhoto(int photoId)
+        {
+            var db = Database.Open("basicData");
+            var photo = db.QuerySingle("SELECT PhotoId FROM Photos WHERE PhotoId = @0", photoId);
+            if(photo != null && !hasPhoto(photoId)) 
+            {
+                db.Execute("INSERT INTO PhotoReference (PhotoId, RobotId) VALUES (@0, @1)", photoId, robotId);
+            }
+            db.Close();
+        }
+
+        public void removePhoto(int photoId)
+        {
+            var db = Database.Open("basicData");
+            db.Execute("DELETE FROM PhotoReference WHERE PhotoId = @0 AND RobotId = @1", photoId, robotId);
+            db.Close();
         }
     }
 
@@ -192,13 +259,6 @@
         public string CoverPhoto 
         {
             get{return coverPhoto;}
-            set{
-                var db = Database.Open("basicData");
-                string basicString = "DisplayImage?Id=";
-                coverPhoto = basicString + value;
-                db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", coverPhoto, partId);
-                db.Close();
-            }
         }
 
         public Part(int partId, string partName, string partNo, string coverPhoto)
@@ -265,6 +325,26 @@
                 return 0;
             }
         }
+
+        public void setQuantity(int robotId, int quantity)
+        {
+            var db = Database.Open("basicData");
+            db.Execute("UPDATE PartReference SET Quantity = @0 WHERE RobotId = @1 AND PartId = @2", quantity, robotId, partId);
+            db.Close();
+        }
+
+        public void setCoverPhoto(int photoId)
+        {
+            var db = Database.Open("BasicData");
+            int currentId = Convert.ToInt32(coverPhoto.Substring(23));
+            db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", photoId, partId);
+                if(currentId != 1)
+                {
+                    db.Execute("DELETE FROM Photos WHERE PhotoId = @0", currentId);   
+                }
+            db.Close();
+        }
+        
     }
 
     public class Vendor
@@ -476,5 +556,57 @@
         Vendor tempVendor = new Vendor(vendorData.VendorName, vendorData.VendorLink, (float)vendorData.Price, vendorData.PartId, vendorData.PurchaseLink, vendorData.VendorId);
         db.Close();
         return tempVendor;
+    }
+
+    public static Robot getFavRobot() 
+    {
+        var db = Database.Open("basicData");
+        var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+        var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
+        Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId.ToString());
+        db.Close();
+        return favRobot;
+    }
+
+    public static string[] Names()
+    {
+        string[] names = new string[]{"Schweizer", "Easter", "Bunny", "Schweizenator"};
+        return names;
+    }
+    
+    public static string makeLink(string link)
+    {
+        if(link.Length >= 5)
+        {
+            if(!link.Substring(0, 5).Contains("http"))
+            {
+                link = "https://" + link;
+            }
+        }
+        else
+        {
+            link = "";
+        }
+        return link;
+    }
+
+    public static List<string> getAllPhotos()
+    {
+        var db = Database.Open("basicData");
+        List<string> tempList = new List<string>();
+        
+        var queryData = db.Query("SELECT PhotoId FROM Photos WHERE PhotoId != 1");
+
+        foreach(var photo in queryData)
+        {
+            var partPhoto = db.QuerySingle("SELECT PhotoId FROM Parts WHERE PhotoId = @0", photo.PhotoId);
+            if(partPhoto == null)
+            {
+                tempList.Add("DisplayImage?Id=" + photo.PhotoId);
+            }
+        }
+
+        db.Close(); 
+        return tempList;
     }
 }
