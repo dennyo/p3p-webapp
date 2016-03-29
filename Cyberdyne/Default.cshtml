@@ -52,8 +52,8 @@
     @foreach (Repository.Robot robot in robots)
     {
     <div class="col-md-6">
-        <a href="~/Robot?Id=@robot.RobotId" id="linkIgnore">
-            <div class="gallery homeGallery" style="background-image: url(@robot.CoverImage?size=large)">
+        <a href="/Robot?Id=@robot.RobotId" id="linkIgnore">
+            <div class="gallery homeGallery" style="background-image: url(@App.Thumbnail@robot.CoverImage?size=large)">
                 <h2>@robot.RobotName</h2>
             </div>
         </a>

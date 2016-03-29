@@ -4,7 +4,7 @@
         private int robotId;
         private string robotName;
         private string robotText;
-        private string coverImage;
+        private int coverImage;
 
         public int RobotId
         {
@@ -30,12 +30,12 @@
                 db.Close();
             }
         }
-        public string CoverImage
+        public int CoverImage
         {
             get{return coverImage;}
         }
 
-        public Robot(int robotId, string robotName, string robotText, string coverImage)
+        public Robot(int robotId, string robotName, string robotText, int coverImage)
         {
             this.robotId = robotId;
             this.robotName = robotName;
@@ -44,14 +44,14 @@
         }
 
         //return list with photo links corresponded with this robot
-        public List<string> getPhotos()
+        public List<int> getPhotos()
         {
-            List<string> PhotoIDs = new List<string>();
+            List<int> PhotoIDs = new List<int>();
             var db = Database.Open("basicData");
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
-                PhotoIDs.Add("/Photos/Thumbnail.cshtml/" + row.PhotoId);
+                PhotoIDs.Add(row.PhotoId);
             }
             db.Close();
             return PhotoIDs;
@@ -144,7 +144,7 @@
             foreach(var part in partIds)
             {
                 var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", part.PartId);
-                partList.Add(new Part(partData.PartId, partData.PartName, partData.PartNo, Convert.ToString(partData.PhotoId)));
+                partList.Add(new Part(partData.PartId, partData.PartName, partData.PartNo, partData.PhotoId));
             }
             db.Close();
             return partList;
@@ -173,7 +173,7 @@
             {
                 if(!link.Substring(0, 5).Contains("http"))
                 {
-                    link = "https://" + link;
+                    link = "http://" + link;
                 }
             }
             else
@@ -223,7 +223,7 @@
         private int partId;
         private string partName;
         private string partNo;
-        private string coverPhoto;
+        private int coverPhoto;
 
         public int PartId
         {
@@ -249,12 +249,22 @@
                 db.Close();
             }
         }
-        public string CoverPhoto 
+        public int CoverPhoto 
         {
             get{return coverPhoto;}
+            set{
+                var db = Database.Open("BasicData");
+                int currentId = coverPhoto;
+                db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", value, partId);
+                    if(currentId != 1)
+                    {
+                        db.Execute("DELETE FROM Photos WHERE PhotoId = @0", currentId);   
+                    }
+                db.Close();
+            }
         }
 
-        public Part(int partId, string partName, string partNo, string coverPhoto)
+        public Part(int partId, string partName, string partNo, int coverPhoto)
         {
             this.partId = partId;
             this.partName = partName;
@@ -324,20 +334,7 @@
             var db = Database.Open("basicData");
             db.Execute("UPDATE PartReference SET Quantity = @0 WHERE RobotId = @1 AND PartId = @2", quantity, robotId, partId);
             db.Close();
-        }
-
-        public void setCoverPhoto(int photoId)
-        {
-            var db = Database.Open("BasicData");
-            int currentId = Convert.ToInt32(coverPhoto.Substring(23));
-            db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", photoId, partId);
-                if(currentId != 1)
-                {
-                    db.Execute("DELETE FROM Photos WHERE PhotoId = @0", currentId);   
-                }
-            db.Close();
-        }
-        
+        }        
     }
 
     public class Vendor
@@ -366,18 +363,7 @@
             set{
                 var db = Database.Open("basicData");
                 link = value;
-                if(link.Length >= 5)
-                {
-                    if(!link.Substring(0, 5).Contains("http"))
-                    {
-                        link = "https://" + link;
-                    }
-                }
-                else
-                {
-                    link = "";
-                }
-                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", link, vendorId);
+                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", makeLink(link), vendorId);
                 db.Close();
             }
         }
@@ -399,18 +385,7 @@
             set{
                 var db = Database.Open("basicData");
                 purchaseLink = value;
-                if(purchaseLink.Length >= 5)
-                {
-                    if(!purchaseLink.Substring(0, 5).Contains("http"))
-                    {
-                        purchaseLink = "https://" + purchaseLink;
-                    }
-                }
-                else
-                {
-                    purchaseLink = "";
-                }
-                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", purchaseLink, vendorId);
+                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", makeLink(purchaseLink), vendorId);
                 db.Close();
             }
         }
@@ -429,33 +404,11 @@
 
         public Vendor(string name, string link, float price, int partId, string purchaseLink, int vendorId)
         {
-            if(link.Length >= 5)
-            {
-                if(!link.Substring(0, 5).Contains("http"))
-                {
-                    link = "https://" + link;
-                }
-            }
-            else
-            {
-                link = "";
-            }
-            if(purchaseLink.Length >= 5)
-            {
-                if(!purchaseLink.Substring(0, 8).Contains("http"))
-                {
-                    purchaseLink = "https://" + purchaseLink;
-                }
-            }
-            else
-            {
-                purchaseLink = "";
-            }
             this.name = name;
-            this.link = link;
+            this.link = makeLink(link);
             this.price = price;
             this.partId = partId;
-            this.purchaseLink = purchaseLink;
+            this.purchaseLink = makeLink(link);
             this.vendorId = vendorId;
         }
     }
@@ -466,7 +419,7 @@
         var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
         if(robotQuery != null)
         {
-            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, "/Photos/Thumbnail.cshtml/" + robotQuery.PhotoId);
+            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, robotQuery.PhotoId);
             db.Close();
             return robotObject;
         }
@@ -483,7 +436,7 @@
         var robotQuery = db.Query("SELECT * FROM Robots WHERE RobotId = @0 OR RobotId = @1 ORDER BY RobotID DESC", subQuery1, subQuery2);
         foreach(var row in robotQuery)
         {
-            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, row.PhotoId));
         }
         db.Close();
         return robotList;
@@ -496,7 +449,7 @@
         var robotQuery = db.Query("SELECT * FROM Robots");
         foreach(var row in robotQuery)
         {
-            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, row.PhotoId));
         }
         db.Close();
         return robotList;
@@ -508,7 +461,7 @@
         var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", partId);
         if(partData != null)
         {
-            Part tempPart = new Part(partId, partData.PartName, partData.PartNo, "/Photos/Thumbnail.cshtml/" + partData.PhotoId);
+            Part tempPart = new Part(partId, partData.PartName, partData.PartNo, partData.PhotoId);
             db.Close();
             return tempPart;
         }
@@ -523,7 +476,7 @@
         var partData = db.Query("SELECT * FROM Parts");
         foreach(var row in partData)
         {
-            partList.Add(new Part(row.PartId, row.PartName, row.PartNo, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
+            partList.Add(new Part(row.PartId, row.PartName, row.PartNo, row.PhotoId));
         }
         db.Close();
         return partList;
@@ -556,7 +509,7 @@
         var db = Database.Open("basicData");
         var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
         var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
-        Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId.ToString());
+        Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId);
         db.Close();
         return favRobot;
     }
@@ -583,10 +536,10 @@
         return link;
     }
 
-    public static List<string> getAllPhotos()
+    public static List<int> getAllPhotos()
     {
         var db = Database.Open("basicData");
-        List<string> tempList = new List<string>();
+        List<int> tempList = new List<int>();
         
         var queryData = db.Query("SELECT PhotoId FROM Photos WHERE PhotoId != 1");
 
@@ -595,10 +548,9 @@
             var partPhoto = db.QuerySingle("SELECT PhotoId FROM Parts WHERE PhotoId = @0", photo.PhotoId);
             if(partPhoto == null)
             {
-                tempList.Add("/Photos/Thumbnail.cshtml/" + photo.PhotoId);
+                tempList.Add(photo.PhotoId);
             }
         }
-
         db.Close(); 
         return tempList;
     }
