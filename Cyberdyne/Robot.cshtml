@@ -5,9 +5,9 @@
 
     var robotId = "";
     var robotName = "";
-    var mainPhoto = "";
+    int mainPhoto = 1;
     var robotText = "";
-    List<string> photos = new List<string>();
+    List<int> photos = new List<int>();
     List<string[]> codeLinks = new List<string[]>();
     List<string[]> codeSnippets = new List<string[]>();
     List<string[]> threeDLinks = new List<string[]>();
@@ -73,7 +73,7 @@
         <div class="col-md-6">
             <div class="gallery robotimg">
                 <div class="gradient"></div>
-                <img class="img-responsive" src="@mainPhoto?size=large" alt="mainPhoto"/>
+                <img class="img-responsive" src="@App.Thumbnail@mainPhoto?size=large" alt="mainPhoto"/>
             </div>
             @if (photos.Count() != 0)
             {
@@ -82,7 +82,7 @@
                     <h2 class="box-title">Photo's</h2>         
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
-                            @foreach (string photo in photos)
+                            @foreach (int photo in photos)
                             {
                                 if(count==0) 
                                 {
@@ -97,18 +97,18 @@
                             @{count = 0;}
                         </ol>
                         <div class="carousel-inner" role="listbox">
-                            @foreach(string photo in photos)
+                            @foreach(int photo in photos)
                             {
                                 if(count==0)
                                 {
                                     <div class="item active">
-                                        <img src="@photo?size=medium" alt="photo" class="img-responsive" />
+                                        <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="item">
-                                       <img src="@photo?size=medium" alt="photo" class="img-responsive" />
+                                       <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
                                     </div>
                                 }
                                 count++;

@@ -4,10 +4,9 @@
     
     var robotId = "";
     var robotName = "";
-    var mainPhoto = "";
+    int mainPhoto = 1;
     var robotText = "";
-    List<string> photos = new List<string>();
-    List<int> photoIds = new List<int>();
+    List<int> photos = new List<int>();
     List<string[]> codeLinks = new List<string[]>();
     List<string[]> codeSnippets = new List<string[]>();
     List<string[]> threeDLinks = new List<string[]>();
@@ -18,24 +17,25 @@
     var element = "";
     var elementPhoto = "";
     bool isFavourite = false;
+    bool isRobot = false;
     
     if(!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt()) {
         robotId = Request.QueryString["ID"];
 
-        Repository.Robot tempRobot = Repository.getRobot(Convert.ToInt16(robotId));
+        Repository.Robot tempRobot = Repository.getRobot(robotId.AsInt());
         if (tempRobot != null)
         {
             robotName = tempRobot.RobotName;
             mainPhoto = tempRobot.CoverImage;
             robotText = tempRobot.RobotText;
             photos = tempRobot.getPhotos();
-            photoIds = tempRobot.getPhotoIds();
             codeLinks = tempRobot.getCodeLinks();
             codeSnippets = tempRobot.getCodeSnippets();
             threeDLinks = tempRobot.getThreeDLinks();
             videoLinks = tempRobot.getVideoLinks();
             parts = tempRobot.getParts();
             isFavourite = tempRobot.isFavourite();
+            isRobot = true;
         }
         else
         {
@@ -46,7 +46,6 @@
     {
         Validation.AddFormError("Robot could not be found");
     }
-
 
     if(IsPost && Request.Form["editMain"] != null)
     {
@@ -70,14 +69,10 @@
     }
     if(IsPost && Request.Form["choosePhoto"] != null)
     {
-        mainPhoto = Request.Form["photo"];
+        mainPhoto = Request.Form["photo"].AsInt();
 
         if(Validation.IsValid()){
             var db = Database.Open("basicData");
-            if (mainPhoto.Length == 0)
-            {
-                mainPhoto = "1";
-            }
             var updateCommand = "UPDATE Robots SET PhotoId=@0 WHERE RobotId=@1";
             db.Execute(updateCommand, mainPhoto, robotId);
             db.Close();
@@ -280,7 +275,7 @@
     {
         element = Request.Form["element"];
 
-        if(Validation.IsValid() && element != "1")
+        if(Validation.IsValid() && element != "1" && element.IsInt())
         {
             var db = Database.Open("basicData");
             var deleteCommand = "DELETE FROM Photos WHERE PhotoId=@0";
@@ -301,7 +296,7 @@
     <form method="post" class="form-inline"> @* mist nog form ID *@
         <fieldset>
             @AntiForgery.GetHtml()
-            @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+            @Html.ValidationSummary("Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="form-group">
                 <label for="robotName"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</label>
                 <br/>
@@ -334,13 +329,13 @@
                     <label class="radio-inline">
                         @if(photo == mainPhoto)
                         {
-                             <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
+                             <input type="radio" id="photo" name="photo" value="@photo" checked class="form-control">
                         }
                         else
                         {
-                            <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" class="form-control">
+                            <input type="radio" id="photo" name="photo" value="@photo" class="form-control">
                         }
-                        <span><img src="~/@photo" alt="photo" /></span>
+                        <span><img src="@App.Thumbnail@photo" alt="photo" /></span>
                         </label>
                 }<br>
                 <button type="submit" id="choosePhoto" name="choosePhoto" class="btn btn-success">

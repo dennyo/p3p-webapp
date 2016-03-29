@@ -3,9 +3,9 @@
 
     Page.Title = "Photos";
 
-    List<string> photos = Repository.getAllPhotos();
+    List<int> photos = Repository.getAllPhotos();
     bool isRobot = false;
-    Repository.Robot robot = new Repository.Robot(0, "", "", "");
+    Repository.Robot robot = new Repository.Robot(0, "", "", 1);
 
     int robotId = Request.QueryString["Id"].AsInt();
 
@@ -139,19 +139,21 @@
         </form><br />
     </div>
     <div class="row">
-        @foreach(string photo in photos)
+        @foreach(int photo in photos)
         {
             <div class="photogalleryItem">
-                <img src="@photo?size=medium" alt="photo" class="img-responsive"/>
+                <a href="@App.ViewFull@photo" target="_blank">
+                    <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive"/>
+                </a>
                 <div class="galleyTools">
                     <form method="post">
                         @AntiForgery.GetHtml()
                         @if(isRobot)
                         {
-                            if(robot.hasPhoto(photo.Substring(16).AsInt()))
+                            if(robot.hasPhoto(photo))
                             {
                                 <button name="addPhoto" type="submit" class="btn btn-warning">
-                                    <span class="glyphicon glyphicon-plus"></span> Remove from Robot
+                                    <span class="glyphicon glyphicon-minus"></span> Remove from Robot
                                 </button>
                                 <input type="hidden" name="robotState" value="true">
                             }
@@ -166,7 +168,7 @@
                         <button name="removePhoto" type="submit" class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove"></span> Delete
                         </button>
-                        <input type="hidden" value="@photo.Substring(16)" name="PhotoId"/>
+                        <input type="hidden" value="@photo" name="PhotoId"/>
                     </form>
                 </div>
             </div>

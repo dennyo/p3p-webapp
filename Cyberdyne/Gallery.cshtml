@@ -21,9 +21,9 @@
     if(robot.RobotId == favRobot.RobotId)
     {
             <div class="col-md-6">
-                <a href="~/Robot?Id=@robot.RobotId">
+                <a href="/Robot?Id=@robot.RobotId">
                     <div class="gallery featured_img">
-                        <img class="img-responsive" src="@robot.CoverImage?size=large" alt="photo" />
+                        <img class="img-responsive" src="@App.Thumbnail@robot.CoverImage?size=large" alt="photo" />
                     </div>
                 </a>
             </div>
@@ -76,7 +76,7 @@
             else
             {
             <div class="col-md-3">
-                <a href="~/Robot?Id=@robots[count].RobotId"><div class="gallery" style="background-image: url(@robots[count].CoverImage?size=medium)">
+                <a href="/Robot?Id=@robots[count].RobotId"><div class="gallery" style="background-image: url(@App.Thumbnail@robots[count].CoverImage?size=medium)">
                     @*<img src="@robots[count].CoverImage" alt="photo" width="auto" height="20%"/> *@
                     <h2 class="auto"> <span class="glyphicon glyphicon-align-left non-feat-glyph"></span>@robots[count].RobotName</h2>
                 </div></a>
