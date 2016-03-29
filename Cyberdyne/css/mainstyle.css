@@ -209,7 +209,7 @@ input[type="text"], input[type="password"], #robotText {
 
 }
 @media screen and (min-width: 991px) {
-
+    
 input[type="text"], input[type="password"], #robotText {
     min-width: 500px;
 }
@@ -225,12 +225,20 @@ input[type="text"].form-width-override {
     height: 250px;
 }
 
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
+
+.carousel-inner > .item, .carousel-inner > .active {
+    outline-style: none;
+}
+#myCarousel .carousel-inner > .item > img {
       max-width: 300px;
       max-height: 225px;
       margin: auto;
+      outline-style: none;
   }
+
+#modalCarousel .carousel-inner > .item > img {
+    margin: auto;
+}
 
 #photos {
     text-align: center;
@@ -535,6 +543,16 @@ input[type="radio"] {
 }
 
 .codeSnippet {
-    border-bottom: 2px solid grey;
     padding: 10px;
+    background-color: black;
+    color:  white;
+    font-family: Consolas, 'Lucida Console';
+}
+
+.toggleFullscreen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    outline-style: none;
 }
