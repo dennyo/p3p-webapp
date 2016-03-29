@@ -66,7 +66,7 @@ span#title{
 
 @media screen and (min-width:768px)
 {
-    .right {
+    .right:not(.carousel-control) {
     float: right;
     width: 50%;
     }
@@ -198,9 +198,14 @@ input[type="text"].form-width-override {
 }*/
 }
 
+#myCarousel {
+    height: 250px;
+}
+
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
-      width: 250px;
+      max-width: 300px;
+      max-height: 225px;
       margin: auto;
   }
 
@@ -208,8 +213,14 @@ input[type="text"].form-width-override {
     text-align: center;
 }
 
+.carousel-indicators {
+    position: absolute;
+    bottom:  0;
+    margin-bottom: 0;
+}
+
 .carousel-control.left, .carousel-control.right {
-    background-image: none
+    background-image: none;
 }
 
 #footer a:hover {
@@ -256,7 +267,6 @@ label {
 
 .featured_img, .robotimg {
     max-height: 450px;
-    width: 100%;
     display: inline-block;
     border:  none;  
     position: relative;
@@ -286,6 +296,10 @@ label {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;   
+}
+
+#linkIgnore {
+    text-decoration: none;   
 }
 
 .featured_text p {
@@ -439,8 +453,8 @@ input[type="radio"] {
 .photogalleryItem {
     margin: 5px;
     float: left;
-    width: 300px;
-    height: 300px;
+    max-width: 300px;
+    height: 250px;
     overflow: hidden;
     position: relative;
     background-color: rgba(0,0,80,0.5);
