@@ -8,6 +8,7 @@
     Repository.Robot robot = new Repository.Robot(0, "", "", 1);
 
     int robotId = Request.QueryString["Id"].AsInt();
+    bool editCoverImage = Request.QueryString["CIEdit"].AsBool();
 
     if(robotId != 0)
     {
@@ -18,13 +19,18 @@
         }
     }
 
+    if(IsPost && Request.Form["toggleCoverEdit"] != null && isRobot)
+    {
+        editCoverImage = !editCoverImage;
+    }
+
     if(IsPost && Request.Form["addPhoto"] != null && isRobot)
     {
         AntiForgery.Validate();
         if(Validation.IsValid())
         {
             var photoId = Request.Form["PhotoId"].AsInt();
-            if(Request.Form["robotState"].AsBool() == true)
+            if(Request.Form["robotState"].AsBool())
             {
                 //remove Photo from robot 
                 robot.removePhoto(photoId);
@@ -35,6 +41,25 @@
                 robot.addPhoto(photoId);
             }
             Response.Redirect(Request.Url.AbsoluteUri);   
+        }
+    }
+
+    if(IsPost && Request.Form["addCover"] != null && isRobot && editCoverImage)
+    {
+        AntiForgery.Validate();
+        if(Validation.IsValid())
+        {
+            var photoId = Request.Form["PhotoId"].AsInt();
+            if(Request.Form["coverState"].AsBool())
+            {
+                robot.CoverImage = 1;
+            }
+            else
+            {
+                robot.CoverImage = photoId;
+                robot.addPhoto(photoId);
+            }
+            Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
 
@@ -105,6 +130,7 @@
 
 <div class="col-md-12">
     <div class="row">
+        </br>
         @if(isRobot)
         {
             <div class="col-xs-6 col-sm-2">
@@ -121,12 +147,17 @@
             </div>  
         }
     </div>
-    @if(isRobot)
+    @if(isRobot && !editCoverImage)
     {
         <h1>Select Photos for @robot.RobotName</h1>
     }
+    @if(isRobot && editCoverImage)
+    {
+        <h1>Select Cover Image for @robot.RobotName</h1>
+    }
     <div class="row" style="margin-left: 10px">
         <form method="post" enctype="multipart/form-data">
+            <label>Upload a new Image</label>
             @FileUpload.GetHtml(
                 initialNumberOfFiles:1,
                 allowMoreFilesToBeAdded:true,
@@ -139,16 +170,31 @@
         </form><br />
     </div>
     <div class="row">
+        <div class="col-xs-6 col-sm-2 floatBtn">
+            <form method="post">
+                @if(!editCoverImage)
+                {
+                    <button type="submit" name="toggleCoverEdit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Enable CoverImage edit</button>
+                }
+                else
+                {
+                    <button type="submit" name="toggleCoverEdit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Disable CoverImage edit</button>
+                }
+            </form>
+        </div>
+    </div>
+    </br>
+    <div class="row">
         @foreach(int photo in photos)
         {
             <div class="photogalleryItem">
                 <a href="@App.ViewFull@photo" target="_blank">
                     <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive"/>
                 </a>
-                <div class="galleyTools">
+                <div class="galleryTools">
                     <form method="post">
                         @AntiForgery.GetHtml()
-                        @if(isRobot)
+                        @if(isRobot && !editCoverImage)
                         {
                             if(robot.hasPhoto(photo))
                             {
@@ -163,6 +209,23 @@
                                     <span class="glyphicon glyphicon-plus"></span> Add to Robot
                                 </button>
                                 <input type="hidden" name="robotState" value="false">
+                            }
+                        }
+                        @if(isRobot && editCoverImage)
+                        {
+                            if(robot.CoverImage == photo)
+                            {
+                                <button name="addCover" type="submit" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-minus"></span> Remove CoverImage
+                                </button>
+                                <input type="hidden" name="coverState" value="true">
+                            }
+                            else
+                            {
+                                <button name="addCover" type="submit" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-plus"></span> Add CoverImage
+                                </button>
+                                <input type="hidden" name="coverState" value="false">
                             }
                         }
                         <button name="removePhoto" type="submit" class="btn btn-danger">

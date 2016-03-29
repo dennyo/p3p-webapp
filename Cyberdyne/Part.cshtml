@@ -22,7 +22,9 @@
     {
        <div class="row">
             <div class="col-md-6">
-                <img src="@App.Thumbnail@localPart.CoverPhoto?size=large" alt="none" width="100%" height="auto"/>
+                <a href="@App.ViewFull@localPart.CoverPhoto" target="_blank">
+                    <img src="@App.Thumbnail@localPart.CoverPhoto?size=large" alt="none" width="100%" height="auto"/>
+                </a>
             </div>
             <div class="col-md-6">
                 <h2>Part Name: @localPart.PartName</h2>

@@ -33,6 +33,12 @@
         public int CoverImage
         {
             get{return coverImage;}
+            set{
+                var db = Database.Open("basicData");
+                coverImage = value;
+                db.Execute("UPDATE Robots SET PhotoId = @0 WHERE RobotId = @1", value, robotId);
+                db.Close();
+            }
         }
 
         public Robot(int robotId, string robotName, string robotText, int coverImage)
@@ -55,20 +61,6 @@
             }
             db.Close();
             return PhotoIDs;
-        }
-
-        //return list with photoIds for the robot
-        public List<int> getPhotoIds()
-        {
-            List<int> idList = new List<int>();
-            var db = Database.Open("basicData");
-            var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
-            foreach(var row in IDs)
-            {
-                idList.Add(row.PhotoId);
-            }
-            db.Close();
-            return idList;
         }
 
         //return list with links to code
@@ -164,23 +156,6 @@
             {
                 return false;
             }
-        }
-
-        //make links for robot
-        public static string makeLink(string link)
-        {
-            if(link.Length >= 5)
-            {
-                if(!link.Substring(0, 5).Contains("http"))
-                {
-                    link = "http://" + link;
-                }
-            }
-            else
-            {
-                link = "";
-            }
-            return link;
         }
 
         //return if the robot already has a given photo
@@ -288,29 +263,7 @@
         public void addVendor(string name, string link, float price, string purchaseLink)
         {
             var db = Database.Open("basicData");
-            if(link.Length >= 5)
-            {
-                if(!link.Substring(0, 5).Contains("http"))
-                {
-                    link = "https://" + link;
-                }
-            }
-            else
-            {
-                link = "";
-            }
-            if(purchaseLink.Length >= 5)
-            {
-                if(!purchaseLink.Substring(0, 8).Contains("http"))
-                {
-                    purchaseLink = "https://" + purchaseLink;
-                }
-            }
-            else
-            {
-                purchaseLink = "";
-            }
-            db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, link, price, purchaseLink, partId);
+            db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, makeLink(link), price, makeLink(purchaseLink), partId);
             db.Close();
         }
 
@@ -522,18 +475,23 @@
     
     public static string makeLink(string link)
     {
-        if(link.Length >= 5)
+        if(isValidLink(link))
         {
-            if(!link.Substring(0, 5).Contains("http"))
-            {
-                link = "https://" + link;
-            }
+            return link;
         }
-        else
+        UriBuilder newUri = new UriBuilder("http", link);
+        if(isValidLink(newUri.ToString()))
         {
-            link = "";
+            return newUri.ToString();
         }
-        return link;
+        return "";
+    }
+
+    public static bool isValidLink(string link)
+    {
+        Uri result;
+        bool uriValid = Uri.TryCreate(link, UriKind.Absolute, out result) && (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
+        return uriValid;
     }
 
     public static List<int> getAllPhotos()

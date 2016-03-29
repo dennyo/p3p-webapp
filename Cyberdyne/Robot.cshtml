@@ -71,10 +71,10 @@
             <h2 class="robot-title">@robotName</h2>  
         </div>        
         <div class="col-md-6">
-            <div class="gallery robotimg">
+            <a class="gallery robotimg" href="@App.ViewFull@mainPhoto" target="_blank">
                 <div class="gradient"></div>
                 <img class="img-responsive" src="@App.Thumbnail@mainPhoto?size=large" alt="mainPhoto"/>
-            </div>
+            </a>
             @if (photos.Count() != 0)
             {
                 int count = 0;  
@@ -101,15 +101,15 @@
                             {
                                 if(count==0)
                                 {
-                                    <div class="item active">
+                                    <a class="item active" href="@App.ViewFull@photo" target="_blank">
                                         <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
-                                    </div>
+                                    </a>
                                 }
                                 else
                                 {
-                                    <div class="item">
+                                    <a class="item" href="@App.ViewFull@photo" target="_blank">
                                        <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
-                                    </div>
+                                    </a>
                                 }
                                 count++;
                             }

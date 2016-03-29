@@ -489,7 +489,7 @@ input[type="radio"] {
     height: auto;
 }
 
-.photogalleryItem .galleyTools {
+.photogalleryItem .galleryTools {
     position: absolute;
     bottom: 0;
     height: 50px;
@@ -497,13 +497,13 @@ input[type="radio"] {
     background-color: rgba(0,0,80,0.5);
 }
 
-.photogalleryItem .galleyTools button[name="removePhoto"] {
+.photogalleryItem .galleryTools button[name="removePhoto"] {
     position: absolute;
     right: 0;
     margin: 8px;
 }
 
-.photogalleryItem .galleyTools button[name="addPhoto"] {
+.photogalleryItem .galleryTools button[name="addPhoto"], .photogalleryItem .galleryTools button[name="addCover"] {
     position: absolute;
     left: 0;
     margin: 8px;
