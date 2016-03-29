@@ -23,7 +23,7 @@
         {
             if(robotId.IsInt())
             {
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 if(db.Query("SELECT * FROM Robots WHERE RobotId = @0", robotId) != null)
                 {
                     var photoIds = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);

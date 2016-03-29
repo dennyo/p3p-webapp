@@ -22,6 +22,7 @@
     if(IsPost && Request.Form["toggleCoverEdit"] != null && isRobot)
     {
         editCoverImage = !editCoverImage;
+        Response.Redirect(string.Format("/Admin/Tools/PhotoGallery?Id={0}&CIEdit={1}", robotId, editCoverImage));
     }
 
     if(IsPost && Request.Form["addPhoto"] != null && isRobot)
@@ -69,7 +70,7 @@
         if(Validation.IsValid())
         {
             var photoId = Request.Form["PhotoId"].AsInt();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var photo = db.QuerySingle("SELECT PhotoId FROM Photos WHERE PhotoId = @0", photoId);
             if(photos != null)
             {
@@ -94,7 +95,7 @@
         }
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
             {
                 var uploadedFile = Request.Files[imageCount];

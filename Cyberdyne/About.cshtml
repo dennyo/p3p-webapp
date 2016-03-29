@@ -1,7 +1,7 @@
 ﻿@{
     Page.Title= "About";
     Layout = "~/_Layout.cshtml";
-    var db = Database.Open("basicData");
+    var db = Database.Open(App.DataBase);
     List<string> textElements = new List<string> {Repository.getTextElement(2), Repository.getTextElement(3), Repository.getTextElement(4)};
     int id = Convert.ToInt16(Request.QueryString["edit"]);
     var elementText = Repository.getTextElement(id);

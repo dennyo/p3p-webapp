@@ -14,7 +14,7 @@
         {
             get{return robotName;} 
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 robotName = value;
                 db.Execute("UPDATE Robots SET RobotName = @0 WHERE RobotId = @1", value, robotId);
                 db.Close();
@@ -24,7 +24,7 @@
         {
             get{return robotText;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 robotText = value;
                 db.Execute("UPDATE Robots SET RobotText = @0 WHERE RobotId = @1", value, robotId);
                 db.Close();
@@ -34,7 +34,7 @@
         {
             get{return coverImage;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 coverImage = value;
                 db.Execute("UPDATE Robots SET PhotoId = @0 WHERE RobotId = @1", value, robotId);
                 db.Close();
@@ -53,7 +53,7 @@
         public List<int> getPhotos()
         {
             List<int> PhotoIDs = new List<int>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
@@ -67,7 +67,7 @@
         public List<string[]> getCodeLinks()
         {
             List<string[]> links = new List<string[]>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
 
             var data = db.Query("SELECT Id, link FROM CodeLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
@@ -83,7 +83,7 @@
         public List<string[]> getCodeSnippets()
         {
             List<string[]> links = new List<string[]>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
 
             var data = db.Query("SELECT Id, Text FROM CodeSnippets WHERE RobotId = @0", robotId);
             foreach(var row in data)
@@ -99,7 +99,7 @@
         public List<string[]> getVideoLinks()
         {
             List<string[]> links = new List<string[]>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
 
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
@@ -115,7 +115,7 @@
         public List<string[]> getThreeDLinks()
         {
             List<string[]> links = new List<string[]>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
 
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
@@ -131,7 +131,7 @@
         public List<Part> getParts()
         {
             List<Part> partList = new List<Part>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var partIds = db.Query("SELECT PartId FROM PartReference WHERE RobotId = @0", robotId);
             foreach(var part in partIds)
             {
@@ -145,7 +145,7 @@
         //check if robot is favourite
         public bool isFavourite()
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var fav = db.QueryValue("SELECT RobotId FROM FavouriteRobot");
             db.Close();
             if(fav == RobotId)
@@ -161,7 +161,7 @@
         //return if the robot already has a given photo
         public bool hasPhoto(int photoId)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var photo = db.QuerySingle("SELECT * FROM PhotoReference WHERE PhotoId = @0 AND RobotId = @1", photoId, robotId);
             db.Close();
             if(photo != null)
@@ -176,7 +176,7 @@
 
         public void addPhoto(int photoId)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var photo = db.QuerySingle("SELECT PhotoId FROM Photos WHERE PhotoId = @0", photoId);
             if(photo != null && !hasPhoto(photoId)) 
             {
@@ -187,7 +187,7 @@
 
         public void removePhoto(int photoId)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             db.Execute("DELETE FROM PhotoReference WHERE PhotoId = @0 AND RobotId = @1", photoId, robotId);
             db.Close();
         }
@@ -208,7 +208,7 @@
         {
             get{return partName;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 partName = value;
                 db.Execute("UPDATE Parts SET PartName = @0 WHERE PartId = @1", value, partId);
                 db.Close();
@@ -218,7 +218,7 @@
         {
             get{return partNo;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 partNo = value;
                 db.Execute("UPDATE Parts SET PartNo = @0 WHERE PartId = @1", value, partId);
                 db.Close();
@@ -228,7 +228,7 @@
         {
             get{return coverPhoto;}
             set{
-                var db = Database.Open("BasicData");
+                var db = Database.Open(App.DataBase);
                 int currentId = coverPhoto;
                 db.Execute("UPDATE Parts SET PhotoId = @0 WHERE PartId = @1", value, partId);
                     if(currentId != 1)
@@ -250,7 +250,7 @@
         public List<Vendor> getVendors()
         {
             List<Vendor> tempList = new List<Vendor>();
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var vendorData = db.Query("SELECT * FROM Vendors WHERE PartId = @0", partId);
             foreach(var row in vendorData)
             {
@@ -262,14 +262,14 @@
 
         public void addVendor(string name, string link, float price, string purchaseLink)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, Repository.makeLink(link), price, Repository.makeLink(purchaseLink), partId);
             db.Close();
         }
 
         public int getQuantity(int robotId)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var quantity = db.QueryValue("SELECT Quantity FROM PartReference WHERE PartId = @0 AND RobotId = @1", partId, robotId);
             db.Close();
             if(quantity != null)
@@ -284,7 +284,7 @@
 
         public void setQuantity(int robotId, int quantity)
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             db.Execute("UPDATE PartReference SET Quantity = @0 WHERE RobotId = @1 AND PartId = @2", quantity, robotId, partId);
             db.Close();
         }        
@@ -303,7 +303,7 @@
         {
             get{return name;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 name = value;
                 db.Execute("UPDATE Vendors SET VendorName = @0 WHERE VendorId = @1", value, vendorId);
                 db.Close();
@@ -314,7 +314,7 @@
         {
             get{return link;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 link = value;
                 db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", Repository.makeLink(link), vendorId);
                 db.Close();
@@ -325,7 +325,7 @@
         {
             get{return price;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 price = value;
                 db.Execute("UPDATE Vendors SET Price = @0 WHERE VendorId = @1", value, vendorId);
                 db.Close();
@@ -336,7 +336,7 @@
         {
             get{return purchaseLink;}
             set{
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 purchaseLink = value;
                 db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", Repository.makeLink(purchaseLink), vendorId);
                 db.Close();
@@ -368,7 +368,7 @@
 
     public static Robot getRobot(int robotId)
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
         if(robotQuery != null)
         {
@@ -382,7 +382,7 @@
 
     public static List<Robot> getLastRobots()
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         List<Robot> robotList = new List<Robot>();
         var subQuery1 = db.QueryValue("SELECT MAX(RobotID) FROM Robots");
         var subQuery2 = db.QueryValue("SELECT MAX(RobotID) FROM Robots WHERE RobotId != @0", subQuery1);
@@ -397,7 +397,7 @@
 
     public static List<Robot> getAllRobots()
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         List<Robot> robotList = new List<Robot>();
         var robotQuery = db.Query("SELECT * FROM Robots");
         foreach(var row in robotQuery)
@@ -410,7 +410,7 @@
 
     public static Part getPart(int partId)
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", partId);
         if(partData != null)
         {
@@ -424,7 +424,7 @@
 
     public static List<Part> getAllParts()
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         List<Part> partList = new List<Part>();
         var partData = db.Query("SELECT * FROM Parts");
         foreach(var row in partData)
@@ -437,7 +437,7 @@
 
     public static string getTextElement(int elementId)
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         var textData = db.QuerySingle("SELECT ElementText FROM TextElements WHERE ElementId = @0", elementId);
         if(textData != null)
         {
@@ -450,7 +450,7 @@
 
     public static Vendor getVendor(int vendorId)
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         var vendorData = db.QuerySingle("SELECT * FROM Vendors WHERE VendorId = @0", vendorId);
         Vendor tempVendor = new Vendor(vendorData.VendorName, vendorData.VendorLink, (float)vendorData.Price, vendorData.PartId, vendorData.PurchaseLink, vendorData.VendorId);
         db.Close();
@@ -459,7 +459,7 @@
 
     public static Robot getFavRobot() 
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
         var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
         Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId);
@@ -496,7 +496,7 @@
 
     public static List<int> getAllPhotos()
     {
-        var db = Database.Open("basicData");
+        var db = Database.Open(App.DataBase);
         List<int> tempList = new List<int>();
         
         var queryData = db.Query("SELECT PhotoId FROM Photos WHERE PhotoId != 1");

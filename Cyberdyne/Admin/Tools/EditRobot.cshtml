@@ -56,7 +56,7 @@
         if(Request.Form["robotText"] != null) {robotText = Request.Form["robotText"];}
 
         if(Validation.IsValid()){
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             if (robotText.Length == 0)
             {
                 robotText = null;
@@ -72,7 +72,7 @@
         mainPhoto = Request.Form["photo"].AsInt();
 
         if(Validation.IsValid()){
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var updateCommand = "UPDATE Robots SET PhotoId=@0 WHERE RobotId=@1";
             db.Execute(updateCommand, mainPhoto, robotId);
             db.Close();
@@ -84,7 +84,7 @@
     {
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM FavouriteRobot";
             var insertCommand = "INSERT INTO FavouriteRobot (RobotId) VALUES(@0)";
             db.Execute(deleteCommand);
@@ -102,7 +102,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var updateCommand = "UPDATE CodeLinks SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
             db.Close();
@@ -115,7 +115,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM CodeLinks WHERE Id=@0";
             db.Execute(deleteCommand, element);
             db.Close();
@@ -129,7 +129,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var insertCommand = "INSERT INTO CodeLinks (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
             db.Close();
@@ -146,7 +146,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var updateCommand = "UPDATE CodeSnippets SET Text=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
             db.Close();
@@ -159,7 +159,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM CodeSnippets WHERE Id=@0";
             db.Execute(deleteCommand, element);
             db.Close();
@@ -173,7 +173,7 @@
         input = Request.Form["codeSnippetAdd"];
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var insertCommand = "INSERT INTO CodeSnippets (RobotId, Text) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
             db.Close();
@@ -190,7 +190,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var updateCommand = "UPDATE ThreeDFiles SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
             db.Close();
@@ -203,7 +203,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM ThreeDFiles WHERE Id=@0";
             db.Execute(deleteCommand, element);
             db.Close();
@@ -217,7 +217,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var insertCommand = "INSERT INTO ThreeDFiles (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
             db.Close();
@@ -235,7 +235,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var updateCommand = "UPDATE VideoLinks SET link=@0 WHERE Id=@1";
             db.Execute(updateCommand, input, element);
             db.Close();
@@ -248,7 +248,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM VideoLinks WHERE Id=@0";
             db.Execute(deleteCommand, element);
             db.Close();
@@ -262,7 +262,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var insertCommand = "INSERT INTO VideoLinks (RobotId, link) VALUES(@0,@1)";
             db.Execute(insertCommand, robotId, input);
             db.Close();
@@ -277,7 +277,7 @@
 
         if(Validation.IsValid() && element != "1" && element.IsInt())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             var deleteCommand = "DELETE FROM Photos WHERE PhotoId=@0";
             var deleteCommand2 = "DELETE FROM PhotoReference WHERE PhotoId=@0";
             db.Execute(deleteCommand2, element);

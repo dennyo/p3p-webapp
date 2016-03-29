@@ -38,7 +38,7 @@
 
         if(Validation.IsValid() && userName != "Schweizenator")
         {
-            var db = Database.Open("authenticationData");
+            var db = Database.Open(App.AuthDataBase);
 
             var user = db.QuerySingle("SELECT UserName FROM UserProfile WHERE LOWER(UserName) = LOWER(@0)", userName);
             if(user == null && !Repository.Names().Contains(userName))
@@ -54,6 +54,7 @@
                 }
                 catch(System.Web.Security.MembershipCreateUserException e)
                 {
+                    db.Close();
                     ModelState.AddFormError(e.Message);
                 }
             }

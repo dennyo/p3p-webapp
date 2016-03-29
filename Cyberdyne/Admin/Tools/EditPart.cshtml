@@ -15,7 +15,7 @@
 
 
     Repository.Part tempPart = new Repository.Part(0, "N/A", "N/A", 1);
-    var db = Database.Open("basicData");
+    var db = Database.Open(App.DataBase);
     List<Repository.Vendor> Vendors = new List<Repository.Vendor>();
 
     if(!robotId.IsEmpty() && robotId.IsInt())
@@ -194,6 +194,7 @@
                 {
                     tempVendor.Price = float.Parse(price);
                 }
+                db.Close();
                 Response.Redirect(Request.Url.AbsoluteUri);
             }
         }

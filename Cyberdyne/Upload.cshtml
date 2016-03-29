@@ -18,7 +18,7 @@
             
                 byte[] fileContent = new byte[fileLength];
                 fileStream.Read(fileContent, 0, fileLength);
-                var db = Database.Open("basicData");
+                var db = Database.Open(App.DataBase);
                 //var sql = "INSERT INTO FileUploading (FileName, FileContent, MimeType) VALUES (@0,@1,@2)";
                 var sql = "INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)";
                 db.Execute(sql, /*fileName, */fileContent, fileMime);

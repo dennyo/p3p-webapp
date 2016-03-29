@@ -16,7 +16,7 @@
 
         if(Validation.IsValid())
         {
-            var db = Database.Open("basicData");
+            var db = Database.Open(App.DataBase);
             db.Execute("INSERT INTO Robots (RobotName, RobotText, PhotoId) VALUES (@0, @1, 1)", robotName, robotText);
             robotID = (int)db.GetLastInsertId();
 

@@ -2,7 +2,7 @@
     Response.OutputCache(60);
 
     var photoId = UrlData[0].AsInt();
-    var db = Database.Open("basicData");
+    var db = Database.Open(App.DataBase);
     var photo = db.QuerySingle("SELECT * FROM Photos WHERE PhotoId = @0", photoId);
     if(photo == null)
     {
