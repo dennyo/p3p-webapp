@@ -158,7 +158,7 @@
                             <h2 class="box-title">Code Snippets</h2>
                             @foreach (string[] codeSnippet in codeSnippets)
                             {
-                                <div class="content-padding">
+                                <div class="content-padding codeSnippet">
                                     <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
                                 </div>
                             }
