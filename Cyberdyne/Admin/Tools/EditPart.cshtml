@@ -14,7 +14,7 @@
     int editPartId = 0;
 
 
-    Repository.Part tempPart = new Repository.Part(0, "N/A", "N/A", "DisplayImage.cshtml?Id=1");
+    Repository.Part tempPart = new Repository.Part(0, "N/A", "N/A", "/Photos/Thumbnail.cshtml/1");
     var db = Database.Open("basicData");
     List<Repository.Vendor> Vendors = new List<Repository.Vendor>();
 
@@ -309,7 +309,7 @@
             </div>
             <div class="col-md-6">
                 <div class="row">
-                    <img src="~/@tempPart.CoverPhoto" width="auto" height="100px" alt="photo"/>
+                    <img src="@tempPart.CoverPhoto" width="auto" height="100px" alt="photo"/>
                     <form method="post" enctype="multipart/form-data" class="form-group">
                         @Html.ValidationSummary()
                         @FileUpload.GetHtml(

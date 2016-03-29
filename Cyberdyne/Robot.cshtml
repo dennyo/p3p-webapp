@@ -73,7 +73,7 @@
         <div class="col-md-6">
             <div class="gallery robotimg">
                 <div class="gradient"></div>
-                <img class="img-responsive" src="@mainPhoto" alt="mainPhoto"/>
+                <img class="img-responsive" src="@mainPhoto?size=large" alt="mainPhoto"/>
             </div>
             @if (photos.Count() != 0)
             {
@@ -102,13 +102,13 @@
                                 if(count==0)
                                 {
                                     <div class="item active">
-                                        <img src="~/@photo" alt="photo"/>
+                                        <img src="@photo?size=medium" alt="photo"/>
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="item">
-                                       <img src="~/@photo" alt="photo"/>
+                                       <img src="@photo?size=medium" alt="photo"/>
                                     </div>
                                 }
                                 count++;
