@@ -292,7 +292,12 @@
 
 
 <div class="col-md-12">
-<h1>Edit robot</h1><span id="required">* Required Fields</span>
+<h1>Edit robot</h1>
+<div>
+    <a href="~/Robot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+</div>
+<br/>
+<span id="required">* Required Fields</span>
     <form method="post" class="form-inline"> @* mist nog form ID *@
         <fieldset>
             @AntiForgery.GetHtml()
@@ -307,7 +312,7 @@
         <fieldset>
             <div class="form-group">
                 <label for="robotText"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Description*</label></br>
-                <textarea onkeyup="textCounter(this, 'descCounter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50" placeholder="Provide a description for the robot">@robotText</textarea>
+                <textarea onkeyup="textCounter(this, 'descCounter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50" placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea>
                 <br/>
                 <input class="counter" disabled value="4000 characters left" id="descCounter">
                 @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
@@ -421,7 +426,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <textarea onkeyup="textCounter(this, 'snipCounter',4000);" id="codeSnippetAdd" name="codeSnippetAdd" class="form-control col-md-12" rows="8" cols="50" placeholder="Provide a code snippet for the robot"></textarea>
+                    <textarea onkeyup="textCounter(this, 'snipCounter',4000);" id="codeSnippetAdd" name="codeSnippetAdd" class="form-control col-md-12" rows="8" cols="50" placeholder="Provide a code snippet for the robot" maxlength="4000"></textarea>
                     <br/>
                     <input class="counter" disabled value="4000 characters left" id="snipCounter">
                     <br/>
@@ -437,7 +442,7 @@
                 <div id="Snippet_@i" class="tab-pane fade">
                     <form method="post" class="form-inline"><br>
                         <div class="form-group">
-                            <textarea onkeyup="textCounter(this, 'snipCounter_@i',4000);" id="codeSnippetEdit" name="codeSnippetEdit" class="form-control col-md-12" cols="50" rows="8" placeholder="Provide a code snippet for the robot">@codeSnippets[i-1][1]</textarea>
+                            <textarea onkeyup="textCounter(this, 'snipCounter_@i',4000);" id="codeSnippetEdit" name="codeSnippetEdit" class="form-control col-md-12" cols="50" rows="8" placeholder="Provide a code snippet for the robot" maxlength="4000">@codeSnippets[i-1][1]</textarea>
                             <br/>
                             <input class="counter" disabled value="4000 characters left" id="snipCounter_@i">
                             <br/>

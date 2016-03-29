@@ -5,7 +5,6 @@
 
 * {
     /*font-family: 'Wingdings 3', 'Rock Salt', 'Audiowide', 'Bangers', 'Ubuntu';*/
-    font-family: 'Ubuntu';
 }
 html {
     position: relative;
@@ -453,6 +452,7 @@ input[type="radio"] {
 .h_iframe {
     position:relative;
     padding-top: 56%;
+    margin-bottom: 15px;
 }
 .h_iframe iframe {
     position:absolute;
@@ -532,4 +532,9 @@ input[type="radio"] {
 }
 .panel {
     margin-top: 10px;
+}
+
+.codeSnippet {
+    border-bottom: 2px solid grey;
+    padding: 10px;
 }
