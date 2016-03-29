@@ -1,4 +1,5 @@
 ﻿@{
+
     var db = Database.Open("basicData");   
     var link1 = Repository.getTextElement(5);
     var link2 = Repository.getTextElement(6);
@@ -129,7 +130,7 @@
                             <input type="text" class="form-control" id="contact3" name="contact3" value="@contact3" />                                                
                             <button type="submit" id="save" name="save" class="btn btn-default">
                                 <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                            </button>                
+                            </button>             
                         </fieldset>
                     </form>
                 }
@@ -144,7 +145,6 @@
                     
                     </ul>
                 }
-                
             </div>
         </div>   
         <script src="~/js/jquery.min.js"></script>
