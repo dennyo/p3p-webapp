@@ -6,19 +6,19 @@
     var password = "";
     bool rememberMe = false;
 
-    Validation.RequireField("userName", "You must enter an UserName");
+    Validation.RequireField("userName", "You must enter a UserName");
     Validation.Add("userName",
         Validator.StringLength(
             maxLength: 400,
             minLength: 1,
-            errorMessage: "Username can not contain more then 400 caracters"));
+            errorMessage: "Username can not contain more than 400 characters"));
 
     Validation.RequireField("password", "You must enter a password");
     Validation.Add("password", 
         Validator.StringLength(
             maxLength: Int32.MaxValue,
             minLength: 6,
-            errorMessage: "Password must contain at least 6 caracters"));
+            errorMessage: "Password must contain at least 6 characters"));
 
     if(IsPost)
     {
@@ -52,7 +52,7 @@
   <form method="post">
     <fieldset>
         @AntiForgery.GetHtml()
-        @Html.ValidationSummary("Log in was unsuccesful. please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+        @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again.", excludeFieldErrors: true, htmlAttributes: null)
         <h1>Login</h1>
         <div class="form-group">
             <label for="userName">User Name</label>

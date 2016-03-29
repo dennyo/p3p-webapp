@@ -23,11 +23,11 @@
         Validator.StringLength(
             maxLength: Int32.MaxValue,
             minLength: 6,
-            errorMessage: "Password must contain at least 6 caracters"));
+            errorMessage: "Password must contain at least 6 characters"));
     Validation.Add("userName",
         Validator.StringLength(
             maxLength: 400,
-            errorMessage: "Your email cannot contain more then 4000 caracters"));
+            errorMessage: "Your email cannot contain more than 4000 characters"));
 
     if(IsPost)
     {
@@ -70,7 +70,7 @@
 <div class="col-md-12">
     <form method="post">
         @AntiForgery.GetHtml()
-        @Html.ValidationSummary("Account creation failed, Please correct errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+        @Html.ValidationSummary("Account creation failed, please correct errors and try again", excludeFieldErrors: true, htmlAttributes: null)
         <fieldset>
             <h2>Register a new account</h2>
             <div class="form-group">

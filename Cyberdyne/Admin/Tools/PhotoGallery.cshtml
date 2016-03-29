@@ -91,7 +91,7 @@
         else
         {
             if(!Request.Files[0].ContentType.StartsWith("image")){Validation.AddFormError("The given file is not an image");}
-            if(Request.Files[0].ContentLength > 4000000){Validation.AddFormError("The file cannot exeed 4MB");}   
+            if(Request.Files[0].ContentLength > 4000000){Validation.AddFormError("The file cannot exceed 4MB");}   
         }
         if(Validation.IsValid())
         {

@@ -28,7 +28,7 @@
             Validator.StringLength(
                 maxLength: 400,
                 minLength: 1,
-                errorMessage: "The name cannot contain more then 400 caracters"
+                errorMessage: "The name cannot contain more than 400 characters"
             )
         );
         partName = Request.Form["partName"];
@@ -108,7 +108,7 @@
         }
     <div class="col-md-12" style="clear: both">
         <form method="post">
-            @Html.ValidationSummary("there are some errors", excludeFieldErrors: true, htmlAttributes: null)
+            @Html.ValidationSummary("There are some errors", excludeFieldErrors: true, htmlAttributes: null)
             @AntiForgery.GetHtml()
             <h1>Add Part</h1>
             <div class="form-group">

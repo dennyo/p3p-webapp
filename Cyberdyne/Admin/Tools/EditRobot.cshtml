@@ -39,12 +39,12 @@
         }
         else
         {
-            Validation.AddFormError("Robot could not be found. ");
+            Validation.AddFormError("Robot could not be found.");
         }
     }
     else
     {
-        Validation.AddFormError("Robot could not be found");
+        Validation.AddFormError("Robot could not be found.");
     }
 
     if(IsPost && Request.Form["editMain"] != null)

@@ -23,12 +23,12 @@
             Validator.StringLength(
                 maxLength: Int32.MaxValue,
                 minLength: 6,
-                errorMessage: "Your password must at least be 6 caracters long"));
+                errorMessage: "Your password must be at least 6 characters long"));
         Validation.Add("oldPassword",
             Validator.StringLength(
                 maxLength: Int32.MaxValue,
                 minLength: 6,
-                errorMessage: "Your password must at least be 6 caracters long"));
+                errorMessage: "Your password must be at least 6 characters long"));
         AntiForgery.Validate();
         if(Validation.IsValid())
         {
@@ -38,11 +38,11 @@
 
             if(WebSecurity.ChangePassword(WebSecurity.CurrentUserName, oldPassword, newPassword))
             {
-                passwordMessage = "Your password has been succesfully changed";
+                passwordMessage = "Your password has been successfully changed";
             }
             else
             {
-                passwordMessage = "Something went wrong while changing your password, Please check your input and try again";
+                passwordMessage = "Something went wrong while changing your password, please check your input and try again";
             }
         }
     }

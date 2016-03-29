@@ -46,7 +46,7 @@
         }
         else
         {
-            Validation.AddFormError("Goddamnit. Part is lost.");
+            Validation.AddFormError("The part you requested is lost.");
         }
         
         //Post checks
@@ -99,12 +99,12 @@
                 Validator.StringLength(
                     maxLength: 400,
                     minLength: 1,
-                    errorMessage: "The Name must be at 400 caracters at most")
+                    errorMessage: "The Name must be 400 characters at most")
             );
             Validation.Add("vendorLink",
                 Validator.StringLength(
                     maxLength: 400,
-                    errorMessage: "The link cannot be longer then 400 caracters")
+                    errorMessage: "The link cannot be longer than 400 characters")
             );
             Validation.Add("price",
                 Validator.Float("This is not a number")
@@ -112,7 +112,7 @@
             Validation.Add("purchaseLink",
             Validator.StringLength(
                     maxLength: 400,
-                    errorMessage: "The link cannot be longer then 400 caracters")
+                    errorMessage: "The link cannot be longer than 400 characters")
             );
 
             if(Validation.IsValid())
@@ -166,12 +166,12 @@
                 Validator.StringLength(
                     maxLength: 400,
                     minLength: 1,
-                    errorMessage: "The Name must be at 400 caracters at most")
+                    errorMessage: "The Name must be 400 characters at most")
             );
             Validation.Add("vendorLink",
                 Validator.StringLength(
                     maxLength: 400,
-                    errorMessage: "The link cannot be longer then 400 caracters")
+                    errorMessage: "The link cannot be longer than 400 characters")
             );
             Validation.Add("price",
                 Validator.Float("This is not a number")
@@ -179,7 +179,7 @@
             Validation.Add("purchaseLink",
             Validator.StringLength(
                     maxLength: 400,
-                    errorMessage: "The link cannot be longer then 400 caracters")
+                    errorMessage: "The link cannot be longer than 400 characters")
             );
             if(Validation.IsValid())
             {
@@ -223,7 +223,7 @@
                     else
                     {
                         //give error that file is too big
-                        ModelState.AddError("addPhoto", "The file cannot be larger then 4MB");
+                        ModelState.AddError("addPhoto", "The file cannot be larger than 4MB");
                     }
                 }
             }
@@ -231,7 +231,7 @@
     }
     else
     {
-        Validation.AddFormError("Goddamnit. Part is lost.");
+        Validation.AddFormError("The part you requested is lost.");
     }   
     db.Close();
 }
