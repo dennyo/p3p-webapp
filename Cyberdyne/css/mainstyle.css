@@ -292,7 +292,7 @@ label {
       z-index:-1;   
 }
 
-.homeGallery {
+.homeGallery, .gallery {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;   
@@ -487,4 +487,17 @@ input[type="radio"] {
 
 .list-group {
     color: #000;
+}
+
+.footer li:first-child {
+    margin-left: -20px;
+}
+
+#title {
+    font-family: 'OCR A';
+    text-transform: uppercase;
+}
+
+.about, .editBtn {
+    margin-left: 10px;
 }

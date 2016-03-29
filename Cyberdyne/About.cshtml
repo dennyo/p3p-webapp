@@ -30,7 +30,7 @@
             }
             else
             {
-                <p> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
+                <p class="about"> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
                 if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=2"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
             }
       </div>
@@ -51,7 +51,7 @@
             }
             else
             {
-               <p> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
+               <p class="about"> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
                if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=3"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
             }
         </div>
@@ -72,7 +72,7 @@
             }
             else
             {
-                <p> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
+                <p class="about"> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
                 if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=4"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
             }
       </div>
