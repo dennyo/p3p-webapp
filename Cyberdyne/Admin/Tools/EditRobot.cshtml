@@ -321,32 +321,7 @@
             </button>
         </fieldset>
     </form><br>
-    <form method="post">
-        <fieldset>
-            <label>Pick a cover image</label></br>
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">Toggle photos</button>
-            <div id="PhotoToggle" class="collapse">
-                @foreach (var photo in photos)
-                {
-                    <label class="radio-inline">
-                        @if(photo == mainPhoto)
-                        {
-                                <input type="radio" id="photo" name="photo" value="@photo" checked class="form-control">
-                        }
-                        else
-                        {
-                            <input type="radio" id="photo" name="photo" value="@photo" class="form-control">
-                        }
-                        <span><img src="@App.Thumbnail@photo" alt="photo" /></span>
-                        </label>
-                }<br>
-                <button type="submit" id="choosePhoto" name="choosePhoto" class="btn btn-success">
-                    <span class="glyphicon glyphicon-ok"></span> Choose Photo
-                </button>
-            </div>
-        </fieldset>
-    </form>
-    <label>Choose Photos for this robot</label></br>
+    <label>Choose Photos and CoverImage for this robot</label></br>
 
     <a href="/Admin/Tools/PhotoGallery?Id=@robotId" class="btn btn-default">
     <span class="glyphicon glyphicon-picture"></span> Edit Photos</a></br>

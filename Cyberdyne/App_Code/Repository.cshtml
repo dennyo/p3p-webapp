@@ -72,7 +72,7 @@
             var data = db.Query("SELECT Id, link FROM CodeLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
+                links.Add(new string[]{Convert.ToString(row.Id), Repository.makeLink(row.link)});
             }
 
             db.Close();
@@ -104,7 +104,7 @@
             var data = db.Query("SELECT Id, link FROM VideoLinks WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
+                links.Add(new string[]{Convert.ToString(row.Id), Repository.makeLink(row.link)});
             }
 
             db.Close();
@@ -120,7 +120,7 @@
             var data = db.Query("SELECT Id, link FROM ThreeDFiles WHERE RobotId = @0", robotId);
             foreach(var row in data)
             {
-                links.Add(new string[]{Convert.ToString(row.Id), makeLink(row.link)});
+                links.Add(new string[]{Convert.ToString(row.Id), Repository.makeLink(row.link)});
             }
 
             db.Close();
@@ -263,7 +263,7 @@
         public void addVendor(string name, string link, float price, string purchaseLink)
         {
             var db = Database.Open("basicData");
-            db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, makeLink(link), price, makeLink(purchaseLink), partId);
+            db.Execute("INSERT INTO Vendors (VendorName, VendorLink, Price, PurchaseLink, PartId) VALUES (@0, @1, @2, @3, @4)", name, Repository.makeLink(link), price, Repository.makeLink(purchaseLink), partId);
             db.Close();
         }
 
@@ -316,7 +316,7 @@
             set{
                 var db = Database.Open("basicData");
                 link = value;
-                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", makeLink(link), vendorId);
+                db.Execute("UPDATE Vendors SET VendorLink = @0 WHERE VendorId = @1", Repository.makeLink(link), vendorId);
                 db.Close();
             }
         }
@@ -338,7 +338,7 @@
             set{
                 var db = Database.Open("basicData");
                 purchaseLink = value;
-                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", makeLink(purchaseLink), vendorId);
+                db.Execute("UPDATE Vendors SET PurchaseLink = @0 WHERE VendorId = @1", Repository.makeLink(purchaseLink), vendorId);
                 db.Close();
             }
         }
@@ -358,10 +358,10 @@
         public Vendor(string name, string link, float price, int partId, string purchaseLink, int vendorId)
         {
             this.name = name;
-            this.link = makeLink(link);
+            this.link = Repository.makeLink(link);
             this.price = price;
             this.partId = partId;
-            this.purchaseLink = makeLink(link);
+            this.purchaseLink = Repository.makeLink(link);
             this.vendorId = vendorId;
         }
     }
