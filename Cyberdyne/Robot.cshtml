@@ -79,8 +79,8 @@
             {
                 int count = 0;  
                 <div class="box-padding">
-                    <h2 class="box-title">Photo's</h2>         
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <h2 class="box-title">Photo's</h2>
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">                                
                         <ol class="carousel-indicators">
                             @foreach (int photo in photos)
                             {
@@ -101,18 +101,21 @@
                             {
                                 if(count==0)
                                 {
-                                    <a class="item active" href="@App.ViewFull@photo" target="_blank">
+                                    <div class="item active">
                                         <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
-                                    </a>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <a class="item" href="@App.ViewFull@photo" target="_blank">
-                                       <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
-                                    </a>
+                                    <div class="item">
+                                        <img src="@App.Thumbnail@photo?size=medium" alt="photo" class="img-responsive" />
+                                    </div>
                                 }
                                 count++;
                             }
+                            <button class="btn btn-primary toggleFullscreen" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-fullscreen"></span></button>
+                                        
+                            
                         </div>
                         <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                           <span class="glyphicon glyphicon-chevron-left"></span>
@@ -249,3 +252,55 @@ else
     </div>
 }
 
+
+          <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+             <div class="modal-dialog">
+                 <!-- Modal content-->
+                 <div id="modalCarousel" class="carousel slide" data-ride="carousel">
+                            @{var counter = 0;}
+                        <ol class="carousel-indicators">
+                            @foreach (int photo in photos)
+                            {
+                                if(counter==0) 
+                                {
+                                    <li data-target="#modalCarousel" data-slide-to="@counter" class="active"></li>
+                                }
+                                else
+                                {
+                                    <li data-target="#modalCarousel" data-slide-to="@counter"></li>
+                                }
+                                counter++;
+                            }
+                            @{counter = 0;}
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                            @foreach(int photo in photos)
+                            {
+                                if(counter==0)
+                                {
+                                    <div class="item active">
+                                        <img src="@App.ViewFull@photo?size=medium" alt="photo" class="img-responsive" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="item">
+                                        <img src="@App.ViewFull@photo?size=medium" alt="photo" class="img-responsive" />
+                                    </div>
+                                }
+                                counter++;
+                            }
+                            <button class="btn btn-danger toggleFullscreen" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button>
+                        </div>
+                        <a class="left carousel-control" href="#modalCarousel" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#modalCarousel" role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                    </div>  
+                </div>
+          </div>
