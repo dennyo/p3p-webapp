@@ -79,7 +79,7 @@
 
         if(Request.Form["addToRobot"] != null)
         {
-            db.Execute("INSERT INTO PartReference (PartId, RobotId) VALUES (@0, @1)", tempId, RobotId);
+            db.Execute("INSERT INTO PartReference (PartId, RobotId, Quantity) VALUES (@0, @1, 1)", tempId, RobotId);
         }
         else
         {

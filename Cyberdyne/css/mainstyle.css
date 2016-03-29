@@ -8,7 +8,6 @@ body {
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-bottom: 300px;
 }
 #header, .container , #footer {  
     display: block;  
@@ -66,6 +65,9 @@ span#title{
 
 @media screen and (min-width:768px)
 {
+    body {
+        margin-bottom: 200px;
+    }
     .right:not(.carousel-control) {
     float: right;
     width: 50%;
@@ -84,6 +86,13 @@ span#title{
     }
     #myNavbar #navRight {
     right:  0;
+    }
+}
+
+@media screen and (max-width: 768px)
+{
+    body {
+        margin-bottom: 400px;
     }
 }
 .navbar #navRight {
@@ -143,7 +152,7 @@ span#title{
     margin-bottom: 10px;
 }
 
-@media screen and (max-width: 470px) {
+@media screen and (max-width: 470px) {    
     .gallery h2 {
     font-size: 30px;
 }
