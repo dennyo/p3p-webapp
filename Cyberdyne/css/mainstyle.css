@@ -439,7 +439,7 @@ input[type="radio"] {
     margin: 5px;
     float: left;
     width: 300px;
-    height: 300px;
+    height: 250px;
     overflow: hidden;
     position: relative;
     background-color: rgba(0,0,80,0.5);

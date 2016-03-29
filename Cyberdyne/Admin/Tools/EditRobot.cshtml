@@ -290,49 +290,6 @@
             Response.Redirect(Request.Url.AbsoluteUri);
         }
     }
-    if(IsPost && Request.Form["addPhoto"] != null)
-    {
-        if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
-        else
-        {
-            if(!Request.Files[0].ContentType.StartsWith("image")){Validation.AddFormError("The given file is not an image");}
-            if(Request.Files[0].ContentLength > 4000000){Validation.AddFormError("The file cannot exeed 4MB");}   
-        }
-        if(Validation.IsValid())
-        {
-            var db = Database.Open("basicData");
-            for(int imageCount = 0; imageCount < Request.Files.Count; imageCount++)
-            {
-                var uploadedFile = Request.Files[imageCount];
-                var fileName = Path.GetFileName(uploadedFile.FileName);
-                if(fileName != String.Empty)
-                {
-                    var fileType = uploadedFile.ContentType;
-                    if(fileType.StartsWith("image"))
-                    {
-                        var fileStream = uploadedFile.InputStream;
-                        var fileLength = uploadedFile.ContentLength;
-                        if(fileLength <= 4000000)
-                        {
-                            byte[] fileContent = new byte[fileLength];
-                            fileStream.Read(fileContent, 0, fileLength);
-                            db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)", fileContent, fileType);
-                            int id = (int)db.GetLastInsertId();
-                            db.Execute("INSERT INTO PhotoReference (RobotID, PhotoID) VALUES (@0,@1)", robotId, id );
-                            db.Close();
-                        }        
-                    }
-                    else
-                    {
-                        Validation.AddFormError("The file is not an image");
-                    }
-                }
-            }
-            db.Close();
-            Response.Redirect(Request.Url.AbsoluteUri);
-        }
-    }
-
     Page.Title = String.Format("Edit {0}", robotName);
 }
 
@@ -389,27 +346,10 @@
             
         </fieldset>
        </form>
-       <form method="post" enctype="multipart/form-data">
-        <fieldset><br>
-            <div class="form-group">
-                <label>Add Images</label>  
-                <div>
-                    @FileUpload.GetHtml(
-                    initialNumberOfFiles:1,
-                    allowMoreFilesToBeAdded:true,
-                    includeFormTag:false,
-                    uploadText: "Upload2",
-                    name: "Upload2")
-                </div>
-                <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
-                    <span class="glyphicon glyphicon-cloud-upload"></span> Upload
-                </button>
-            </div>
-        </fieldset>
-    </form>
-    <label>Temporary button to the galery</label></br>
+    <label>Choose Photos for this robot</label></br>
 
-    <a href="/Admin/Tools/PhotoGallery?Id=@robotId" class="btn btn-danger">Edit Photos</a></br>
+    <a href="/Admin/Tools/PhotoGallery?Id=@robotId" class="btn btn-default">
+    <span class="glyphicon glyphicon-picture"></span> Edit Photos</a></br>
     <label>Make this robot your favourite!</label></br>
                 @if(isFavourite)
                 {

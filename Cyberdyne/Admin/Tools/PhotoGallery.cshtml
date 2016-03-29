@@ -125,7 +125,7 @@
     {
         <h1>Select Photos for @robot.RobotName</h1>
     }
-    <div class="row">
+    <div class="row" style="margin-left: 10px">
         <form method="post" enctype="multipart/form-data">
             @FileUpload.GetHtml(
                 initialNumberOfFiles:1,
@@ -136,7 +136,7 @@
             <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
                 <span class="glyphicon glyphicon-cloud-upload"></span> Upload
             </button>
-        </form>
+        </form><br />
     </div>
     <div class="row">
         @foreach(string photo in photos)
