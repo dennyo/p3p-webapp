@@ -4,7 +4,8 @@
 @import url(https://fonts.googleapis.com/css?family=Rock+Salt);
 
 * {
-    font-family: 'Wingdings 3', 'Rock Salt', 'Audiowide', 'Bangers', 'Ubuntu';
+    /*font-family: 'Wingdings 3', 'Rock Salt', 'Audiowide', 'Bangers', 'Ubuntu';*/
+    font-family: 'Ubuntu';
 }
 html {
     position: relative;
