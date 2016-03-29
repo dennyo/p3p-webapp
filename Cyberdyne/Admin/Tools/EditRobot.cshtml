@@ -298,9 +298,7 @@
 
 <div class="col-md-12">
 <h1>Edit robot</h1>
-<div>
-    <a href="~/Robot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
-</div>
+<a href="~/Robot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
 <br/>
 <span id="required">* Required Fields</span>
     <form method="post" class="form-inline"> @* mist nog form ID *@
@@ -328,9 +326,9 @@
                 <span class="glyphicon glyphicon-ok"></span> Save Changes
             </button>
         </fieldset>
-        </form><br>
-        <form method="post">
-          <fieldset>
+    </form><br>
+    <form method="post">
+        <fieldset>
             <label>Pick a cover image</label></br>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#PhotoToggle">Toggle photos</button>
             <div id="PhotoToggle" class="collapse">
@@ -339,7 +337,7 @@
                     <label class="radio-inline">
                         @if(photo == mainPhoto)
                         {
-                             <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
+                                <input type="radio" id="photo" name="photo" value="@photo.Substring(23)" checked class="form-control">
                         }
                         else
                         {
@@ -352,28 +350,27 @@
                     <span class="glyphicon glyphicon-ok"></span> Choose Photo
                 </button>
             </div>
-            
         </fieldset>
-       </form>
+    </form>
     <label>Choose Photos for this robot</label></br>
 
     <a href="/Admin/Tools/PhotoGallery?Id=@robotId" class="btn btn-default">
     <span class="glyphicon glyphicon-picture"></span> Edit Photos</a></br>
     <label>Make this robot your favourite!</label></br>
-                @if(isFavourite)
-                {
-                    <p>This robot is already your favourite.</p><br>
-                }
-                else
-                {
-                    <form method="post" class="form-inline">
-                        <fieldset>
-                            <button type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-warning">
-                                <span class="glyphicon glyphicon-star"></span> Favourite
-                            </button>
-                        </fieldset>
-                    </form>
-                }
+    @if(isFavourite)
+    {
+        <p>This robot is already your favourite.</p><br>
+    }
+    else
+    {
+        <form method="post" class="form-inline">
+            <fieldset>
+                <button type="submit" id="submit" name="favourite" value="Favourite" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-star"></span> Favourite
+                </button>
+            </fieldset>
+        </form>
+    }
 
     <label>View parts for this robot</label></br>
     <p>@parts.Count Part(s) have been added</p>
@@ -404,18 +401,20 @@
             </form>
         </div>
         @for (int i = 1; i <= codeLinks.Count; i++)
-            {
-                <div id="Link_@i" class="tab-pane fade">
-                    <form method="post" class="form-inline"><br>
-                            <input type="text" id="codeLinkEdit" name="codeLinkEdit" value="@codeLinks[i-1][1]" class="form-control" placeholder="e.g. https://github.com/username/repository">
-                            <input type="hidden" name="element" value="@codeLinks[i-1][0]">
-                            <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-primary">
-                            <button type="submit" id="submit" name="deleteCodeLink"class="btn btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span> Delete
-                            </button>
-                    </form><br>
-                </div>
-            }
+        {
+            <div id="Link_@i" class="tab-pane fade">
+                <form method="post" class="form-inline"><br>
+                        <input type="text" id="codeLinkEdit" name="codeLinkEdit" value="@codeLinks[i-1][1]" class="form-control" placeholder="e.g. https://github.com/username/repository">
+                        <input type="hidden" name="element" value="@codeLinks[i-1][0]">
+                        <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-primary">
+                        <button type="submit" id="submit" name="deleteCodeLink"class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Delete
+                        </button>
+                </form><br>
+            </div>
+        }
+    </div>
+
     <h2><span class="glyphicon glyphicon-font"></span> snippets</h2>
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#Snippet_plus">+</a></li>
@@ -443,106 +442,105 @@
             </form>
         </div>
         @for (int i = 1; i <= codeSnippets.Count; i++)
+        {
+            <div id="Snippet_@i" class="tab-pane fade">
+                <form method="post" class="form-inline"><br>
+                    <div class="form-group">
+                        <textarea onkeyup="textCounter(this, 'snipCounter_@i',4000);" id="codeSnippetEdit" name="codeSnippetEdit" class="form-control col-md-12" cols="50" rows="8" placeholder="Provide a code snippet for the robot" maxlength="4000">@codeSnippets[i-1][1]</textarea>
+                        <br/>
+                        <input class="counter" disabled value="4000 characters left" id="snipCounter_@i">
+                        <br/>
+                        <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
+                        <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-primary">
+                        <button type="submit" id="submit" name="deleteCodeSnippet"class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Delete
+                        </button>
+                    </div>
+                </form><br>
+            </div>
+        }
+    </div>
+
+
+    <h2><span class="glyphicon glyphicon-link"></span> 3D links</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#ThreeD_plus">+</a></li>
+        @for (int i = 1; i <= threeDLinks.Count; i++)
+        {
+            <li><a data-toggle="tab" href="#ThreeD_@i">@i</a></li>
+        }
+    </ul>
+
+    <div class="tab-content">
+        <div id="ThreeD_plus" class="tab-pane fade in active">
+            <form method="post" class="form-inline"><br>
+                @AntiForgery.GetHtml()
+                @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+                <div class="form-group">
+                    <input type="text" id="threeDLinkAdd" name="threeDLinkAdd" value="" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
+                    <button type="submit" id="submit" name="addThreeDLink" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span> Add
+                </button>
+                    @Html.ValidationMessage("threeDAdd")
+                </div>
+            </form>
+        </div>
+        @for (int i = 1; i <= threeDLinks.Count; i++)
             {
-                <div id="Snippet_@i" class="tab-pane fade">
+                <div id="ThreeD_@i" class="tab-pane fade">
                     <form method="post" class="form-inline"><br>
                         <div class="form-group">
-                            <textarea onkeyup="textCounter(this, 'snipCounter_@i',4000);" id="codeSnippetEdit" name="codeSnippetEdit" class="form-control col-md-12" cols="50" rows="8" placeholder="Provide a code snippet for the robot" maxlength="4000">@codeSnippets[i-1][1]</textarea>
-                            <br/>
-                            <input class="counter" disabled value="4000 characters left" id="snipCounter_@i">
-                            <br/>
-                            <input type="hidden" name="element" value="@codeSnippets[i-1][0]">
-                            <input type="submit" id="submit" name="editCodeSnippet" value="Edit" class="btn btn-primary">
-                            <button type="submit" id="submit" name="deleteCodeSnippet"class="btn btn-danger">
+                            <input type="text" id="threeDLinkEdit" name="threeDLinkEdit" value="@threeDLinks[i-1][1]" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
+                            <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
+                            <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-primary">
+                            <button type="submit" id="submit" name="deleteThreeDLink"class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove"></span> Delete
                             </button>
                         </div>
                     </form><br>
                 </div>
             }
+    </div>
 
 
+    <h2><span class="glyphicon glyphicon-film"></span> Video links</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#Video_plus">+</a></li>
+        @for (int i = 1; i <= videoLinks.Count; i++)
+        {
+            <li><a data-toggle="tab" href="#Video_@i">@i</a></li>
+        }
+    </ul>
 
-        <h2><span class="glyphicon glyphicon-link"></span> 3D links</h2>
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#ThreeD_plus">+</a></li>
-            @for (int i = 1; i <= threeDLinks.Count; i++)
-            {
-                <li><a data-toggle="tab" href="#ThreeD_@i">@i</a></li>
-            }
-        </ul>
-
-        <div class="tab-content">
-            <div id="ThreeD_plus" class="tab-pane fade in active">
-                <form method="post" class="form-inline"><br>
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-                    <div class="form-group">
-                        <input type="text" id="threeDLinkAdd" name="threeDLinkAdd" value="" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
-                        <button type="submit" id="submit" name="addThreeDLink" class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span> Add
+    <div class="tab-content">
+        <div id="Video_plus" class="tab-pane fade in active">
+            <form method="post" class="form-inline"><br>
+                @AntiForgery.GetHtml()
+                @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
+                <div class="form-group">
+                    <input type="text" id="videoLinkAdd" name="videoLinkAdd" value="" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
+                    <button type="submit" id="submit" name="addVideoLink" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span> Add
                     </button>
-                        @Html.ValidationMessage("threeDAdd")
-                    </div>
-                </form>
-            </div>
-            @for (int i = 1; i <= threeDLinks.Count; i++)
-                {
-                    <div id="ThreeD_@i" class="tab-pane fade">
-                        <form method="post" class="form-inline"><br>
-                            <div class="form-group">
-                                <input type="text" id="threeDLinkEdit" name="threeDLinkEdit" value="@threeDLinks[i-1][1]" class="form-control" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
-                                <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
-                                <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-primary">
-                                <button type="submit" id="submit" name="deleteThreeDLink"class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span> Delete
-                                </button>
-                            </div>
-                        </form><br>
-                    </div>
-                }
+                    @Html.ValidationMessage("videoAdd")
+                </div>
+            </form>
         </div>
-
-
-        <h2><span class="glyphicon glyphicon-film"></span> Video links</h2>
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#Video_plus">+</a></li>
-            @for (int i = 1; i <= videoLinks.Count; i++)
-            {
-                <li><a data-toggle="tab" href="#Video_@i">@i</a></li>
-            }
-        </ul>
-
-        <div class="tab-content">
-            <div id="Video_plus" class="tab-pane fade in active">
+        @for (int i = 1; i <= videoLinks.Count; i++)
+        {
+            <div id="Video_@i" class="tab-pane fade">
                 <form method="post" class="form-inline"><br>
-                    @AntiForgery.GetHtml()
-                    @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                     <div class="form-group">
-                        <input type="text" id="videoLinkAdd" name="videoLinkAdd" value="" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
-                        <button type="submit" id="submit" name="addVideoLink" class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span> Add
+                        <input type="text" id="videoLinkEdit" name="videoLinkEdit" value="@videoLinks[i-1][1]" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
+                        <input type="hidden" name="element" value="@videoLinks[i-1][0]">
+                        <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-primary">
+                        <button type="submit" id="submit" name="deleteVideoLink"class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Delete
                         </button>
-                        @Html.ValidationMessage("videoAdd")
                     </div>
-                </form>
+                </form><br>
             </div>
-            @for (int i = 1; i <= videoLinks.Count; i++)
-                {
-                    <div id="Video_@i" class="tab-pane fade">
-                        <form method="post" class="form-inline"><br>
-                            <div class="form-group">
-                                <input type="text" id="videoLinkEdit" name="videoLinkEdit" value="@videoLinks[i-1][1]" class="form-control" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
-                                <input type="hidden" name="element" value="@videoLinks[i-1][0]">
-                                <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-primary">
-                                <button type="submit" id="submit" name="deleteVideoLink"class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span> Delete
-                                </button>
-                            </div>
-                        </form><br>
-                    </div>}
-            </div>
-        </div>
+        }
     </div>
 </div>
                 <script>
