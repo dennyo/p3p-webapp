@@ -288,6 +288,10 @@ label {
     background-size: cover;   
 }
 
+#linkIgnore {
+    text-decoration: none;   
+}
+
 .featured_text p {
     padding-left: 25px;
     padding-right: 5px;
