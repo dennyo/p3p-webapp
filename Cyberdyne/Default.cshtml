@@ -38,8 +38,11 @@
     @foreach (Repository.Robot robot in robots)
     {
     <div class="col-md-6">
-        <div class="gallery homeGallery" style="background-image: url(@robot.CoverImage)"><a href="~/Robot?Id=@robot.RobotId">
-        <h2>@robot.RobotName</h2> </a></div>
+        <a href="~/Robot?Id=@robot.RobotId" id="linkIgnore">
+            <div class="gallery homeGallery" style="background-image: url(@robot.CoverImage?size=large)">
+                <h2>@robot.RobotName</h2>
+            </div>
+        </a>
         <p>@Html.Raw(robot.RobotText.Replace("\n","<br />"))</p>
     </div>
     }

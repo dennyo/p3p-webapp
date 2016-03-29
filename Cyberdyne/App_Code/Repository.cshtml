@@ -33,13 +33,6 @@
         public string CoverImage
         {
             get{return coverImage;}
-            set{
-                var db = Database.Open("basicData");
-                string basicString = "DisplayImage?Id=";
-                coverImage = basicString + value;
-                db.Execute("UPDATE Robots SET RobotId = @0 WHERE RobotId = @1", coverImage, robotId);
-                db.Close();
-            }
         }
 
         public Robot(int robotId, string robotName, string robotText, string coverImage)
@@ -58,7 +51,7 @@
             var IDs = db.Query("SELECT PhotoId FROM PhotoReference WHERE RobotId = @0", robotId);
             foreach(var row in IDs)
             {
-                PhotoIDs.Add("DisplayImage.cshtml?Id=" + row.PhotoId);
+                PhotoIDs.Add("/Photos/Thumbnail.cshtml/" + row.PhotoId);
             }
             db.Close();
             return PhotoIDs;
@@ -473,7 +466,7 @@
         var robotQuery = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", robotId);
         if(robotQuery != null)
         {
-            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, "DisplayImage.cshtml?Id=" + robotQuery.PhotoId);
+            Robot robotObject = new Robot(robotId, robotQuery.RobotName, robotQuery.RobotText, "/Photos/Thumbnail.cshtml/" + robotQuery.PhotoId);
             db.Close();
             return robotObject;
         }
@@ -490,7 +483,7 @@
         var robotQuery = db.Query("SELECT * FROM Robots WHERE RobotId = @0 OR RobotId = @1 ORDER BY RobotID DESC", subQuery1, subQuery2);
         foreach(var row in robotQuery)
         {
-            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "DisplayImage.cshtml?Id=" + row.PhotoId));
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
         }
         db.Close();
         return robotList;
@@ -503,7 +496,7 @@
         var robotQuery = db.Query("SELECT * FROM Robots");
         foreach(var row in robotQuery)
         {
-            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "DisplayImage.cshtml?Id=" + row.PhotoId));
+            robotList.Add(new Robot(row.RobotId, row.RobotName, row.RobotText, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
         }
         db.Close();
         return robotList;
@@ -515,7 +508,7 @@
         var partData = db.QuerySingle("SELECT * FROM Parts WHERE PartId = @0", partId);
         if(partData != null)
         {
-            Part tempPart = new Part(partId, partData.PartName, partData.PartNo, "DisplayImage.cshtml?Id=" + partData.PhotoId);
+            Part tempPart = new Part(partId, partData.PartName, partData.PartNo, "/Photos/Thumbnail.cshtml/" + partData.PhotoId);
             db.Close();
             return tempPart;
         }
@@ -530,7 +523,7 @@
         var partData = db.Query("SELECT * FROM Parts");
         foreach(var row in partData)
         {
-            partList.Add(new Part(row.PartId, row.PartName, row.PartNo, "DisplayImage.cshtml?Id=" + row.PhotoId));
+            partList.Add(new Part(row.PartId, row.PartName, row.PartNo, "/Photos/Thumbnail.cshtml/" + row.PhotoId));
         }
         db.Close();
         return partList;
@@ -602,7 +595,7 @@
             var partPhoto = db.QuerySingle("SELECT PhotoId FROM Parts WHERE PhotoId = @0", photo.PhotoId);
             if(partPhoto == null)
             {
-                tempList.Add("DisplayImage?Id=" + photo.PhotoId);
+                tempList.Add("/Photos/Thumbnail.cshtml/" + photo.PhotoId);
             }
         }
 
