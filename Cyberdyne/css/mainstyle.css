@@ -478,3 +478,7 @@ input[type="radio"] {
 .list-group {
     color: #000;
 }
+
+.panel {
+    margin-top: 10px;
+}
