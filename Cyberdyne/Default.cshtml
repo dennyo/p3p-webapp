@@ -1,6 +1,16 @@
 ﻿@{
     Page.Title= "Home";
     Layout = "~/_Layout.cshtml";
+    //Response.Cookies["UserSettings"]["Font"] = "Bangers";
+
+    //Repository.createCookie("UserSettings", "Font", "Bangers", 4d);
+
+    /*HttpCookie myCookie = new HttpCookie("UserSettings");
+    myCookie["Font"] = "Bangers";
+    myCookie.Path = "/";
+    myCookie.Expires = DateTime.Now.AddDays(4d);
+    Response.Cookies.Add(myCookie);*/
+
     var db = Database.Open(App.DataBase);
     List<Repository.Robot> robots = Repository.getLastRobots();
     var intro = Repository.getTextElement(1);

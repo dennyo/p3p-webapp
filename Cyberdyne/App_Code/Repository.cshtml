@@ -517,4 +517,25 @@
         db.Close(); 
         return tempList;
     }
+
+    public static string getFontForUser()
+    {
+        string font = "";
+        HttpCookie rqstCookie = Request.Cookies.Get("UserSettings");
+        if(rqstCookie != null && !string.IsNullOrEmpty(rqstCookie.Value))
+        {
+            font = rqstCookie["Font"];
+            font += ',';
+        }
+        return string.Format("font-family: {0} sans-serif", font);
+    }
+
+    public static void createCookie(string cookieName, string cookieKey, string cookieContent, double daysValid)
+    {
+        HttpCookie myCookie = new HttpCookie(cookieName);
+        myCookie[cookieName] = cookieContent;
+        myCookie.Path = "/";
+        myCookie.Expires = DateTime.Now.AddDays(daysValid);
+        Response.Cookies.Add(myCookie);
+    }
 }
