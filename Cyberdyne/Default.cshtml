@@ -11,30 +11,44 @@
         Response.Redirect("~/Default");
     }
     db.Close();
-}
-<div id="introduction" class="col-md-12">
-    <h1>Introduction</h1>
-    @if(Request.QueryString["edit"] == "true")
-    {
-        <form id="homepageform" method="post">
-            <fieldset>
-                <textarea id="intro" name="intro" class="form-control" rows="10" >@intro</textarea> <br />           
-                <button type="submit" name="submit" class="btn btn-default">
-                    <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                </button> 
-            </fieldset>
-        </form>
-    }
-    else 
-    {
-        <p> @Html.Raw(intro.Replace("\n","<br />"))</p>
-        if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=true"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
-    }
 
+        if(IsPost && Request.Form["editItem"] != null)
+    {
+        Response.Redirect("~/Default?edit=true"); 
+    }
+}
+<div class="col-md-12">
+    <div class="featured_text">
+        <h2 class="box-title">Introduction</h2>
+        @if(Request.QueryString["edit"] == "true")
+        {
+            <form id="homepageform" method="post">
+                <fieldset>
+                    <textarea id="intro" name="intro" class="form-control" rows="10" >@intro</textarea> <br />           
+                    <button type="submit" name="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button> 
+                </fieldset>
+            </form>
+        }
+        else 
+        {
+            <p> @Html.Raw(intro.Replace("\n","<br />"))</p>
+            if(WebSecurity.IsAuthenticated)
+            {
+                <form method="post" class="content-padding">
+                    <button type="submit" name="editItem" class="btn btn-warning robotBtn">
+                        <span class="glyphicon glyphicon-wrench"></span> Edit this text            
+                    </button> 
+                </form>
+            }
+        }
+    </div>
 </div>
+
 @if (robots.Count() != 0){
 <div class="col-md-12" id="latest">
-    <h1>Latest Additions</h1>
+    <h2 class="box-title">Latest Additions</h2>
     @foreach (Repository.Robot robot in robots)
     {
     <div class="col-md-6">
