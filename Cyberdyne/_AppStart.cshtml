@@ -6,11 +6,11 @@
     App.Thumbnail = "/Photos/Thumbnail/";
     App.ViewFull = "/Photos/ViewFull/";
 
-    App.DataBase = "basicData";
+    App.DataBase = "dummyData";
     App.AuthDataBase = "authenticationData";
 
     //Emergency Measures
 
-    /*var db = Database.Open("basicData");
-    db.Execute("DELETE FROM Photos WHERE PhotoId = 28")*/;
+    /*var db = Database.Open(App.DataBase);
+    db.Execute("DELETE FROM Photos WHERE PhotoId != 1")*/;
 }

@@ -460,11 +460,16 @@
     public static Robot getFavRobot() 
     {
         var db = Database.Open(App.DataBase);
-        var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
-        var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
-        Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId);
+        if(db.QuerySingle("SELECT RobotId FROM FavouriteRobot") != null)
+        {
+            var favId = (int)db.QueryValue("SELECT RobotId FROM FavouriteRobot");
+            var robotData = db.QuerySingle("SELECT * FROM Robots WHERE RobotId = @0", favId);
+            Robot favRobot = new Robot(favId, robotData.RobotName, robotData.RobotText, robotData.PhotoId);
+            db.Close();
+            return favRobot;
+        }
         db.Close();
-        return favRobot;
+        return null;
     }
 
     public static string[] Names()
