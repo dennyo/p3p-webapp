@@ -11,11 +11,26 @@
         db.Execute("UPDATE TextElements SET ElementText= @0 WHERE ElementID = @1", elementText, id);
         Response.Redirect("~/About");
     }
+
+    if(IsPost && Request.Form["editItem2"] != null)
+    {
+        Response.Redirect("~/About?edit=2"); 
+    }
+
+    if(IsPost && Request.Form["editItem3"] != null)
+    {
+        Response.Redirect("~/About?edit=3"); 
+    }
+
+    if(IsPost && Request.Form["editItem4"] != null)
+    {
+        Response.Redirect("~/About?edit=4"); 
+    }
 }
 
 <div class="col-md-12">
     <div class="col-md-6">
-       <div>
+       <div class="featured_text">
            <h2 class="box-title">About Me</h2>
             @if(Request.QueryString["edit"] == "2" && WebSecurity.IsAuthenticated)
             {
@@ -31,12 +46,19 @@
             else
             {
                 <p> @Html.Raw(textElements[0].Replace("\n","<br />"))</p>
-                if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=2"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+                if(WebSecurity.IsAuthenticated)
+                {
+                    <form method="post" class="content-padding">
+                        <button type="submit" name="editItem2" class="btn btn-warning robotBtn">
+                            <span class="glyphicon glyphicon-wrench"></span> Edit this text            
+                        </button> 
+                    </form>
+                }
             }
       </div>
     </div>
     <div class="col-md-6">
-       <div class="box-padding">
+       <div class="featured_text">
            <h2 class="box-title">About Foppele Inc.</h2>
             @if(Request.QueryString["edit"] == "3" && WebSecurity.IsAuthenticated)
             {
@@ -52,12 +74,19 @@
             else
             {
                <p> @Html.Raw(textElements[1].Replace("\n","<br />"))</p>
-               if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=3"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+                if(WebSecurity.IsAuthenticated)
+                {
+                    <form method="post" class="content-padding">
+                        <button type="submit" name="editItem3" class="btn btn-warning robotBtn">
+                            <span class="glyphicon glyphicon-wrench"></span> Edit this text            
+                        </button> 
+                    </form>
+                }
             }
         </div>
     </div>
         <div class="col-md-6"> 
-            <div class="box-padding">
+            <div class="featured_text">
            <h2 class="box-title">Contact</h2>
            @if(Request.QueryString["edit"] == "4" && WebSecurity.IsAuthenticated)
             {
@@ -73,7 +102,14 @@
             else
             {
                 <p> @Html.Raw(textElements[2].Replace("\n","<br />"))</p>
-                if(WebSecurity.IsAuthenticated){<div class="btn btn-warning  editBtn"><a href="?edit=4"><span class="glyphicon glyphicon-wrench"></span> Edit text</a></div>}
+                if(WebSecurity.IsAuthenticated)
+                {
+                    <form method="post" class="content-padding">
+                        <button type="submit" name="editItem4" class="btn btn-warning robotBtn">
+                            <span class="glyphicon glyphicon-wrench"></span> Edit this text            
+                        </button> 
+                    </form>
+                }
             }
       </div>
     </div>
