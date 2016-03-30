@@ -342,36 +342,49 @@
                 <form method="post" class="form-group">
                     @AntiForgery.GetHtml()
                     <fieldset>
-                        <h2>Add a Vendor</h2>
-                        <div class="form-group">
-                            <label for="vendorName">Vendor Name: </label>
-                            <input type="text" id="vendorName" name="vendorName" class="form-control">
-                            @Html.ValidationMessage("vendorName")
-                        </div>
-                        <div class="form-group">
-                            <label for="vendorLink">Link to Vendor</label>
-                            <input type="text" id="vendorLink" name="vendorLink" class="form-control">
-                            @Html.ValidationMessage("vendorLink")
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price</label>
-                            <input type="text" id="price" name="price" class="form-control">
-                            @Html.ValidationMessage("price")
-                        </div>
-                        <div class="form-group">
-                            <label for="purchaseLink">Link To Product</label>
-                            <input type="text" id="purchaseLink" name="purchaseLink" class="form-control">
-                            @Html.ValidationMessage("purchaseLink")
-                        </div>
-                        <div class="form-group">
+                        <div class="col-md-12"><h2 class="robot-title">Add a Vendor</h2></div>
+                            <div class="col-md-6">
+                                <div class="background-blue">
+                                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Vendor Name</h2>
+                                    <div class="form-group content-padding">
+                                        <input type="text" id="vendorName" name="vendorName" class="form-control form-width-override margin-btw">
+                                            @Html.ValidationMessage("vendorName")
+                                    </div>
+                               </div>
+                                <div class="background-blue">
+                                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Link to Vendor</h2>
+                                    <div class="form-group content-padding">
+                                        <input type="text" id="vendorLink" name="vendorLink" class="form-control form-width-override margin-btw">
+                                        @Html.ValidationMessage("vendorLink")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="background-blue">
+                                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-euro"></span>&nbsp; Price</h2>
+                                    <div class="form-group content-padding">
+                                        <input type="text" id="price" name="price" class="form-control form-width-override margin-btw">
+                                        @Html.ValidationMessage("price")
+                                    </div>
+                                </div>
+                                <div class="background-blue">
+                                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-link"></span>&nbsp; Link To Product</h2>
+                                    <div class="form-group content-padding">
+                                        <input type="text" id="purchaseLink" name="purchaseLink" class="form-control form-width-override margin-btw">
+                                        @Html.ValidationMessage("purchaseLink")
+                                    </div>
+                                </div>
+                             </div>
+                            <div class="col-md-6">
                             <button type="submit" name="submitVendor" class="btn btn-default">
-                                <span class="glyphicon glyphicon-plus"></span> Add
+                                <span class="glyphicon glyphicon-plus"></span> Add Vendor
                             </button>
                         </div>
                     </fieldset>
                 </form>
             </div>
-                </div>
+            </div>
         </div>
         <br>
         <div class="panel panel-primary">
