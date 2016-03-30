@@ -295,19 +295,19 @@
     <a href="~/Robot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
     <br/>
     <div class="col-md-6">
-    <span id="required">* Required Fields</span>
     <form method="post" class="form-inline background-blue"> @* mist nog form ID *@
         <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</h2>
         <fieldset>
             @AntiForgery.GetHtml()
             @Html.ValidationSummary("Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="content-padding">
+                <p id="required">* Required Fields</p>
                 <input type="text" id="name" name="name" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
                 @Html.ValidationMessage("name")
             </div>
             
         </fieldset>
-        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Description*</h2>
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Description*</h2>
         <fieldset>
            <div class="content-padding">
                 <textarea onkeyup="textCounter(this, 'descCounter',4000);" style="width: 100%; resize: none; margin: 0 5px;" name="robotText" class="form-control col-md-12" rows="8"  placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea>
@@ -316,7 +316,7 @@
                 @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
                     @Html.ValidationMessage("robotText")
                 </br>
-                <button type="submit" id="editMain" name="editMain" class="btn btn-default">
+                <button type="submit" id="editMain" name="editMain" class="btn btn-default margin-btw">
                     <span class="glyphicon glyphicon-ok"></span> Save Changes
                 </button>
           </div>
@@ -324,15 +324,15 @@
     </form><br>
 
     <div class="background-blue">
-        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Choose Photos</h2>
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-picture"></span>&nbsp; Choose Photos</h2>
         <div class="content-padding">
             <a href="/Admin/Tools/PhotoGallery?Id=@robotId" class="btn btn-default margin-btw">
-            <span class="glyphicon glyphicon-picture"></span> Edit Photos</a>
+            <span class="glyphicon glyphicon-wrench"></span> Edit Photos</a>
         </div>
     </div>
 
     <div class="background-blue">
-        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Favourite Robot</h2>
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-star-empty"></span>&nbsp; Favourite Robot</h2>
         <div class="content-padding">
             @if(isFavourite)
             {
@@ -352,7 +352,7 @@
     </div>
 
     <div class="background-blue">
-        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; View Parts</h2>
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-th-list"></span>&nbsp; View Parts</h2>
         <div class="content-padding">
             <p>@parts.Count Part(s) have been added</p>
                 <a href="~/Admin/Tools/Viewparts?Id=@robotId" class="btn btn-primary margin-btw">
@@ -405,7 +405,7 @@
         </div>
 
         <div class="background-blue">
-            <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-font"></span>&nbsp; Snippets</h2>
+            <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-console"></span>&nbsp; Snippets</h2>
             <div class="content-padding">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#Snippet_plus">+</a></li>
@@ -471,7 +471,7 @@
                             @AntiForgery.GetHtml()
                             @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                             <div class="form-group">
-                                <input type="text" id="threeDLinkAdd" name="threeDLinkAdd" value="" class="form-control margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
+                                <input type="text" id="threeDLinkAdd" name="threeDLinkAdd" value="" class="form-control form-width-override margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
                                 <button type="submit" id="submit" name="addThreeDLink" class="btn btn-success">
                                 <span class="glyphicon glyphicon-plus"></span> Add
                             </button>
@@ -484,7 +484,7 @@
                             <div id="ThreeD_@i" class="tab-pane fade">
                                 <form method="post" class="form-inline"><br>
                                     <div class="form-group">
-                                        <input type="text" id="threeDLinkEdit" name="threeDLinkEdit" value="@threeDLinks[i-1][1]" class="form-control margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
+                                        <input type="text" id="threeDLinkEdit" name="threeDLinkEdit" value="@threeDLinks[i-1][1]" class="form-control form-width-override margin-btw" placeholder="e.g. https://360.autodesk.com/ViewerPage?id=abCdeFghijKlMnoP">
                                         <input type="hidden" name="element" value="@threeDLinks[i-1][0]">
                                         <input type="submit" id="submit" name="editThreeDLink" value="Edit" class="btn btn-primary">
                                         <button type="submit" id="submit" name="deleteThreeDLink"class="btn btn-danger">
@@ -515,7 +515,7 @@
                 @AntiForgery.GetHtml()
                 @Html.ValidationSummary("Login was unsuccessful. Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
                 <div class="form-group">
-                    <input type="text" id="videoLinkAdd" name="videoLinkAdd" value="" class="form-control margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
+                    <input type="text" id="videoLinkAdd" name="videoLinkAdd" value="" class="form-control form-width-override margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
                     <button type="submit" id="submit" name="addVideoLink" class="btn btn-success">
                     <span class="glyphicon glyphicon-plus"></span> Add
                     </button>
@@ -528,7 +528,7 @@
             <div id="Video_@i" class="tab-pane fade">
                 <form method="post" class="form-inline"><br>
                     <div class="form-group">
-                        <input type="text" id="videoLinkEdit" name="videoLinkEdit" value="@videoLinks[i-1][1]" class="form-control margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
+                        <input type="text" id="videoLinkEdit" name="videoLinkEdit" value="@videoLinks[i-1][1]" class="form-control form-width-override margin-btw" placeholder="e.g. https://youtube.com/embed/abCdeFg-123">
                         <input type="hidden" name="element" value="@videoLinks[i-1][0]">
                         <input type="submit" id="submit" name="editVideoLink" value="Edit" class="btn btn-primary">
                         <button type="submit" id="submit" name="deleteVideoLink"class="btn btn-danger">
