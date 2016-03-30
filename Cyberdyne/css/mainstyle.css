@@ -165,7 +165,7 @@ span#title{
     font-size: 30px;
 }
 input[type="text"], input[type="password"], #robotText {
-    width: 50%;
+    width: 67.5%;
 }
 
     #mainphoto {
@@ -530,9 +530,8 @@ input[type="radio"] {
 }
 
 #title {
-    font-family: 'OCR A';
+    font-family: 'Audiowide';
     text-transform: uppercase;
-    font-style: italic;
 }
 
 .about, .editBtn {
