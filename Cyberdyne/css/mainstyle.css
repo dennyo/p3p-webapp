@@ -226,8 +226,8 @@ input[type="text"], input[type="password"], #robotText {
     
 input[type="text"], input[type="password"], #robotText {
     min-width: 500px;
-    margin: 0 20px 0 20px;
     max-width: 80%;
+    margin-left: 5px;
 }
 input[type="text"].form-width-override {
     min-width: 0px;
@@ -567,4 +567,14 @@ input[type="radio"] {
     right: 0;
     z-index: 2;
     outline-style: none;
+}
+.background-blue {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    background-color: rgba(0,0,80,0.5);
+    color: white;
+}
+
+.edit-robot-title {
+    margin-top: 0px;
 }
