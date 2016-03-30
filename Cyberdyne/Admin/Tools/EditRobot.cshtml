@@ -49,7 +49,7 @@
 
     if(IsPost && Request.Form["editMain"] != null)
     {
-        Validation.RequireField("name", "You must enter a name");
+        Validation.RequireField("robotName", "You must enter a name");
         Validation.RequireField("robotText", "You must enter a description");
         
         if(Request.Form["robotName"] != null) {robotName = Request.Form["robotName"];}
@@ -302,8 +302,8 @@
             @Html.ValidationSummary("Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="content-padding">
                 <p id="required">* Required Fields</p>
-                <input type="text" id="name" name="name" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
-                @Html.ValidationMessage("name")
+                <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
+                @Html.ValidationMessage("robotName")
             </div>
             
         </fieldset>
