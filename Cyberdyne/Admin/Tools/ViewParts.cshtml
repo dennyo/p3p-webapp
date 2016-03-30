@@ -90,40 +90,42 @@
 }
 
 <div class="col-md-12">
-    <div class="col-md-12" style="clear: both">
-        <form method="post">
-            @Html.ValidationSummary("There are some errors", excludeFieldErrors: true, htmlAttributes: null)
-            @AntiForgery.GetHtml()
-            <h2 class="robot-title">Add Part</h2>
-            @if(isRobot)
-            {
-                <div class="col-xs-6 col-sm-2 margin-btw">
-                    <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
-                </div> 
-                <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn margin-btw">
-                    <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-                </div>
-            }
-            else
-            {    
-                <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn margin-btw">
-                    <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-                </div>
-            }
-        </form>
+    <div class="row">
+        <div class="col-md-12" style="clear: both">
+            <form method="post">
+                @Html.ValidationSummary("There are some errors", excludeFieldErrors: true, htmlAttributes: null)
+                @AntiForgery.GetHtml()
+                <h2 class="robot-title">View Parts</h2>
+                @if(isRobot)
+                {
+                    <div class="col-xs-6 col-sm-2 margin-btw">
+                        <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                    </div> 
+                    <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn margin-btw">
+                        <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                    </div>
+                }
+                else
+                {    
+                    <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn margin-btw">
+                        <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                    </div>
+                }
+            </form>
+        </div>
     </div>
     <div class="col-md-4">
         <div class="background-blue">
         <form method="post">
 
-                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tags"></span>&nbsp; New Part</h2>
+                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tags"></span>&nbsp; Add Part</h2>
                 <div class="form-group content-padding">
                     <input type="text" id="partName" name="partName" value="@partName" class="form-control form-width-override margin-btw">
                 @if(!message.IsEmpty())
                 {
                     <text>@message</text> 
                 }
-                    <button type="submit" name="submitItem" class="btn btn-default margin-btw"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+                    <button type="submit" name="submitItem" class="btn btn-default margin-btw"><span class="glyphicon glyphicon-plus"></span> Add</button>
                 </div>
 
         </form>
@@ -138,14 +140,14 @@
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-xs-12 col-md-2 col-sm-4">Name: @part.PartName</div>
-                            <div class="col-xs-12 col-md-2 col-sm-4">Prices: @Repository.getPart(part.PartId).getVendors().Count</div>
+                            <div class="col-xs-12 col-md-1 col-sm-4">Prices: @Repository.getPart(part.PartId).getVendors().Count</div>
                             @if(isRobot)
                             {
-                                <div class="col-xs-12 col-md-2 col-sm-4">Quantity: @part.getQuantity(Convert.ToInt32(RobotId))</div>
+                                <div class="col-xs-12 col-md-1 col-sm-4">Quantity: @part.getQuantity(Convert.ToInt32(RobotId))</div>
                             }
                             @if(isRobot)
                             {                            
-                                <div class="col-md-2 col-xs-12 col-sm-4">
+                                <div class="col-md-3 col-xs-12 col-sm-4">
                                     <form method="post" id="addRemove">
                                     @{
                                         var data = Database.Open("basicData");
