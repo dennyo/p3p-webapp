@@ -376,9 +376,19 @@
                             @if(!partEdit)
                             {
                                 <div class="col-xs-12 col-md-2 col-sm-6">Name: @vendor.Name</div>
-                                <div class="col-xs-12 col-md-2 col-sm-6">Vendor Link: <a href="@vendor.Link" target="_blank">Vendor</a></div>
+                                <div class="col-xs-12 col-md-2 col-sm-6">Vendor Link: @if(string.IsNullOrEmpty(vendor.Link)){
+                                                                                        <text>No Link</text>
+                                                                                      }else {                                                                                      
+                                                                                          <a href="@vendor.Link" target="_blank"> Vendor</a>
+                                                                                      }
+                                </div>
                                 <div class="col-xs-12 col-md-2 col-sm-6">Price: €@vendor.Price</div>
-                                <div class="col-xs-12 col-md-2 col-sm-6">Purchase Link: <a href="@vendor.PurchaseLink" target="_blank">Buy here</a></div>  
+                                <div class="col-xs-12 col-md-2 col-sm-6">Purchase Link: @if(string.IsNullOrEmpty(vendor.PurchaseLink)){
+                                                                                            <text>No Link</text>
+                                                                                        } else {
+                                                                                            <a href="@vendor.PurchaseLink" target="_blank">Buy here</a>
+                                                                                        }
+                                </div>  
                                 <div class="col-xs-12 col-md-2 col-sm-6">
                                     <form method="post">
                                         @AntiForgery.GetHtml()

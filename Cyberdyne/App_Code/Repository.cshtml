@@ -576,4 +576,13 @@
         myCookie.Expires = DateTime.Now.AddDays(daysValid);
         Response.Cookies.Add(myCookie);
     }
+
+    public static bool isRobot(int robotId)
+    {
+        if(getRobot(robotId) != null)
+        {
+            return true;
+        }
+        return false;
+    }
 }
