@@ -518,22 +518,60 @@
         return tempList;
     }
 
+    public static string getBackgroundForUser()
+    {
+        string background = "";
+        string type = "";
+        HttpCookie rqstCookie = Request.Cookies.Get("UserSettings");
+        if(rqstCookie != null && !string.IsNullOrEmpty(rqstCookie.Values["Background"]))
+        {
+            switch(rqstCookie.Values["Background"])
+            {
+                default:
+                case "default":
+                    background = "url('/Cyberdyne background.jpg')";
+                    type = "background-image";
+                    break;
+                case "amazing":
+                    background = "url('/Schweizerdyne.jpg')";
+                    type = "background-image";
+                    break; 
+                case "fabulousPink":
+                    background = "#E91E63";
+                    type = "background";
+                    break;   
+                case "yellow":
+                    background = "#FFFF00";
+                    type = "background";
+                    break;              
+            }
+        }
+        return background = string.Format("{0}: {1};", type, background);
+    }
+
     public static string getFontForUser()
     {
         string font = "";
         HttpCookie rqstCookie = Request.Cookies.Get("UserSettings");
-        if(rqstCookie != null && !string.IsNullOrEmpty(rqstCookie.Value))
+        if(rqstCookie != null && !string.IsNullOrEmpty(rqstCookie.Values["Font"]))
         {
-            font = rqstCookie["Font"];
-            font += ',';
+            font = rqstCookie["Font"] + ", sans-serif";
         }
-        return string.Format("font-family: {0} sans-serif", font);
+        return string.Format("font-family: {0};", font);
     }
 
     public static void createCookie(string cookieName, string cookieKey, string cookieContent, double daysValid)
     {
-        HttpCookie myCookie = new HttpCookie(cookieName);
-        myCookie[cookieName] = cookieContent;
+        HttpCookie myCookie;
+        if(Request.Cookies.Get(cookieName) != null)
+        {
+            myCookie = Request.Cookies.Get(cookieName);
+        }
+        else
+        {
+            myCookie = new HttpCookie(cookieName);
+        }
+        myCookie.Values[cookieKey] = cookieContent;
         myCookie.Path = "/";
         myCookie.Expires = DateTime.Now.AddDays(daysValid);
         Response.Cookies.Add(myCookie);
