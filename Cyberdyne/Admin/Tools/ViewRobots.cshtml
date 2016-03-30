@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "/_Layout.cshtml";
+    
+    Page.Title = "View Robots";
+    
+    List<Repository.Robot> robots = Repository.getAllRobots();
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Robots</div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td style="width: 100%"><strong>Robot Name</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="/Admin/Tools/AddRobot" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Robot</a></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(Repository.Robot robot in robots)
+                {
+                    <tr onclick="document.location = '/Robot?id=@robot.RobotId'">
+                        <td>@robot.RobotName</td>
+                        <td>
+                            <a href="/Admin/Tools/EditRobot?Id=@robot.RobotId" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-pencil"></span> Robot
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/Admin/Tools/ViewParts?Id=@robot.RobotId" class="btn btn-info">
+                                <span class="glyphicon glyphicon-pencil"></span> Parts
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/Admin/Tools/RemoveRobot?Id=@robot.RobotId" class="btn btn-danger btn-block">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
