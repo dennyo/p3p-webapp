@@ -110,21 +110,26 @@
                     <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
                 </div>
             }
-            <div class="content-padding">
-                <div class="form-group">
-                    <label for="partName">Name:</label>
-                    <input type="text" id="partName" name="partName" value="@partName" class="form-control">
-                </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="background-blue">
+        <form method="post">
+
+                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tags"></span>&nbsp; New Part</h2>
+                <div class="form-group content-padding">
+                    <input type="text" id="partName" name="partName" value="@partName" class="form-control form-width-override margin-btw">
                 @if(!message.IsEmpty())
                 {
                     <text>@message</text> 
                 }
-                <div class="form-group">
-                    <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+                    <button type="submit" name="submitItem" class="btn btn-default margin-btw"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
                 </div>
-            </div>
-        </form>
 
+        </form>
+        </div>
+    </div>
+    <div class="col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">Parts</div>
             <div class="list-group">

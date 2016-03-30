@@ -337,6 +337,7 @@
             @Html.ValidationSummary()
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addVendorCollapse">Add a Vendor</button>
             </div>
+            <div class="col-md-12">
             <div class="collapse" id="addVendorCollapse">
                 <form method="post" class="form-group">
                     @AntiForgery.GetHtml()
@@ -370,6 +371,7 @@
                     </fieldset>
                 </form>
             </div>
+                </div>
         </div>
         <br>
         <div class="panel panel-primary">
