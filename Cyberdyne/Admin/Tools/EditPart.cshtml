@@ -237,9 +237,9 @@
 }
 
 
-
+<div class="container">
 <div class="col-md-12">
-    <h1>Edit part</h1>
+    <h2 class="robot-title">Edit part</h2>
 
     @if(isPart)
     {
@@ -263,53 +263,56 @@
         <br>
         <div class="row">
             <div class="col-md-6">
-                <div class="row">
+                <div class="background-blue">
                     <form method="post" class="form-group">
                         <fieldset>
                             @AntiForgery.GetHtml()
-
-                            <label for="partName">Name: @partName</label>
-                            <div class="form-inline">
-                                <input type="text" id="partName" name="partName" value="@partName" class="form-control form-width-override">
-                                <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info">
+                            <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Name</h2>
+                            <div class="form-inline content-padding">
+                                <input type="text" id="partName" name="partName" value="@partName" class="form-control form-width-override margin-btw">
+                                <input type="submit" id="submit" name="submitPartName" value="Edit" class="btn btn-info margin-btw">
                             </div>
                             @Html.ValidationMessage("partName")
                         </fieldset>
                     </form>
+                </div>
 
-
+                <div class="background-blue">
                     <form method="post" class="form-group">
                         <fieldset>
                             @AntiForgery.GetHtml()
-
-                            <label for="partNo">Part Number: @partNo</label>
-                            <div class="form-inline">
-                                <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control form-width-override">
-                                <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info">
+                            <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Number</h2>
+                            <div class="form-inline content-padding">
+                                <input type="text" id="partNo" name="partNo" value="@partNo" class="form-control form-width-override margin-btw">
+                                <input type="submit" id="submit" name="submitPartNo" value="Edit" class="btn btn-info margin-btw">
                             </div>
                             @Html.ValidationMessage("partNo")
                         </fieldset>
                     </form>
+                </div>
 
-                    @if(isRobot)
-                    {
+                @if(isRobot)
+                {
+                    <div class="background-blue">
                         <form method="post" class="form-group">
                             <fieldset>
                                 @AntiForgery.GetHtml()
-                                <h2>This quantity corresponds to robot: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
-                                <label for="quantity">Quantity: @quantity</label>
-                                <div class="form-inline">
-                                    <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control form-width-override">
-                                    <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info">
+                                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Quantity corresponds to: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
+                                <div class="form-inline content-padding">
+                                    <p><label for="quantity">Quantity: @quantity</label></p>
+                                    <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control form-width-override margin-btw">
+                                    <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info margin-btw">
                                 </div>
                                 @Html.ValidationMessage("quantity")
                             </fieldset>
                         </form>
-                    }
-                </div>
+                    </div>
+                 }
             </div>
             <div class="col-md-6">
-                <div class="row">
+                <div class="background-blue">
+                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-picture"></span>&nbsp; Photo</h2>
+                    <div class="content-padding">
                     <img src="@App.Thumbnail@tempPart.CoverPhoto" width="auto" height="100px" alt="photo"/>
                     <form method="post" enctype="multipart/form-data" class="form-group">
                         @Html.ValidationSummary()
@@ -322,15 +325,18 @@
                         <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
                             <span class="glyphicon glyphicon-cloud-upload"></span> Upload
                         </button>
-                    </form>   
+                    </form>  
+                    </div> 
                 </div>
             </div>
         </div>
         
         
         <div class="row">
+            <div class="col-md-12">
             @Html.ValidationSummary()
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#addVendorCollapse">Add a Vendor</button>
+            </div>
             <div class="collapse" id="addVendorCollapse">
                 <form method="post" class="form-group">
                     @AntiForgery.GetHtml()
@@ -434,4 +440,5 @@
     {
         @Html.ValidationSummary()
     }
+</div>
 </div>
