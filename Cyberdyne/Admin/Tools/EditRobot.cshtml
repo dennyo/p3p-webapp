@@ -296,20 +296,21 @@
     <br/>
     <div class="col-md-6">
     <span id="required">* Required Fields</span>
-    <form method="post" class="form-inline box-padding"> @* mist nog form ID *@
+    <form method="post" class="form-inline background-blue"> @* mist nog form ID *@
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</h2>
         <fieldset>
             @AntiForgery.GetHtml()
             @Html.ValidationSummary("Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
-            <div class="form-group background-blue">
-                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp;Name*</h2>
-                <input type="text" id="name" name="name" value="@robotName" class="form-control margin-btw" placeholder="Enter the name of the robot">
+            <div class="content-padding">
+                <input type="text" id="name" name="name" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
                 @Html.ValidationMessage("name")
             </div>
+            
         </fieldset>
+        <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Description*</h2>
         <fieldset>
-            <div class="form-group background-blue">
-                <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Description*</h2>
-                <textarea onkeyup="textCounter(this, 'descCounter',4000);" id="robotText" name="robotText" class="form-control col-md-12" rows="8" cols="50" placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea>
+           <div class="content-padding">
+                <textarea onkeyup="textCounter(this, 'descCounter',4000);" style="width: 100%; resize: none; margin: 0 5px;" name="robotText" class="form-control col-md-12" rows="8"  placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea>
                 <br/>
                 <input class="counter margin-btw" disabled value="4000 characters left" id="descCounter">
                 @*<textarea id="robotDescription" name="robotDescription" class="form-control">@robotDescription</textarea>*@
@@ -318,8 +319,8 @@
                 <button type="submit" id="editMain" name="editMain" class="btn btn-default">
                     <span class="glyphicon glyphicon-ok"></span> Save Changes
                 </button>
-            </div>
-            </fieldset>
+          </div>
+        </fieldset>
     </form><br>
 
     <div class="background-blue">
@@ -378,7 +379,7 @@
                         <form method="post" class="form-inline"><br>
                             @AntiForgery.GetHtml()
                             <div class="form-group">
-                                <input type="text" id="codeLinkAdd" name="codeLinkAdd" value="" class="form-control margin-btw" placeholder="e.g. https://github.com/username/repository">
+                                <input type="text" id="codeLinkAdd" name="codeLinkAdd" value="" class="form-control form-width-override margin-btw" placeholder="e.g. https://github.com/username/repository">
                                 <button type="submit" id="submit" name="addCodeLink" class="btn btn-success">
                                     <span class="glyphicon glyphicon-plus"></span> Add
                                 </button>
@@ -390,7 +391,7 @@
                     {
                         <div id="Link_@i" class="tab-pane fade">
                             <form method="post" class="form-inline"><br>
-                                    <input type="text" id="codeLinkEdit" name="codeLinkEdit" value="@codeLinks[i-1][1]" class="form-control margin-btw" placeholder="e.g. https://github.com/username/repository">
+                                    <input type="text" id="codeLinkEdit" name="codeLinkEdit" value="@codeLinks[i-1][1]" class="form-control form-width-override margin-btw" placeholder="e.g. https://github.com/username/repository">
                                     <input type="hidden" name="element" value="@codeLinks[i-1][0]">
                                     <input type="submit" id="submit" name="editCodeLink" value="Edit" class="btn btn-primary">
                                     <button type="submit" id="submit" name="deleteCodeLink"class="btn btn-danger">
