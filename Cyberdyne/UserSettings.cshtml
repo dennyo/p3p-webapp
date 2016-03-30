@@ -16,12 +16,12 @@
         }
     }
 }
-
+<div class="container">
 <div class="col-md-12">
         <form method="post">
             @AntiForgery.GetHtml()
             <div class="col-md-6">
-                <label>Set Your font</label>
+                <h2 class="box-title">Set Your font</h2>
                 <select name="fonts" style="color: #000;margin-bottom: 10px; font-family: Arial" class="form-control">
                     <option value="Arial" style="font-family: Arial">Arial</option>
                     <option value="'Bangers'" style="font-family: 'Bangers'">Bangers</option>
@@ -32,7 +32,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <label>Set Your Background</label>
+                <h2 class="box-title">Set Your Background</h2>
                 <select name="background" style="color: #000" class="form-control">
                     <option value="default">Default</option>
                     <option value="amazing">Amazing</option>
@@ -41,9 +41,10 @@
                 </select>
             </div>
             <div class="col-md-12">
-                <button type="submit" name="submitSettings" class="btn btn-success">
+                <button type="submit" name="submitSettings" class="btn btn-success margin-btw">
                     <span class="glyphicon glyphicon-ok"></span> Apply
                 </button>
             </div>
         </form>
+</div>
 </div>
