@@ -187,9 +187,9 @@
                 var vendorId = Request.Form["vendorId"];
                 Repository.Vendor tempVendor = Repository.getVendor(Convert.ToInt32(vendorId));
                 tempVendor.Name = Request.Form["vendorName"];
-                tempVendor.Link = Request.Form["vendorLink"].ToLower();
+                tempVendor.Link = Request.Form["vendorLink"];
                 var price = Request.Form["price"].Replace(',', '.');
-                tempVendor.PurchaseLink = Request.Form["purchaseLink"].ToLower();
+                tempVendor.PurchaseLink = Request.Form["purchaseLink"];
                 if(price != "")
                 {
                     tempVendor.Price = float.Parse(price);

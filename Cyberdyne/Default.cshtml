@@ -37,11 +37,11 @@
             <p> @Html.Raw(intro.Replace("\n","<br />"))</p>
             if(WebSecurity.IsAuthenticated)
             {
-                <form method="post" class="content-padding">
-                    <button type="submit" name="editItem" class="btn btn-warning robotBtn">
+                
+                    <a href="?edit=true" class="btn btn-warning robotBtn" style="margin-left: 15px;">
                         <span class="glyphicon glyphicon-wrench"></span> Edit this text            
-                    </button> 
-                </form>
+                    </a> 
+                
             }
         }
     </div>

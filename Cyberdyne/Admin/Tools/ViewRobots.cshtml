@@ -10,11 +10,27 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Robots</div>
         <div class="list-group">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-3 col-xs-6 col-sm-offset-9">
+                        <a href="/Admin/Tools/AddRobot" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span> Add Robot</a>
+                    </div>
+                </div>
+            </div>
             @foreach(Repository.Robot robot in robots)
             {
                 <div class="list-group-item">
                     <div class="row">
-                        
+                        <div class="col-xs-12 col-md-6 col-sm-6">@robot.RobotName</div>
+                        <div class="col-xs-6 col-md-2 col-sm-3">
+                            <a href="/Admin/Tools/EditRobot?Id=@robot.RobotId" class="btn btn-warning btn-block"><span class="glyphicon glyphicon-pencil"></span> Edit Robot</a>
+                        </div>
+                        <div class="col-xs-6 col-md-2 col-sm-3">
+                            <a href="/Admin/Tools/ViewParts?Id=@robot.RobotId" class="btn btn-info btn-block"><span class="glyphicon glyphicon-pencil"></span> Edit Parts</a>
+                        </div>
+                        <div class="col-xs-6 col-md-2 col-sm-3 col-sm-offset-9 col-xs-offset-6 col-md-offset-0">
+                            <a href="/Admin/Tools/RemoveRobot?Id=@robot.RobotId" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-remove"></span> Delete Robot</a>
+                        </div>
                     </div>
                 </div>
             }
