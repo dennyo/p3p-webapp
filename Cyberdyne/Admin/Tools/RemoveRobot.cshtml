@@ -4,7 +4,7 @@
 
     var robotId = "";
     var robotName = "";
-    var mainPhoto = "";
+    int mainPhoto = 1;
     var robotText = "";
     if(!Request.QueryString["id"].IsEmpty() && Request.QueryString["id"].IsInt()) 
     {
@@ -56,20 +56,25 @@
 
     <div class="col-md-12">    
         <h1>Remove Robot</h1> 
-        <p>Are you sure you want to delete this robot? This can NOT be undone.</p>     
+        <p><span class="glyphicon glyphicon-alert"></span>&nbsp; Are you sure you want to delete this robot? This can NOT be undone.</p>     
         <div class="col-md-4">
             <div>
-                <img src="~/@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
+                <img src="@App.Thumbnail@mainPhoto" alt="photo" id="mainphoto" class="img-responsive" />
             </div>
         </div>
         <div class="col-md-8">
-            <h1>@robotName</h1>
+            <h2 class="box-title">@robotName</h2>
                 <p>@Html.Raw(robotText.Replace("\n","<br />"))</p>
+            <form method="post" class="form-inline">
+                <a href='~/Robot?id=@robotId' class="btn btn-primary">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Back to robot
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </button>
+            </form><br/>
         </div>
-        <form method="post" class="form-inline">
-            <input type="submit" value="Delete" class="btn btn-danger" />
-            <a href='javascript:history.go(-1)' class="btn btn-primary"> Back to robot</a>
-        </form>
+        
     </div>
 
    

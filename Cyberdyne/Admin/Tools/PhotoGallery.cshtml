@@ -85,7 +85,7 @@
         }
     }
 
-    if(IsPost && Request.Form["addPhoto"] != null)
+    if(IsPost && Request.Form["uploadPhoto"] != null)
     {
         if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
         else
@@ -112,8 +112,6 @@
                             byte[] fileContent = new byte[fileLength];
                             fileStream.Read(fileContent, 0, fileLength);
                             db.Execute("INSERT INTO Photos (Photo, MimeType) VALUES (@0, @1)", fileContent, fileType);
-                            db.Close();
-                            Response.Redirect(Request.Url.AbsoluteUri);
                         }        
                     }
                     else
@@ -165,7 +163,7 @@
                 includeFormTag:false,
                 name: "Upload"
             )
-            <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
+            <button type="submit" id="submit" name="uploadPhoto" class="btn btn-default">
                 <span class="glyphicon glyphicon-cloud-upload"></span> Upload
             </button>
         </form><br />
