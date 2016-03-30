@@ -16,6 +16,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
 }
 #header, .container , #footer {  
     display: block;  
