@@ -18,7 +18,15 @@
         db.Execute(sql, link1, 5);
         db.Execute(sql, link2, 6);
         db.Execute(sql, link3, 7);
-        string path = currenturl.Substring(0, currenturl.IndexOf("?"));
+        string path = "";
+        if(currenturl.Contains("&"))
+        {
+            path = currenturl.Substring(0, currenturl.IndexOf("&"));
+        }
+        else 
+        {
+            path = currenturl.Substring(0, currenturl.IndexOf("?"));
+        }
         Response.Redirect(path);
     }
     if(IsPost && Request.QueryString["editfooter"] == "2")
@@ -29,7 +37,15 @@
         db.Execute(sql, contact1, 8);
         db.Execute(sql, contact2, 9);
         db.Execute(sql, contact3, 10);
-        string path = currenturl.Substring(0, currenturl.IndexOf("?"));
+        string path = "";
+        if(currenturl.Contains("&"))
+        {
+            path = currenturl.Substring(0, currenturl.IndexOf("&"));
+        }
+        else 
+        {
+            path = currenturl.Substring(0, currenturl.IndexOf("?"));
+        }
         Response.Redirect(path);
     }
     db.Close();
@@ -113,7 +129,19 @@
                         <li><span class="glyphicon glyphicon-chevron-right"></span><a href="@link2"> @link2</a></li>
                         <li><span class="glyphicon glyphicon-chevron-right"></span><a href="@link3"> @link3</a></li>
                     
-                    @if(WebSecurity.IsAuthenticated){<li><a class="btn btn-warning editBtn "href="?editfooter=1"><span class="glyphicon glyphicon-wrench"></span> Edit links</a></li>}
+                    @if(WebSecurity.IsAuthenticated)
+                    {
+                        <li>
+                            @if(Request.RawUrl.Contains("?"))
+                            {
+                                <a class="btn btn-warning editBtn "href="@Request.RawUrl&editfooter=1"><span class="glyphicon glyphicon-wrench"></span> Edit Links</a>
+                            }
+                            else 
+                            {
+                                <a class="btn btn-warning editBtn" href="@Request.RawUrl?editfooter=1"><span class="glyphicon glyphicon-wrench"></span> Edit Links</a>
+                            }
+                        </li>
+                    }  
                     </ul>
                 }
 
@@ -140,7 +168,19 @@
                         <li><span class="glyphicon glyphicon-envelope"></span> @contact1</li>
                         <li><span class="glyphicon glyphicon-phone-alt"></span> @contact2</li>
                         <li><span class="glyphicon glyphicon-globe"></span> @contact3</li>
-                    @if(WebSecurity.IsAuthenticated){<li><a class="btn btn-warning editBtn "href="?editfooter=2"><span class="glyphicon glyphicon-wrench"></span> Edit Info</a></li>}              
+                    @if(WebSecurity.IsAuthenticated)
+                    {
+                        <li>
+                            @if(Request.RawUrl.Contains("?"))
+                            {
+                                <a class="btn btn-warning editBtn "href="@Request.RawUrl&editfooter=2"><span class="glyphicon glyphicon-wrench"></span> Edit Info</a>
+                            }
+                            else 
+                            {
+                                <a class="btn btn-warning editBtn" href="@Request.RawUrl?editfooter=2"><span class="glyphicon glyphicon-wrench"></span> Edit Info</a>
+                            }
+                        </li>
+                    }              
                     
                     </ul>
                 }
