@@ -505,7 +505,7 @@ input[type="radio"] {
 .photogalleryItem {
     margin: 5px;
     float: left;
-    max-width: 300px;
+    width: 300px;
     height: 250px;
     overflow: hidden;
     position: relative;
