@@ -37,7 +37,6 @@
             <label for="robotText"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Description*</label> @Html.ValidationMessage("robotText")</br>
             <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8" placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea></br>
             <input disabled value="4000 characters left" id="counter">
-            <br />
             <div id="required" class="margin-btw">* Required Fields</div>
             <button type="submit" name="buttonUpload2" class="btn btn-primary">
                 <span class="glyphicon glyphicon-arrow-right"></span> Continue

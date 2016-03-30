@@ -186,7 +186,7 @@ input[type="text"], input[type="password"], #robotText {
 #myCarousel {
     height: 150px;
 }
-.carousel-inner .item img {
+#myCarousel .carousel-inner .item img {
     max-height: 130px;
 }
 }
@@ -217,7 +217,7 @@ input[type="text"], input[type="password"], #robotText {
 #myCarousel {
     height: 250px;
 }
-.carousel-inner .item img {
+#myCarousel .carousel-inner .item img {
     max-height: 230px;
 }
 }
@@ -226,8 +226,8 @@ input[type="text"], input[type="password"], #robotText {
     
 input[type="text"], input[type="password"], #robotText {
     min-width: 500px;
-    margin: 0 20px 0 20px;
     max-width: 80%;
+    margin-left: 5px;
 }
 input[type="text"].form-width-override {
     min-width: 0px;
@@ -237,12 +237,16 @@ input[type="text"].form-width-override {
 #myCarousel {
     height: 250px;
 }
-.carousel-inner .item img {
+#myCarousel .carousel-inner .item img {
     max-height: 230px;
 }
 }
 
-.carousel-inner {
+#myCarousel .carousel-inner {
+    height: auto;
+}
+
+#modalCarousel .carousel-inner {
     height: inherit;
 }
 
@@ -259,6 +263,10 @@ input[type="text"].form-width-override {
     position: absolute;
     bottom:  0;
     margin-bottom: 0;
+}
+
+#modalCarousel {
+    height: fill-available;
 }
 
 .carousel-control.left, .carousel-control.right {
@@ -567,4 +575,14 @@ input[type="radio"] {
     right: 0;
     z-index: 2;
     outline-style: none;
+}
+.background-blue {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    background-color: rgba(0,0,80,0.5);
+    color: white;
+}
+
+.edit-robot-title {
+    margin-top: 0px;
 }

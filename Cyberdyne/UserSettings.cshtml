@@ -3,23 +3,14 @@
 
     Page.Title = "Change Settings";
 
-    if(IsPost && Request.Form["submitFont"] != null)
+    if(IsPost && Request.Form["submitSettings"] != null)
     {
         AntiForgery.Validate();
         var inputFont = Request.Form["fonts"];
-        if(Validation.IsValid())
-        {
-            Repository.createCookie("UserSettings", "Font", inputFont, 4d);
-            Response.Redirect(Request.Url.AbsoluteUri);
-        }
-    }
-
-    if(IsPost && Request.Form["submitBackground"] != null)
-    {
-        AntiForgery.Validate();
         var inputBackground = Request.Form["background"];
         if(Validation.IsValid())
         {
+            Repository.createCookie("UserSettings", "Font", inputFont, 4d);
             Repository.createCookie("UserSettings", "Background", inputBackground, 4d);
             Response.Redirect(Request.Url.AbsoluteUri);
         }
@@ -27,36 +18,32 @@
 }
 
 <div class="col-md-12">
-    <div class="col-md-6">
-        <form method="post" class="form-group">
+        <form method="post">
             @AntiForgery.GetHtml()
-            <label>Set Your font</label>
-            <select name="fonts" style="color: #000" class="form-control">
-                <option value="Arial" style="font-family: Arial">Arial</option>
-                <option value="'Bangers'" style="font-family: 'Bangers'">Bangers</option>
-                <option value="'Ubuntu'" style="font-family: 'Ubuntu'">Ubuntu</option>
-                <option value="'Audiowide'" style="font-family: 'Audiowide'">Audiowide</option>
-                <option value="'Rock Salt'" style="font-family: 'Rock Salt'">Rock Salt</option>
-                <option value="cursive" style="font-family: cursive">Cursive</option>
-            </select>
-            <button type="submit" name="submitFont" class="btn btn-success">
-                <span class="glyphicons glyphicons-ok"></span> Set Font
-            </button>
+            <div class="col-md-6">
+                <label>Set Your font</label>
+                <select name="fonts" style="color: #000;margin-bottom: 10px; font-family: Arial" class="form-control">
+                    <option value="Arial" style="font-family: Arial">Arial</option>
+                    <option value="'Bangers'" style="font-family: 'Bangers'">Bangers</option>
+                    <option value="'Ubuntu'" style="font-family: 'Ubuntu'">Ubuntu</option>
+                    <option value="'Audiowide'" style="font-family: 'Audiowide'">Audiowide</option>
+                    <option value="'Rock Salt'" style="font-family: 'Rock Salt'">Rock Salt</option>
+                    <option value="cursive" style="font-family: cursive">Cursive</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label>Set Your Background</label>
+                <select name="background" style="color: #000" class="form-control">
+                    <option value="default">Default</option>
+                    <option value="amazing">Amazing</option>
+                    <option value="fabulousPink">Fabulous Pink</option>
+                    <option value="yellow">Fuggly Yellow</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" name="submitSettings" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span> Apply
+                </button>
+            </div>
         </form>
-    </div>
-    <div class="col-md-6">
-        <form method="post" class="form-group">
-            @AntiForgery.GetHtml()
-            <label>Set Your Background</label>
-            <select name="background" style="color: #000" class="form-control">
-                <option value="default">Default</option>
-                <option value="amazing">Amazing</option>
-                <option value="fabulousPink">Fabulous Pink</option>
-                <option value="yellow">Fuggly Yellow</option>
-            </select>
-            <button type="submit" name="submitBackground" class="btn btn-success">
-                <span class="glyphicons glyphicons-ok"></span> Set Background
-            </button>
-        </form>
-    </div>
 </div>
