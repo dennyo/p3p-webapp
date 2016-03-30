@@ -150,15 +150,15 @@
     </div>
     @if(isRobot && !editCoverImage)
     {
-        <h1>Select Photos for @robot.RobotName</h1>
+        <h2 class="robot-title">Select Photos for @robot.RobotName</h2>
     }
     @if(isRobot && editCoverImage)
     {
-        <h1>Select Cover Image for @robot.RobotName</h1>
+        <h2 class="robot-title">Select Cover Image for @robot.RobotName</h2>
     }
     <div class="row" style="margin-left: 10px">
         <form method="post" enctype="multipart/form-data">
-            <label>Upload a new Image</label>
+            <label><span class="glyphicon glyphicon-picture"></span>&nbsp; Upload a new Image</label>
             @FileUpload.GetHtml(
                 initialNumberOfFiles:1,
                 allowMoreFilesToBeAdded:true,

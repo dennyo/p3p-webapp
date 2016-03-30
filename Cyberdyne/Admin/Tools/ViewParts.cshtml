@@ -90,37 +90,38 @@
 }
 
 <div class="col-md-12">
-    <br>
-        @if(isRobot)
-        {
-            <div class="col-xs-6 col-sm-2">
-                <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
-            </div> 
-            <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
-                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-            </div>
-        }
-        else
-        {    
-            <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn">
-                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
-            </div>
-        }
     <div class="col-md-12" style="clear: both">
         <form method="post">
             @Html.ValidationSummary("There are some errors", excludeFieldErrors: true, htmlAttributes: null)
             @AntiForgery.GetHtml()
-            <h1>Add Part</h1>
-            <div class="form-group">
-                <label for="partName">Name:</label>
-                <input type="text" id="partName" name="partName" value="@partName" class="form-control">
-            </div>
-            @if(!message.IsEmpty())
+            <h2 class="robot-title">Add Part</h2>
+            @if(isRobot)
             {
-                <text>@message</text> 
+                <div class="col-xs-6 col-sm-2 margin-btw">
+                    <a href="~/Admin/Tools/EditRobot?Id=@RobotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                </div> 
+                <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn margin-btw">
+                    <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                </div>
             }
-            <div class="form-group">
-                <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+            else
+            {    
+                <div class="col-xs-6 col-xs-offset-6 col-sm-offset-10 col-sm-2 floatBtn margin-btw">
+                    <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                </div>
+            }
+            <div class="content-padding">
+                <div class="form-group">
+                    <label for="partName">Name:</label>
+                    <input type="text" id="partName" name="partName" value="@partName" class="form-control">
+                </div>
+                @if(!message.IsEmpty())
+                {
+                    <text>@message</text> 
+                }
+                <div class="form-group">
+                    <button type="submit" name="submitItem" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Add Part</button>
+                </div>
             </div>
         </form>
 
@@ -187,8 +188,12 @@
                         </div>     
                     </div>
                 }
+
             </div>
+
         </div>
+
     </div>
+
 </div>
 
