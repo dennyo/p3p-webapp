@@ -27,7 +27,7 @@
 }
 
 <div class="col-md-12">
-<h1>Add a Robot</h1><span id="required">* Required Fields</span>
+<h2 class="robot-title">Add a Robot</h2>
     <form id="robotform" method="post" enctype="multipart/form-data">
     <fieldset>
         @Html.ValidationSummary()
@@ -38,6 +38,7 @@
             <textarea onkeyup="textCounter(this, 'counter',4000);" id="robotText" name="robotText" class="form-control" rows="8" placeholder="Provide a description for the robot" maxlength="4000">@robotText</textarea></br>
             <input disabled value="4000 characters left" id="counter">
             <br />
+            <div id="required" class="margin-btw">* Required Fields</div>
             <button type="submit" name="buttonUpload2" class="btn btn-default">
                 <span class="glyphicon glyphicon-save"></span> Upload
             </button>
