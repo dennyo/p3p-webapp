@@ -85,7 +85,7 @@
         }
     }
 
-    if(IsPost && Request.Form["addPhoto"] != null)
+    if(IsPost && Request.Form["uploadPhoto"] != null)
     {
         if(Request.Files[0].FileName == string.Empty){Validation.AddFormError("You must attach at least one image");}
         else
@@ -165,7 +165,7 @@
                 includeFormTag:false,
                 name: "Upload"
             )
-            <button type="submit" id="submit" name="addPhoto" class="btn btn-default">
+            <button type="submit" id="submit" name="uploadPhoto" class="btn btn-default">
                 <span class="glyphicon glyphicon-cloud-upload"></span> Upload
             </button>
         </form><br />
