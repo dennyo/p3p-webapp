@@ -126,47 +126,60 @@
     }
 }
 
-
+<div class="container">
 <div class="col-md-12">
-    <div class="row">
-        </br>
+
+        <h2 class="robot-title">Image(s) for @robot.RobotName</h2>
+
+        <div class="row">
         @if(isRobot)
         {
             <div class="col-xs-6 col-sm-2">
-                <a href="~/Admin/Tools/EditRobot?Id=@robotId" class="btn btn-primary btn-block floatBtn"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+                <a href="~/Admin/Tools/EditRobot?Id=@robotId" class="btn btn-primary btn-block floatBtn margin-btw"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
             </div> 
             <div class="col-xs-6  col-sm-offset-8 col-sm-2 floatBtn">
-                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block margin-btw"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>
         }
         else
         {
             <div class="col-xs-6  col-sm-offset-10 col-sm-2 floatBtn">
-                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block"><span class="glyphicon glyphicon-refresh"></span></a>
+                <a href="@Request.Url.AbsoluteUri" class="btn btn-success btn-block margin-btw"><span class="glyphicon glyphicon-refresh"></span></a>
             </div>  
         }
     </div>
-    @if(isRobot && !editCoverImage)
-    {
-        <h2 class="robot-title">Select Photos for @robot.RobotName</h2>
-    }
-    @if(isRobot && editCoverImage)
-    {
-        <h2 class="robot-title">Select Cover Image for @robot.RobotName</h2>
-    }
-    <div class="row" style="margin-left: 10px">
-        <form method="post" enctype="multipart/form-data">
-            <label><span class="glyphicon glyphicon-picture"></span>&nbsp; Upload a new Image</label>
-            @FileUpload.GetHtml(
-                initialNumberOfFiles:1,
-                allowMoreFilesToBeAdded:true,
-                includeFormTag:false,
-                name: "Upload"
-            )
-            <button type="submit" id="submit" name="uploadPhoto" class="btn btn-default">
-                <span class="glyphicon glyphicon-cloud-upload"></span> Upload
-            </button>
-        </form><br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="background-blue">
+                <form method="post" enctype="multipart/form-data">
+                    <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-picture"></span>&nbsp; Upload New Image</h2>
+                    <div class="content-padding">
+                        @FileUpload.GetHtml(
+                            initialNumberOfFiles:1,
+                            allowMoreFilesToBeAdded:true,
+                            includeFormTag:false,
+                            name: "Upload"
+                        )
+                        <button type="submit" id="submit" name="uploadPhoto" class="btn btn-default">
+                            <span class="glyphicon glyphicon-cloud-upload"></span> Upload
+                        </button>
+                    </div>
+                </form><br />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-md-12 margin-btw">
+
+        @if(isRobot && !editCoverImage)
+        {
+            <h2 class="robot-title">Select Image(s) for @robot.RobotName</h2>
+        }
+        @if(isRobot && editCoverImage)
+        {
+            <h2 class="robot-title">Select Cover Image for @robot.RobotName</h2>
+        }
+            </div>
     </div>
     <div class="row">
         <div class="col-xs-6 col-sm-2 floatBtn">
@@ -184,6 +197,8 @@
     </div>
     </br>
     <div class="row">
+        <div class="col-md-12 margin-btw">
+
         @foreach(int photo in photos)
         {
             <div class="photogalleryItem">
@@ -235,5 +250,7 @@
                 </div>
             </div>
         }
+        </div>
     </div>
+</div>
 </div>
