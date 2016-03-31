@@ -159,7 +159,7 @@
                             @foreach (string[] codeSnippet in codeSnippets)
                             {
                                 <div class="content-padding codeSnippet">
-                                    <p>@Html.Raw(codeSnippet[1].Replace("\n","<br />"))</p>
+                                    <p>@Html.Raw(HttpUtility.HtmlEncode(codeSnippet[1]).Replace("\n","<br />"))</p>
                                 </div>
                             }
                         </div>
