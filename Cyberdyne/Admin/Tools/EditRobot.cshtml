@@ -141,7 +141,7 @@
     if(IsPost && Request.Form["editCodeSnippet"] != null)
     {
         Validation.RequireField("codeSnippetEdit", "Please enter something");
-        input = Request.Form["codeSnippetEdit"];
+        input = Request.Unvalidated.Form["codeSnippetEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -170,7 +170,7 @@
     {
         Validation.RequireField("codeSnippetAdd", "Please enter something");
 
-        input = Request.Form["codeSnippetAdd"];
+        input = Request.Unvalidated.Form["codeSnippetAdd"];
         if(Validation.IsValid())
         {
             var db = Database.Open(App.DataBase);
@@ -185,7 +185,7 @@
     if(IsPost && Request.Form["editThreeDLink"] != null)
     {
         Validation.RequireField("threeDLinkEdit", "Please enter something");
-        input = Request.Form["threeDLinkEdit"];
+        input = Request.Unvalidated.Form["threeDLinkEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
