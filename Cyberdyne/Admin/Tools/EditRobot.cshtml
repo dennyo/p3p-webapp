@@ -49,7 +49,7 @@
 
     if(IsPost && Request.Form["editMain"] != null)
     {
-        Validation.RequireField("robotName", "You must enter a name");
+        Validation.RequireField("name", "You must enter a name");
         Validation.RequireField("robotText", "You must enter a description");
         
         if(Request.Form["robotName"] != null) {robotName = Request.Form["robotName"];}
@@ -141,7 +141,7 @@
     if(IsPost && Request.Form["editCodeSnippet"] != null)
     {
         Validation.RequireField("codeSnippetEdit", "Please enter something");
-        input = Request.Unvalidated.Form["codeSnippetEdit"];
+        input = Request.Form["codeSnippetEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -170,7 +170,7 @@
     {
         Validation.RequireField("codeSnippetAdd", "Please enter something");
 
-        input = Request.Unvalidated.Form["codeSnippetAdd"];
+        input = Request.Form["codeSnippetAdd"];
         if(Validation.IsValid())
         {
             var db = Database.Open(App.DataBase);
@@ -185,7 +185,7 @@
     if(IsPost && Request.Form["editThreeDLink"] != null)
     {
         Validation.RequireField("threeDLinkEdit", "Please enter something");
-        input = Request.Unvalidated.Form["threeDLinkEdit"];
+        input = Request.Form["threeDLinkEdit"];
         element = Request.Form["element"];
 
         if(Validation.IsValid())
@@ -302,8 +302,8 @@
             @Html.ValidationSummary("Please correct the errors and try again", excludeFieldErrors: true, htmlAttributes: null)
             <div class="content-padding">
                 <p id="required">* Required Fields</p>
-                <input type="text" id="robotName" name="robotName" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
-                @Html.ValidationMessage("robotName")
+                <input type="text" id="name" name="name" value="@robotName" class="form-control form-width-override margin-btw" placeholder="Enter the name of the robot">
+                @Html.ValidationMessage("name")
             </div>
             
         </fieldset>
@@ -541,9 +541,6 @@
         </div>
     </div>
     </div>
-    </div>
-    <div class="row">
-        <a href="/Gallery" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Done</a>
     </div>
 </div>
 </div>
