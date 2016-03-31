@@ -299,7 +299,6 @@
                                 @AntiForgery.GetHtml()
                                 <h2 class="box-title edit-robot-title"><span class="glyphicon glyphicon-tag"></span>&nbsp; Quantity corresponds to: @Repository.getRobot(Convert.ToInt32(robotId)).RobotName</h2>
                                 <div class="form-inline content-padding">
-                                    <p><label for="quantity">Quantity: @quantity</label></p>
                                     <input type="text" id="quantity" name="quantity" value="@quantity" class="form-control form-width-override margin-btw">
                                     <input type="submit" id="submitQuantity" name="submitQuantity" value="Edit" class="btn btn-info margin-btw">
                                 </div>
