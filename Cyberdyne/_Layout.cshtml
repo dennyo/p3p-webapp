@@ -8,8 +8,23 @@
     var contact3 = Repository.getTextElement(10);
     var currenturl = Request.RawUrl;
     var sql = "UPDATE TextElements SET ElementText= @0 WHERE ElementID = @1";
+
+    bool editLinkFooter = false;
+    bool editContactFooter = false;
     
-    if(IsPost && Request.QueryString["editfooter"] == "1")
+    if(IsPost && (Request.Form["toggleEditLink"] != null || Request.Form["toggleEditContact"] != null))
+    {
+        if(Request.Form["toggleEditLink"] != null)
+        {
+            editLinkFooter = !editLinkFooter;
+        }
+        else if(Request.Form["toggleEditContact"] != null)
+        {
+            editContactFooter = !editContactFooter;
+        }
+    }
+
+    if(IsPost && Request.Form["saveLink"] != null)
     {
         link1 = Request.Form["link1"];
         link2 = Request.Form["link2"];
@@ -18,18 +33,10 @@
         db.Execute(sql, link1, 5);
         db.Execute(sql, link2, 6);
         db.Execute(sql, link3, 7);
-        string path = "";
-        if(currenturl.Contains("&"))
-        {
-            path = currenturl.Substring(0, currenturl.IndexOf("&"));
-        }
-        else 
-        {
-            path = currenturl.Substring(0, currenturl.IndexOf("?"));
-        }
-        Response.Redirect(path);
+        
+        Response.Redirect(Request.Url.AbsoluteUri);
     }
-    if(IsPost && Request.QueryString["editfooter"] == "2")
+    if(IsPost && Request.Form["saveContact"] != null)
     {
         contact1 = Request.Form["contact1"];
         contact2 = Request.Form["contact2"];
@@ -37,16 +44,8 @@
         db.Execute(sql, contact1, 8);
         db.Execute(sql, contact2, 9);
         db.Execute(sql, contact3, 10);
-        string path = "";
-        if(currenturl.Contains("&"))
-        {
-            path = currenturl.Substring(0, currenturl.IndexOf("&"));
-        }
-        else 
-        {
-            path = currenturl.Substring(0, currenturl.IndexOf("?"));
-        }
-        Response.Redirect(path);
+        
+        Response.Redirect(Request.Url.AbsoluteUri);
     }
     db.Close();
 }
@@ -106,7 +105,7 @@
         </div>
         <div id ="footer" class="navbar-inverse footer">
             <div class="col-md-6 col-sm-6 col-xs-12">               
-                @if(Request.QueryString["editfooter"] == "1" && WebSecurity.IsAuthenticated)
+                @if(editLinkFooter && WebSecurity.IsAuthenticated)
                 {
                     <h3>Links</h3>
                     <form method="post">
@@ -114,7 +113,7 @@
                             <input type="text" class="form-control" id="link1" name="link1" value="@link1" />
                             <input type="text" class="form-control" id="link2" name="link2" value="@link2" />
                             <input type="text" class="form-control" id="link3" name="link3" value="@link3" />   
-                            <button type="submit" id="save" name="save" class="btn btn-default">
+                            <button type="submit" id="save" name="saveLink" class="btn btn-default">
                                 <span class="glyphicon glyphicon-floppy-disk"></span> Save
                             </button>                
                         </fieldset>
@@ -132,14 +131,11 @@
                     @if(WebSecurity.IsAuthenticated)
                     {
                         <li>
-                            @if(Request.RawUrl.Contains("?"))
-                            {
-                                <a class="btn btn-warning editBtn "href="@Request.RawUrl&editfooter=1"><span class="glyphicon glyphicon-wrench"></span> Edit Links</a>
-                            }
-                            else 
-                            {
-                                <a class="btn btn-warning editBtn" href="@Request.RawUrl?editfooter=1"><span class="glyphicon glyphicon-wrench"></span> Edit Links</a>
-                            }
+                            <form method="post">
+                                <button type="submit" name="toggleEditLink" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-wrench"></span> Edit Links
+                                </button>
+                            </form>
                         </li>
                     }  
                     </ul>
@@ -147,7 +143,7 @@
 
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">               
-                @if(Request.QueryString["editfooter"] == "2" && WebSecurity.IsAuthenticated)
+                @if(editContactFooter && WebSecurity.IsAuthenticated)
                 {
                     <h3>Contact</h3>
                     <form method="post">
@@ -155,7 +151,7 @@
                             <input type="text" class="form-control" id="contact1" name="contact1" value="@contact1" />
                             <input type="text" class="form-control" id="contact2" name="contact2" value="@contact2" />
                             <input type="text" class="form-control" id="contact3" name="contact3" value="@contact3" />                                                
-                            <button type="submit" id="save" name="save" class="btn btn-default">
+                            <button type="submit" id="save" name="saveContact" class="btn btn-default">
                                 <span class="glyphicon glyphicon-floppy-disk"></span> Save
                             </button>             
                         </fieldset>
@@ -171,14 +167,11 @@
                     @if(WebSecurity.IsAuthenticated)
                     {
                         <li>
-                            @if(Request.RawUrl.Contains("?"))
-                            {
-                                <a class="btn btn-warning editBtn "href="@Request.RawUrl&editfooter=2"><span class="glyphicon glyphicon-wrench"></span> Edit Info</a>
-                            }
-                            else 
-                            {
-                                <a class="btn btn-warning editBtn" href="@Request.RawUrl?editfooter=2"><span class="glyphicon glyphicon-wrench"></span> Edit Info</a>
-                            }
+                            <form method="post">
+                                <button type="submit" name="toggleEditContact" class="btn btn-warning">
+                                    <span class="glyphicon glyphicon-wrench"></span> Edit Links
+                                </button>
+                            </form>
                         </li>
                     }              
                     
